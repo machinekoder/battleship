@@ -91,6 +91,11 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
 
+        Explosion {
+            id: explosion1
+            anchors.fill: parent
+        }
+
         Button {
             id: singlePlayerButton
             x: 193
@@ -103,6 +108,7 @@ Rectangle {
             onClicked: main.state = "playState"
         }
 
+
         Button {
             id: networkButton
             x: 193
@@ -113,6 +119,7 @@ Rectangle {
             textColor: "#fbfbfb"
             anchors.horizontalCenter: parent.horizontalCenter
         }
+
     }
     states: [
         State {
