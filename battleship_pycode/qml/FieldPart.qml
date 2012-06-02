@@ -9,7 +9,7 @@ Rectangle {
     color: "#00000000"
     border.width: 1
     border.color: "#4f4f4f"
-    opacity: 0.5
+    opacity: 0.3
 
     Image {
         id: image1
