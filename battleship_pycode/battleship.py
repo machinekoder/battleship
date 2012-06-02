@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # <Copyright and license information goes here.>
-import sys
-
 from PyQt4.QtCore import *
-from PyQt4.QtGui import *
 from PyQt4.QtDeclarative import *
+from PyQt4.QtGui import *
 from PyQt4.QtNetwork import *
 from PyQt4.phonon import *
+import sys
+import functional.players
 
+functional.players.rek( 10 )
 print( "Welcome to Battleship Galactica" )
 
 # This class will emit the current date and time as a signal when
@@ -23,18 +24,17 @@ print( "Welcome to Battleship Galactica" )
 
 class BattleShip( QObject ):
     
-  
     def __init__( self ):
         QObject.__init__( self )
         self.m_media = Phonon.MediaObject( self )
-	audioOutput = Phonon.AudioOutput( Phonon.GameCategory, self )
-	Phonon.createPath( self.m_media, audioOutput )
-	# loop not working
-	self.m_media.aboutToFinish.connect(self.m_media.play)
+        audioOutput = Phonon.AudioOutput( Phonon.GameCategory, self )
+        Phonon.createPath( self.m_media, audioOutput )
+	   # loop not working
+        self.m_media.aboutToFinish.connect( self.m_media.play )
 	
-	self.m_sound = Phonon.MediaObject( self )
-	soundOutput = Phonon.AudioOutput( Phonon.GameCategory, self )
-	Phonon.createPath( self.m_sound, soundOutput )
+        self.m_sound = Phonon.MediaObject( self )
+        soundOutput = Phonon.AudioOutput( Phonon.GameCategory, self )
+        Phonon.createPath( self.m_sound, soundOutput )
         
 
     def startGame( self ):
@@ -45,8 +45,8 @@ class BattleShip( QObject ):
         self.m_media.play()
         
     def playSound( self ):
-	self.m_sound.enqueue( Phonon.MediaSource( "music/predator_laugh.wav" ))
-	self.m_sound.play()
+        self.m_sound.enqueue( Phonon.MediaSource( "music/predator_laugh.wav" ) )
+        self.m_sound.play()
             
     
 
@@ -82,8 +82,8 @@ battleShipUi.initialize()
 desktopWidget = QDesktopWidget()
 viewHeight = view.height()
 viewWidth = view.width()
-view.setWindowTitle("Battleship Galactica")
-view.setGeometry( desktopWidget.width()/2 - viewWidth/2, desktopWidget.height() / 2 -viewHeight/2, viewWidth, viewHeight )
+view.setWindowTitle( "Battleship Galactica" )
+view.setGeometry( desktopWidget.width() / 2 - viewWidth / 2, desktopWidget.height() / 2 - viewHeight / 2, viewWidth, viewHeight )
 view.show()
 
 app.exec_() 
