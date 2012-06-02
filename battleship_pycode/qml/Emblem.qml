@@ -3,6 +3,7 @@ import QtQuick 1.1
 
 Rectangle {
     property url image
+    property double xAngle: 0; property double yAngle: 0; property double zAngle: 0
 
     id: main
     radius: 10
@@ -30,5 +31,11 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         fillMode: Image.PreserveAspectFit
         source: main.image
+    }
+
+    transform: Rotation { origin.x: width/2; origin.y: 10; axis {x:0; y:1; z:0} angle:main.yAngle }
+    Timer {
+         interval: 30; running: true; repeat: true
+         onTriggered: { main.yAngle = main.yAngle + 2 }
     }
 }
