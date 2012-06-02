@@ -2,9 +2,10 @@
 import QtQuick 1.1
 
 Rectangle {
-    id: rectangle1
+    id: main
     width: 500
     height: 500
+    state: "gameTypeState"
     Rectangle {
         id: rectangle2
         width: parent.width
@@ -36,7 +37,7 @@ Rectangle {
         }
         Emblem {
             id: logo2
-            width: 80
+            width: height
             height: parent.height * 0.8
             anchors.right: parent.right
             anchors.rightMargin: 10
@@ -65,14 +66,91 @@ Rectangle {
     }
 
     Field {
+        id: gameField
         width: parent.width
         height: parent.height*0.8
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
     }
 
-    function createPart()
+    Rectangle {
+        id: startRect
+        width: parent.width
+        height: parent.height*0.8
+        gradient: Gradient {
+            GradientStop {
+                position: 0
+                color: "#4d4c4c"
+            }
+
+            GradientStop {
+                position: 1
+                color: "#000000"
+            }
+        }
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 0
+
+        Button {
+            id: singlePlayerButton
+            x: 193
+            y: 116
+            width: parent.width * 0.5
+            text: "Single Player Game"
+            textSize: 13
+            textColor: "#fbfbfb"
+            anchors.horizontalCenter: parent.horizontalCenter
+            onClicked: main.state = "playState"
+        }
+
+        Button {
+            id: networkButton
+            x: 193
+            y: 204
+            width: parent.width*0.5
+            text: "Network Game"
+            textSize: 13
+            textColor: "#fbfbfb"
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+    }
+    states: [
+        State {
+            name: "gameTypeState"
+
+            PropertyChanges {
+                target: gameField
+                opacity: 0
+            }
+            PropertyChanges {
+                target: startRect
+                opacity: 1
+            }
+        },
+        State {
+            name: "playState"
+
+            PropertyChanges {
+                target: startRect
+                opacity: 0
+            }
+            PropertyChanges {
+                target: gameField
+                opacity: 1
+            }
+
+            PropertyChanges {
+                target: logo2
+                width: height
+            }
+        }
+    ]
+    transitions: Transition {
+             PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear }
+         }
+
+    function initialize()
     {
-        console.log("test")
+        gameField.initializeField()
     }
 }

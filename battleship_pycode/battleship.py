@@ -70,7 +70,7 @@ view.setResizeMode( QDeclarativeView.SizeRootObjectToView )
 battleShipUi = view.rootObject()
 
 # for testing
-battleShipUi.createPart()
+battleShipUi.initialize()
 
 # Update the user interface with the current date and time.
 # now.now.connect(rootObject.updateMessage)

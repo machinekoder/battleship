@@ -19,6 +19,6 @@ Rectangle {
         fillMode: Image.PreserveAspectFit
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        source: hit?"images/destroyed.png":""
+        source: hit?"../images/destroyed.png":""
     }
 }
