@@ -3,25 +3,46 @@ Created on Jun 2, 2012
 
 @author: christian
 '''
+#===============================================================================
+# Player class should have following methods:
+# - name
+# - date (for file)
+# - 
+#
+# wenn der button single player oder netwerok player gedrückt wird soll ein fenster aufgehen um denn namen einzugeben
+# 
+#===============================================================================
+from PyQt4.QtCore import *
+from PyQt4.QtDeclarative import *
+from PyQt4.QtGui import *
+from PyQt4.QtNetwork import *
+from PyQt4.phonon import *
+import sys
+import time
 
-class MyClass( object ):
-    '''
-    classdocs
-    '''
 
+def eingabe():
+    buffer = input()
+    return buffer
+
+class player( QObject ):
 
     def __init__( self ):
-        '''
-        Constructor
-        '''
+        date = time.localtime()
+        print( date )
+#        QObject.__init__( self )
+        self.Name = name
+        self.Date = date
+
+    def player_name( self, name ):
+        print( "players name:", name )
         
-l1 = []
-def rek( wert ):
-    b = wert
-    if b > 0:
-        a = ( lambda x: x * 10 - 10 )( b )
-        l1.append( a )
-        b -= 1
-        rek( b )
-    elif b == 0:
-        print( sorted( l1 ) )
+        pass
+   
+buffer = eingabe()
+
+player1 = player()
+player2 = player()
+
+player.player_name( 2, buffer )
+
