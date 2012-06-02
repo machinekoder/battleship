@@ -31,14 +31,15 @@ class player( QObject ):
         date = time.localtime()
         print( date )
 #        QObject.__init__( self )
-        self.Name = name
-        self.Date = date
+        self.name = "Default"
+        self.date = date
 
     def player_name( self, name ):
         print( "players name:", name )
         
         pass
    
+print("Input a name:")
 buffer = eingabe()
 
 player1 = player()

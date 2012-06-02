@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
  Created on Jun 31, 2012
  Main file
