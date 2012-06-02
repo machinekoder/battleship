@@ -10,6 +10,7 @@ Rectangle {
         id: rectangle2
         width: parent.width
         height: parent.height*0.2
+        z: 0
         gradient: Gradient {
             GradientStop {
                 position: 0
@@ -30,6 +31,7 @@ Rectangle {
             id: logo1
             width: height
             height: parent.height * 0.8
+            z: 0
             anchors.left: parent.left
             anchors.leftMargin: 10
             anchors.verticalCenter: parent.verticalCenter
@@ -39,6 +41,7 @@ Rectangle {
             id: logo2
             width: height
             height: parent.height * 0.8
+            z: 0
             anchors.right: parent.right
             anchors.rightMargin: 10
             anchors.verticalCenter: parent.verticalCenter
@@ -91,34 +94,43 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
 
-        Explosion {
-            id: explosion1
-            anchors.fill: parent
-        }
-
-        Button {
-            id: singlePlayerButton
-            x: 193
-            y: 116
-            width: parent.width * 0.5
-            text: "Single Player Game"
-            textSize: 13
-            textColor: "#fbfbfb"
+        Column {
+            id: column1
+            x: 258
+            y: 308
+            z: 1
+            spacing: 10
+            width:  parent.width*0.5
+            anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            onClicked: main.state = "playState"
+
+            Button {
+                id: singlePlayerButton
+                width: parent.width
+                text: "Single Player Game"
+                textSize: 13
+                textColor: "#fbfbfb"
+                onClicked: main.state = "playState"
+            }
+
+            Button {
+                id: networkButton
+                width: parent.width
+                text: "Network Game"
+                textSize: 13
+                textColor: "#fbfbfb"
+            }
+
         }
 
-
-        Button {
-            id: networkButton
-            x: 193
-            y: 204
-            width: parent.width*0.5
-            text: "Network Game"
-            textSize: 13
-            textColor: "#fbfbfb"
-            anchors.horizontalCenter: parent.horizontalCenter
+        BackgroundSmoke {
+            id: smoke1
+            x: -150
+            y: 20
+            width: parent.width - x
+            height: parent.height - y
         }
+
 
     }
     states: [
