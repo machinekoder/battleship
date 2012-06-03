@@ -30,7 +30,6 @@ def eingabe():
 class players( QObject ):
 
     def __init__( self, name, date, ):
-
 #        QObject.__init__( self )
         self.Name = name
         self.Date = date
