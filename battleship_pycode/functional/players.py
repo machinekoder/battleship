@@ -32,14 +32,22 @@ class players( QObject ):
     def __init__( self, name, date, ):
 
 #        QObject.__init__( self )
-        self.Name = name
-        self.Date = date
+        self.name = "Default"
+        self.date = date
 
     def player_name( self, name ):
         print( "players name:", name )
         
         pass
    
+<<<<<<< HEAD
+=======
+print("Input a name:")
+buffer = eingabe()
+
+player1 = player()
+player2 = player()
+>>>>>>> 4f12e86fa285feb1c4f927590ca7637703d15cd8
 
 player.player_name( 2, buffer )
 

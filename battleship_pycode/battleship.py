@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
  Created on Jun 31, 2012
  Main file
@@ -17,7 +18,7 @@ import functional.players
 import functional.initfield
 from asyncore import loop
 
-#functional.players.rek( 10 )
+
 print( "Welcome to Battleship Galactica" )
 
 # This class will emit the current date and time as a signal when

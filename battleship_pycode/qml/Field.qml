@@ -44,10 +44,30 @@ Rectangle {
         }
     }
 
+    BackgroundStars {
+        id: backgroundstars1
+        anchors.fill: parent
+    }
+
+    Ship {
+        id: ship1
+        x: 80
+        y: 180
+    }
+
+    Ship {
+        id: ship2
+        x: 210
+        y: 187
+        shipColor: "blue"
+        type: 4
+        rotated: true
+    }
+
     function initializeField()
     {
         for (var i = 0; i < 100; i++)
-            fieldModel.append({"hitter":true})
+            fieldModel.append({"hitter":false})
     }
 
 }
