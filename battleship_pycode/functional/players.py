@@ -22,28 +22,26 @@ import time
 
 
 def eingabe():
-    buffer = input()
-    return buffer
+    date = time.localtime()
+    name = input( "Input a name >>> " )
+    player1 = players( name, date )
+    return player1
 
-class player( QObject ):
+class players( QObject ):
 
-    def __init__( self ):
-        date = time.localtime()
-        print( date )
+    def __init__( self, name, date, ):
+
 #        QObject.__init__( self )
-        self.name = "Default"
-        self.date = date
+        self.Name = name
+        self.Date = date
 
-    def player_name( self, name ):
-        print( "players name:", name )
+    def player_name( self ):
+        print( "Players name:", self.Name )
         
-        pass
    
-print("Input a name:")
-buffer = eingabe()
 
-player1 = player()
-player2 = player()
 
-player.player_name( 2, buffer )
+#print("Input a name:")
+player1 = eingabe()
+player1.player_name() 
 
