@@ -35,20 +35,55 @@ class BattleShip( QObject ):
     
     def __init__( self ):
         QObject.__init__( self )
-#       QSound.setLoops( 3 ) 
-        self.m_media = Phonon.MediaObject( self )
-        audioOutput = Phonon.AudioOutput( Phonon.GameCategory, self )
-        Phonon.createPath( self.m_media, audioOutput )
-	   # loop not working
         
-        self.m_media.aboutToFinish.connect( self.m_media.play )
-	
-        self.m_sound = Phonon.MediaObject( self )
-        soundOutput = Phonon.AudioOutput( Phonon.GameCategory, self )
-        Phonon.createPath( self.m_sound, soundOutput )
+        self.initializeSound()
+        self.initializeView()    
         
+    def initializeSound( self ):
+      self.m_media = Phonon.MediaObject( self )
+      audioOutput = Phonon.AudioOutput( Phonon.GameCategory, self )
+      Phonon.createPath( self.m_media, audioOutput )
+      # loop not working
+      self.m_media.aboutToFinish.connect( self.m_media.play )
+      
+      self.m_sound = Phonon.MediaObject( self )
+      soundOutput = Phonon.AudioOutput( Phonon.GameCategory, self )
+      Phonon.createPath( self.m_sound, soundOutput )
 
+    def initializeView( self ):
+      # Create the QML user interface.
+      self.view = QDeclarativeView()
+      self.view.setSource( QUrl( 'qml/battleship.qml' ) )
+      self.view.setResizeMode( QDeclarativeView.SizeRootObjectToView )
+      
+      # Get the root object of the user interface.
+      self.battleShipUi = self.view.rootObject()
+      
+      # run initializing function in the ui
+      self.battleShipUi.initialize()
+      
+      # connect signal and slots
+      self.battleShipUi.singlePlayerGameClicked.connect(self.startGame)
+      
+      # Display the user interface and allow the user to interact with it.
+      desktopWidget = QDesktopWidget()
+      viewHeight = self.view.height()
+      viewWidth = self.view.width()
+      self.view.setWindowTitle( "Battleship Galactica" )
+      self.view.setGeometry( desktopWidget.width() / 2 - viewWidth / 2, desktopWidget.height() / 2 - viewHeight / 2, viewWidth, viewHeight )
+      self.view.show()
+      
+    def testFunction( self ):
+      # get ready to test the ships
+      self.battleShipUi.setShip(23,1,"red",False)
+      self.battleShipUi.setShip(3,2,"blue",False)
+      self.battleShipUi.setShip(45,3,"red",True)
+      self.battleShipUi.setShip(70,4,"blue",True)
+        
+    @pyqtSlot()
     def startGame( self ):
+        print("Yeah someone has pressed the single player button")
+        print("Player Name:", self.battleShipUi.property("playerName"))
         pass
   
     def playMusic( self ):
@@ -74,24 +109,9 @@ print( battleShip.playMusic() )
 
 print( battleShip.playSound() )
 
+battleShip.testFunction()
+
 # now = Now()
-
-# Create the QML user interface.
-view = QDeclarativeView()
-view.setSource( QUrl( 'qml/battleship.qml' ) )
-view.setResizeMode( QDeclarativeView.SizeRootObjectToView )
-
-# Get the root object of the user interface.
-battleShipUi = view.rootObject()
-
-# for testing
-battleShipUi.initialize()
-
-# get ready to test the ships
-battleShipUi.setShip(23,1,"red",False)
-battleShipUi.setShip(3,2,"blue",False)
-battleShipUi.setShip(45,3,"red",True)
-battleShipUi.setShip(70,4,"blue",True)
 
 
 # Update the user interface with the current date and time.
@@ -99,16 +119,5 @@ battleShipUi.setShip(70,4,"blue",True)
 
 # Provide an initial message as a prompt.
 # rootObject.updateMessage("Click to get the current date and time")
-
-# Display the user interface and allow the user to interact with it.
-desktopWidget = QDesktopWidget()
-viewHeight = view.height()
-viewWidth = view.width()
-view.setWindowTitle( "Battleship Galactica" )
-view.setGeometry( desktopWidget.width() / 2 - viewWidth / 2, desktopWidget.height() / 2 - viewHeight / 2, viewWidth, viewHeight )
-view.show()
-#while True:
-#    time.sleep( 2 )
-
 
 app.exec_() 

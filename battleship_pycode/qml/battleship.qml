@@ -2,6 +2,11 @@
 import QtQuick 1.1
 
 Rectangle {
+    property string playerName: playerNameEdit.text
+
+    signal singlePlayerGameClicked
+    signal networkGameClicked
+
     id: main
     width: 500
     height: 500
@@ -66,6 +71,7 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
         }
+
     }
 
     Field {
@@ -110,7 +116,10 @@ Rectangle {
                 text: "Single Player Game"
                 textSize: 13
                 textColor: "#fbfbfb"
-                onClicked: main.state = "playState"
+                onClicked: {
+                    main.state = "playState"
+                    singlePlayerGameClicked()
+                }
             }
 
             Button {
@@ -119,6 +128,15 @@ Rectangle {
                 text: "Network Game"
                 textSize: 13
                 textColor: "#fbfbfb"
+                onClicked: {
+                    networkGameClicked()
+                }
+            }
+
+            LineEdit {
+                id: playerNameEdit
+                width: parent.width
+                labelText: "Nickname:"
             }
 
         }
