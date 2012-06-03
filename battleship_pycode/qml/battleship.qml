@@ -66,6 +66,7 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
         }
+
     }
 
     Field {
