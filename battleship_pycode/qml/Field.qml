@@ -40,6 +40,9 @@ Rectangle {
                 width: gridView.cellWidth
                 height: gridView.cellHeight
                 hit: hitter
+                shipType: type
+                shipColor: colored
+                shipRotated: rotated
             }
         }
     }
@@ -49,25 +52,20 @@ Rectangle {
         anchors.fill: parent
     }
 
-    Ship {
-        id: ship1
-        x: 80
-        y: 180
-    }
-
-    Ship {
-        id: ship2
-        x: 210
-        y: 187
-        shipColor: "blue"
-        type: 4
-        rotated: true
-    }
-
     function initializeField()
     {
         for (var i = 0; i < 100; i++)
-            fieldModel.append({"hitter":false})
+            fieldModel.append({"type":0,"hitter":false,"colored":"red","rotated":false})
     }
-
+    function setShip(index, type, color,rotated)
+    {
+        fieldModel.setProperty(index,"type",type)
+        fieldModel.setProperty(index,"colored",color)
+        fieldModel.setProperty(index,"rotated",rotated)
+    }
+    function clearShips()
+    {
+        for (var i = 0; i < 100; i++)
+            setShip(i,0,"red",false)
+    }
 }

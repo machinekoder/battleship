@@ -172,4 +172,8 @@ Rectangle {
     {
         gameField.initializeField()
     }
+    function setShip(index, type, color,rotated)
+    {
+        gameField.setShip(index,type,color,rotated)
+    }
 }

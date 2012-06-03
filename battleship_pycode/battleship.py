@@ -87,6 +87,12 @@ battleShipUi = view.rootObject()
 # for testing
 battleShipUi.initialize()
 
+# get ready to test the ships
+battleShipUi.setShip(23,1,"red",False)
+battleShipUi.setShip(3,2,"blue",False)
+battleShipUi.setShip(45,3,"red",True)
+battleShipUi.setShip(70,4,"blue",True)
+
 
 # Update the user interface with the current date and time.
 # now.now.connect(rootObject.updateMessage)

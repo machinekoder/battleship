@@ -2,23 +2,25 @@
 import QtQuick 1.1
 
 Rectangle {
-    property int type: 1
+    property int type: 3
     property string shipColor: "red"
     property bool rotated: false
+    property int baseWidth: 40
+    property int baseHeight: 40
     property int direction: 1
 
     id: main
-    width: 40
-    height: width * type
-    rotation: rotated?90:0
+    width: rotated ? baseWidth * type :baseWidth
+    height: rotated ? baseHeight : baseHeight * type
     color: "#00000000"
 
     Image {
         id: image1
-        smooth: true
-        fillMode: Image.PreserveAspectFit
         anchors.fill: parent
-        source: "../images/ship"+ type.toString() + "_" + shipColor + ".png"
+        smooth: true
+        fillMode: Image.Stretch
+
+        source: rotated ? "../images/ship"+ type.toString() + "_" + shipColor + "_rotated.png" : "../images/ship"+ type.toString() + "_" + shipColor + ".png"
     }
 
     //transform:  Rotation { origin.x: width/2; origin.y: 10; axis {x:0; y:1; z:0} angle:main.yAngle }
