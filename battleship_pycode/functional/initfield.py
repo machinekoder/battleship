@@ -102,7 +102,6 @@ class GameField( QObject ):
     # create a matrix
     initValue = None
     self.matrix = [[initValue] * self.width for i in range( 0, self.height )]
-    
     # initialize with lots of objects
     for y in range( 0, self.width ):
       for x in range( 0, self.height ):
