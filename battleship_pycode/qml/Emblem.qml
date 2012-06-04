@@ -9,18 +9,18 @@ Rectangle {
     radius: 10
     gradient: Gradient {
         GradientStop {
-            position: 0
-            color: "#6d6c6c"
+            position: 0.020
+            color: "#1e04ff00"
         }
 
         GradientStop {
             position: 1
-            color: "#3e3e3e"
+            color: "#32007309"
         }
     }
     smooth: true
     border.width: 2
-    border.color: "#000000"
+    border.color: "#6400ff00"
 
     Image {
         id: image1

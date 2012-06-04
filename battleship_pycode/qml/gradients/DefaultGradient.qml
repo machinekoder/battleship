@@ -2,12 +2,13 @@
 import QtQuick 1.1
 
 Gradient {
-        GradientStop {
-            position: 0
-            color: "#777"
-        }
-        GradientStop {
-            position: 1
-            color: "#222"
-        }
+    GradientStop {
+        position: 0.020
+        color: "#1e04ff00"
+    }
+
+    GradientStop {
+        position: 1
+        color: "#32007309"
+    }
 }

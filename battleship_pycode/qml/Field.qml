@@ -5,7 +5,7 @@ Rectangle {
     id: main
     width: 500
     height: 500
-    color: "#000000"
+    color: "#00000000"
 
     GridView {
         id: gridView
@@ -45,11 +45,6 @@ Rectangle {
                 shipRotated: rotated
             }
         }
-    }
-
-    BackgroundStars {
-        id: backgroundstars1
-        anchors.fill: parent
     }
 
     function initializeField()

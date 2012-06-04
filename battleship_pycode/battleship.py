@@ -64,6 +64,8 @@ class BattleShip( QObject ):
       
       # connect signal and slots
       self.battleShipUi.singlePlayerGameClicked.connect(self.startGame)
+      self.battleShipUi.playOsdSound.connect(self.playOsdSound)
+      self.battleShipUi.stopOsdSound.connect(self.stopOsdSound)
       
       # Display the user interface and allow the user to interact with it.
       desktopWidget = QDesktopWidget()
@@ -86,6 +88,15 @@ class BattleShip( QObject ):
         print("Player Name:", self.battleShipUi.property("playerName"))
         pass
   
+    @pyqtSlot()
+    def playOsdSound( self ):
+      self.m_sound.setCurrentSource( Phonon.MediaSource( "music/osd_text.wav" ) )
+      self.m_sound.play()
+    
+    @pyqtSlot()
+    def stopOsdSound( self ):
+      self.m_sound.stop()
+      
     def playMusic( self ):
             self.m_media.setCurrentSource( Phonon.MediaSource( "music/carmina_burana.mp3" ) )
             self.m_media.play()

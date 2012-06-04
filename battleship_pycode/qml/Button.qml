@@ -11,6 +11,7 @@ Rectangle {
     property bool round: false
     property color textColor: "black"
     property int textSize: 9
+    property string fontFamily: ""
     signal clicked
     signal pressed
     signal released
@@ -21,7 +22,7 @@ Rectangle {
     radius: round?width/2:11
     smooth: true
     border.width: 2
-    border.color: "#555"
+    border.color: borderColor
     gradient: checked?hoveredGradient:mouseArea.containsMouse?mouseArea.pressed?pressedGradient:hoveredGradient:defaultGradient
 
     MouseArea {
@@ -53,6 +54,7 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         font.pointSize: textSize
+        font.family: fontFamily
     }
 
     Image {

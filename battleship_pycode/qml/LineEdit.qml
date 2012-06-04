@@ -13,7 +13,7 @@ Rectangle {
     smooth: true
     radius: 11
     border.width: 2
-    border.color: "#555"
+    border.color: borderColor
     gradient: defaultGradient
     Text {
         id: text1
@@ -22,6 +22,8 @@ Rectangle {
         anchors.leftMargin: 10
         anchors.verticalCenter: parent.verticalCenter
         font.pointSize: textSize
+        font.family: fontFamily
+        color: textColor
     }
 
     Rectangle {
@@ -39,9 +41,10 @@ Rectangle {
             TextInput {
                 id: input
                 width: parent.width -20
-                color: "#000000"
                 text: "Default"
                 font.pointSize: textSize
+                font.family: fontFamily
+                color: textColor
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
             }
