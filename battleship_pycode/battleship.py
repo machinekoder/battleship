@@ -103,12 +103,18 @@ class BattleShip( QObject ):
 
 app = QApplication( sys.argv )
 app.setApplicationName( "Battleship Game" )
-
 battleShip = BattleShip()
 print( battleShip.playMusic() )
-
 print( battleShip.playSound() )
 
+'''
+initializes field of players
+'''
+player1 = functional.initfield.init_player_field()
+player2 = functional.initfield.init_player_field()
+player1.fill_array()
+
+    
 battleShip.testFunction()
 
 # now = Now()

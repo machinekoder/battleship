@@ -20,27 +20,27 @@ from PyQt4.phonon import *
 import sys
 import time
 
-
-def eingabe():
-    date = time.localtime()
-    name = input( "Input a name >>> " )
-    player1 = players( name, date )
-    return player1
-
-class players( QObject ):
-
-    def __init__( self, name, date, ):
-#        QObject.__init__( self )
-        self.Name = name
-        self.Date = date
-
-    def player_name( self ):
-        print( "Players name:", self.Name )
-        
-   
-
-
-#print("Input a name:")
-player1 = eingabe()
-player1.player_name() 
+#
+#def eingabe():
+#    date = time.localtime()
+#    name = input( "Input a name >>> " )
+#    player1 = players( name, date )
+#    return player1
+#
+#class players( QObject ):
+#
+#    def __init__( self, name, date, ):
+##        QObject.__init__( self )
+#        self.Name = name
+#        self.Date = date
+#
+#    def player_name( self ):
+#        print( "Players name:", self.Name )
+#        
+#   
+#
+#
+##print("Input a name:")
+#player1 = eingabe()
+#player1.player_name() 
 
