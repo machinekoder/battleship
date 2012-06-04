@@ -15,7 +15,7 @@ from PyQt4.phonon import *
 import sys
 import time
 import functional.players
-import functional.initfield
+from functional.initfield import *
 from asyncore import loop
 
 
@@ -116,6 +116,8 @@ player1.fill_array()
 
     
 battleShip.testFunction()
+
+gameField = GameField()
 
 # now = Now()
 
