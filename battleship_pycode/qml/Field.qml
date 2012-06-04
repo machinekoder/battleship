@@ -9,10 +9,11 @@ Rectangle {
 
     GridView {
         id: gridView
-        width: parent.width-10
-        height: parent.height-10
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.rightMargin: 5
+        anchors.leftMargin: 5
+        anchors.bottomMargin: 5
+        anchors.topMargin: 5
+        anchors.fill: parent
         interactive: false
         cellWidth: width / 10
         cellHeight: height / 10
@@ -21,11 +22,21 @@ Rectangle {
 
         MouseArea {
             id: mouse_area1
-            x: 154
-            y: 162
-            width: 235
-            height: 196
+            hoverEnabled: true
+            anchors.fill: parent
             onClicked: initializeField()
+            onMouseXChanged: {
+                var index = gridView.indexAt(mouseX,mouseY)
+                testShip.y = Math.floor(index / 10) * gridView.cellHeight
+                testShip.x = index % 10 * gridView.cellWidth
+            }
+        }
+
+        Ship {
+            id: testShip
+            baseWidth: gridView.cellWidth
+            baseHeight: gridView.cellHeight
+            visible: true
         }
     }
 
