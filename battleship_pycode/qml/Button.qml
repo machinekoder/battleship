@@ -33,6 +33,7 @@ Rectangle {
             base.clicked()
             if (checkable)
                 checked = !checked;
+            buttonSound()
         }
         onPressed: base.pressed()
         onReleased: base.released()

@@ -17,10 +17,12 @@ from functional.initfield import *
 from functional.player import *
 import sys
 import time
-#import functional.player
-
 
 print( "Welcome to Battleship Galactica" )
+
+sound = QSound("music/button.wav")
+sound.play()
+print(sound.fileName())
 
 singleplayer = True
 class BattleShip( QObject ):
@@ -33,15 +35,20 @@ class BattleShip( QObject ):
         
     def initializeSound( self ):
       self.m_media = Phonon.MediaObject( self )
-      audioOutput = Phonon.AudioOutput( Phonon.GameCategory, self )
-      Phonon.createPath( self.m_media, audioOutput )
+      self.musicOutput = Phonon.AudioOutput( Phonon.GameCategory, self )
+      Phonon.createPath( self.m_media, self.musicOutput )
       # loop not working
       self.m_media.aboutToFinish.connect( self.m_media.play )
       
-      self.m_sound = Phonon.MediaObject( self )
-      soundOutput = Phonon.AudioOutput( Phonon.GameCategory, self )
-      Phonon.createPath( self.m_sound, soundOutput )
+#      self.m_sound = Phonon.MediaObject( self )
+#      soundOutput = Phonon.AudioOutput( Phonon.GameCategory, self )
+#      Phonon.createPath( self.m_sound, soundOutput )
+      
+      self.osdSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource("music/osd_text.wav"))
+      self.buttonSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource("music/button.wav"))
 
+      self.playMusic()
+      
     def initializeView( self ):
       # Create the QML user interface.
       self.view = QDeclarativeView()
@@ -58,6 +65,8 @@ class BattleShip( QObject ):
       self.battleShipUi.singlePlayerGameClicked.connect( self.startGame )
       self.battleShipUi.playOsdSound.connect( self.playOsdSound )
       self.battleShipUi.stopOsdSound.connect( self.stopOsdSound )
+      self.battleShipUi.buttonSound.connect( self.playButtonSound )
+      self.battleShipUi.musicMuteChanged.connect( self.muteMusic )
       
       # Display the user interface and allow the user to interact with it.
       desktopWidget = QDesktopWidget()
@@ -83,22 +92,26 @@ class BattleShip( QObject ):
         self.syncField( player1 )
         self.syncField( player2 )
         player1.gameField.placeShip( shipSize = 3, rotate = True, y = 2, x = 2 ) 
+        print( player2.XYcordinates() )
         player2.computerPlaceShip( shipAmount = 5 )
         print( player2.gameField.matrix )
         
+        
     @pyqtSlot()
     def playOsdSound( self ):
-      self.m_sound.setCurrentSource( Phonon.MediaSource( "music/osd_text.wav" ) )
-      self.m_sound.play()
+      self.osdSound.play()
     
     @pyqtSlot()
     def stopOsdSound( self ):
-      self.m_sound.stop()
+      self.osdSound.pause()
+      
+    @pyqtSlot()
+    def playButtonSound( self ):
+      self.buttonSound.play()
       
     def playMusic( self ):
             self.m_media.setCurrentSource( Phonon.MediaSource( "music/carmina_burana.mp3" ) )
             self.m_media.play()
-
         
     def playSound( self ):
 
@@ -108,50 +121,25 @@ class BattleShip( QObject ):
             self.m_sound.play()
         return "Muhahaha"
     
+    @pyqtSlot(bool)
+    def muteMusic(self, mute):
+      print("test")
+      if mute:
+         self.musicOutput.setVolume(0.0)
+      else:
+         self.musicOutput.setVolume(0.0)
+    
     def syncField( self, player ):
         self.battleShipUi.clearField()
         for y in range( player.fieldSize ):
             for x in range( player.fieldSize ):
                 test = player.gameField.matrix[y][x]
-#                print( test )
-#                print( "player name: ", player.name )
-        
-        
-                
-#        if singleplayer == True:
-#            self.computer_KI( player2 )
-#        pass
-#
-#    def computer_KI( player2, hit = 0 ):
-#        for y in range( player2.height ):
-#            for x in range( player2.width ):
-#                field = player2.matrix[y][x]
-#        print( player2.matrix )
-#                if field == 2 && player2.matrix[y-1][x]!=
-                    
-        
+
 
 app = QApplication( sys.argv )
 app.setApplicationName( "Battleship Game" )
 battleShip = BattleShip()
-print( battleShip.playMusic() )
-print( battleShip.playSound() )
 
-'''
-initializes field of players
-'''
-#battleShip.gamemovement()
 battleShip.testFunction()
-
-#gameField = GameField()
-
-# now = Now()
-
-
-# Update the user interface with the current date and time.
-# now.now.connect(rootObject.updateMessage)
-
-# Provide an initial message as a prompt.
-# rootObject.updateMessage("Click to get the current date and time")
 
 app.exec_() 

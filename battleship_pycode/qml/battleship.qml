@@ -11,11 +11,13 @@ Rectangle {
     signal networkGameClicked
     signal playOsdSound
     signal stopOsdSound
+    signal buttonSound
     signal shipPlaced (int index)
+    signal musicMuteChanged (bool muted)
 
     id: main
     width: 500
-    height: 500
+    height: 700
     color: "#000000"
     state: "gameTypeState"
 
@@ -100,103 +102,135 @@ Rectangle {
 
 
 
-    Field {
-        id: gameField
-        width: parent.width
-        height: parent.height*0.8
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0
-    }
 
 
 
 
 
     Rectangle {
-        id: startRect
+        id: bottomInterface
         width: parent.width
-        height: parent.height*0.8
+        height: parent.height*0.05
         color: "#00000000"
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
 
-        Column {
-            id: column1
-            x: 258
-            y: 308
-            z: 1
-            spacing: 10
-            width:  parent.width*0.5
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-
-            Button {
-                id: singlePlayerButton
-                width: parent.width
-                text: "Single Player Game"
-                textSize: 13
-                textColor: main.textColor
-                fontFamily: main.fontFamily
-                onClicked: {
-                    main.state = "storyState"
-                    singlePlayerGameClicked()
-                    story.startText()
-                }
-            }
-
-            Button {
-                id: networkButton
-                width: parent.width
-                text: "Network Game"
-                textSize: 13
-                textColor: main.textColor
-                fontFamily: main.fontFamily
-                onClicked: {
-                    networkGameClicked()
-                }
-            }
-
-            LineEdit {
-                id: playerNameEdit
-                width: parent.width
-                labelText: "Nickname:"
-            }
-
-        }
-
-
-    }
-
-
-    Rectangle {
-        id: storyRect
-        width: parent.width
-        height: parent.height*0.8
-        color: "#00000000"
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0
-
-        Story {
-            id: story
+        OSDText {
+            id: osdText
             anchors.fill: parent
 
             Button {
-                id: continueToGameButton
-                text: "Continue"
+                id: musicMuteButton
+                height: parent.height -10
+                text: "Music"
+                anchors.right: parent.right
+                anchors.rightMargin: 5
+                anchors.verticalCenter: parent.verticalCenter
                 textColor: main.textColor
                 textSize: 13
                 fontFamily: main.fontFamily
-                width: parent.width*0.5
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: 40
-                anchors.horizontalCenter: parent.horizontalCenter
+                checkable: true
                 onClicked: {
-                    onClicked: {
-                        main.state = "playState"
-                    }
+                    musicMuteChanged(checked)
                 }
             }
         }
+    }
+
+    Rectangle {
+        id: centralInterface
+        width: parent.width
+        height: parent.height-topInterface.height-bottomInterface.height
+        color: "#00000000"
+        anchors.top: topInterface.bottom
+        anchors.topMargin: 0
+
+        Rectangle {
+            id: storyRect
+            anchors.fill: parent
+            color: "#00000000"
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 0
+
+            OSDText {
+                id: storyText
+                anchors.fill: parent
+                text: qsTr("Your intergalactical fleet is trapped in a nebula and suddenly the fleet of a hostile race warps into the orbit. <br> You are forced to use your nuclear warheads and fire into the darkness to save the entire human race...")
+
+                Button {
+                    id: continueToGameButton
+                    text: "Continue"
+                    textColor: main.textColor
+                    textSize: 13
+                    fontFamily: main.fontFamily
+                    width: parent.width*0.5
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 40
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    onClicked: {
+                        onClicked: {
+                            main.state = "playState"
+                        }
+                    }
+                }
+        }
+        }
+
+        Rectangle {
+            id: startRect
+            color: "#00000000"
+            anchors.fill: parent
+
+            Column {
+                id: column1
+                z: 1
+                spacing: 10
+                width:  parent.width*0.5
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                Button {
+                    id: singlePlayerButton
+                    width: parent.width
+                    text: "Single Player Game"
+                    textSize: 13
+                    textColor: main.textColor
+                    fontFamily: main.fontFamily
+                    onClicked: {
+                        main.state = "storyState"
+                        singlePlayerGameClicked()
+                        storyText.startText()
+                    }
+                }
+
+                Button {
+                    id: networkButton
+                    width: parent.width
+                    text: "Network Game"
+                    textSize: 13
+                    textColor: main.textColor
+                    fontFamily: main.fontFamily
+                    onClicked: {
+                        networkGameClicked()
+                        outputOSD("Network Game not possible!")
+                    }
+                }
+
+                LineEdit {
+                    id: playerNameEdit
+                    width: parent.width
+                    labelText: "Nickname:"
+                }
+
+        }
+
+
+        }
+
+        Field {
+            id: gameField
+            anchors.fill: parent
+    }
     }
 
     states: [
@@ -281,5 +315,10 @@ Rectangle {
     function stopShipPlacement()
     {
         gameField.stopShipPlacement()
+    }
+    function outputOSD(text)
+    {
+        osdText.text = text
+        osdText.startText()
     }
 }

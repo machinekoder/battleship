@@ -10,7 +10,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtNetwork import *
 from PyQt4.phonon import *
 from functional.initfield import *
-import random
+import math, random
 import sys
 import time
 
@@ -24,12 +24,13 @@ class Player( QObject ):
         self.fieldSize = 10
     
     
-    def computerPlaceShips( self, shipAmount = 0 ):
+    def computerPlaceShip( self, shipAmount = 0 ):
         bigship = 0
         mediumship = 0
         smallship = 0
         extrasmallship = 0
         shipSize_com = 0
+        
         rotateship = False
         x1 = 0
         y1 = 0
@@ -53,8 +54,8 @@ class Player( QObject ):
             rotateship = True if ( bigship % 2 ) == 1 else False
             bigship -= 1
             cordinates = self.XYcordinates
-            x1 = cordinates.pop()
-            y1 = cordinates.pop()
+            x1 = cordinates.pop( 1 )
+            y1 = cordinates.pop( 0 )
             while false == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = y1, x = x1 ):
                 cordinates = self.XYcordinates
                 x1 = cordinates.pop()
@@ -93,12 +94,12 @@ class Player( QObject ):
                 x1 = cordinates.pop()
                 y1 = cordinates.pop() 
             
-        def XYcordinates( self ):
-            i1 = random( 0, 99 )
-            y1 = i1 // self.fieldSize
-            x1 = i1 % self.fieldSize
-            XY = ( y1, x1 )
-            return XY
-            
+    def XYcordinates( self ):
+        i1 = random( 0, 99 )
+        y1 = i1 // self.fieldSize
+        x1 = i1 % self.fieldSize
+        XY = [y1, x1 ]
+        return XY
+        
 
         
