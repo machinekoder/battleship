@@ -21,8 +21,8 @@ Rectangle {
         anchors.topMargin: 5
         anchors.fill: parent
         interactive: false
-        cellWidth: width / gameSize
-        cellHeight: height / gameSize
+        cellWidth: Math.floor(width / gameSize)
+        cellHeight: Math.floor(height / gameSize)
         delegate: gridItem
         model: fieldModel
 
@@ -31,7 +31,6 @@ Rectangle {
             hoverEnabled: true
             anchors.fill: parent
             onClicked: {
-                initializeField()    //testing
                 if (placeMode)
                     shipPlaced(currentIndex)
             }

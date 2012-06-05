@@ -84,7 +84,7 @@ class BattleShip( QObject ):
     @pyqtSlot()
     def startGame( self ):
         print( "Yeah someone has pressed the single player button" )
-        gameSize = 10
+        gameSize = self.battleShipUi.property( "difficulty" )
         self.battleShipUi.initializeField( gameSize )
         player1 = Player( self.battleShipUi.property( "playerName" ), "blue", gameSize )
         player2 = Player( "Computer", "red", gameSize )

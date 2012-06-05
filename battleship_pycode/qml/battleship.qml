@@ -3,6 +3,7 @@ import QtQuick 1.1
 
 Rectangle {
     property string playerName: playerNameEdit.text
+    property int difficulty: 10
     property color borderColor: "#6400ff00"
     property color textColor: "white"
     property string fontFamily: "Courier"
@@ -170,6 +171,7 @@ Rectangle {
                     onClicked: {
                         onClicked: {
                             main.state = "playState"
+                            singlePlayerGameClicked()
                         }
                     }
                 }
@@ -197,9 +199,7 @@ Rectangle {
                     textColor: main.textColor
                     fontFamily: main.fontFamily
                     onClicked: {
-                        main.state = "storyState"
-                        singlePlayerGameClicked()
-                        storyText.startText()
+                        main.state = "difficultyState"
                     }
                 }
 
@@ -251,6 +251,11 @@ Rectangle {
                     textColor: main.textColor
                     fontFamily: main.fontFamily
                     text: "Ensign (5x5)"
+                    onClicked: {
+                        main.state = "storyState"
+                        main.difficulty = 5
+                        storyText.startText()
+                    }
                 }
 
                 Button {
@@ -260,6 +265,11 @@ Rectangle {
                     textColor: main.textColor
                     fontFamily: main.fontFamily
                     text: "Lieutenant (10x10)"
+                    onClicked: {
+                        main.state = "storyState"
+                        main.difficulty = 10
+                        storyText.startText()
+                    }
                 }
 
                 Button {
@@ -269,6 +279,11 @@ Rectangle {
                     textColor: main.textColor
                     fontFamily: main.fontFamily
                     text: "Captain (16x16)"
+                    onClicked: {
+                        main.state = "storyState"
+                        main.difficulty = 16
+                        storyText.startText()
+                    }
                 }
 
                 Button {
@@ -278,6 +293,11 @@ Rectangle {
                     textColor: main.textColor
                     fontFamily: main.fontFamily
                     text: "Admiral (20x20)"
+                    onClicked: {
+                        main.state = "storyState"
+                        main.difficulty = 20
+                        storyText.startText()
+                    }
                 }
             }
         }
@@ -354,6 +374,11 @@ Rectangle {
             PropertyChanges {
                 target: difficultyRect
                 opacity: 0
+            }
+
+            PropertyChanges {
+                target: continueToGameButton
+                anchors.bottomMargin: 20
             }
         },
         State {
