@@ -91,10 +91,12 @@ class BattleShip( QObject ):
         player1 = Player( self.battleShipUi.property( "playerName" ), "blue" )
         player2 = Player( "Computer", "red" )
         player1.gameField.placeShip( shipSize = 3, rotate = True, y = 2, x = 2 ) 
-        player2.computerPlaceShips( shipAmount = 5 )
+        print( player2.XYcordinates() )
+        player2.computerPlaceShip( shipAmount = 5 )
         print( player2.gameField.matrix )
         self.syncField( player1 )
         self.syncField( player2 )
+        
         
     @pyqtSlot()
     def playOsdSound( self ):
