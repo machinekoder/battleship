@@ -31,7 +31,7 @@ print( "Welcome to Battleship Galactica" )
 #    def emit_now(self):
 #        formatted_date = QDateTime.currentDateTime().toString()
 #        self.now.emit(formatted_date)
-
+singleplayer = True
 class BattleShip( QObject ):
     
     def __init__( self ):
@@ -110,19 +110,23 @@ class BattleShip( QObject ):
             self.m_sound.enqueue( Phonon.MediaSource( "music/predator_laugh.wav" ) )
             self.m_sound.play()
         return "Muhahaha"
+    
     def gamemovement( self ):
-        
         player1 = GameField()
         player2 = GameField()
         print( "width", player1.width )
-        player1.computer_KI
-        pass
-
-def computer_KI( player2, hit = 0 ):
-    for y in range( player2.height ):
-        for x in range( player2.widgetTreeItemHandlers ):
-            field = player2.matrix[y][x]
-            if
+#        if singleplayer == True:
+#            self.computer_KI( player2 )
+#        pass
+#
+#    def computer_KI( player2, hit = 0 ):
+#        for y in range( player2.height ):
+#            for x in range( player2.width ):
+#                field = player2.matrix[y][x]
+#        print( player2.matrix )
+#                if field == 2 && player2.matrix[y-1][x]!=
+                    
+        
 
 
 

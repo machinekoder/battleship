@@ -18,27 +18,42 @@ import time
 '''
 Auch eine möglichkeit!
 '''
-#self.mut_array_player1 = matrix10x10 = [[0 for height in range( 10 )] for width in range( 10 )]
-class GameField( object ):    
+
+class FieldPart( QObject ):
+  
+  def __init__( self ):
+    QObject.__init__( self )
+    self.shipType = 0
+    self.shipHit = True
+    self.placeFull = False
+    self.missed = True
+
+    
+    
+    
+class GameField( QObject ):    
     def __init__( self ):
+        QObject.__init__( self )
         self.height = 10
         self.width = 10
         self.fill_array()
-       
+        
     def fill_array( self ):
-        self.matrix = [[0 ] * self.height for x in range( self.width )]
-        for i1 in range( self.height ):
-            for i2 in range( self.width ):
-                self.matrix[i1][i2] = 2
-        print( "array filled\n", self.matrix )
+        # create a matrix
+        initValue = None
+        self.matrix = [[initValue] * self.width for i in range( 0, self.height )]
+        # initialize with lots of objects
+        for y in range( 0, self.width ):
+            for x in range( 0, self.height ):
+                self.matrix[y][x] = FieldPart()
+            print( "array filled\n", self.matrix )
     #===========================================================================
     # operation=0 (get the array it self)
     # operation=1 (return specific field)
     # operation=2 (return specific row; need get_row argument)
     # operation=3 (return specific column; need get_col argument)
     #===========================================================================
-    
-    
+      
     def get_info( self, operation = 0, get_row = 0, get_col = 0, ):
         
         if operation == 1:
@@ -97,10 +112,7 @@ class GameField( object ):
 #player1_matrix.get_info( 4 )
 
 #
-#class FieldPart( QObject ):
-#  
-#  def __init__( self ):
-#    QObject.__init__( self )
+
 #    
 #class GameField( QObject ):
 #  
