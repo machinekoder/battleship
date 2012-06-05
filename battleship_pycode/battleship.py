@@ -20,9 +20,9 @@ import time
 
 print( "Welcome to Battleship Galactica" )
 
-sound = QSound("music/button.wav")
+sound = QSound( "music/button.wav" )
 sound.play()
-print(sound.fileName())
+print( sound.fileName() )
 
 singleplayer = True
 class BattleShip( QObject ):
@@ -44,8 +44,8 @@ class BattleShip( QObject ):
 #      soundOutput = Phonon.AudioOutput( Phonon.GameCategory, self )
 #      Phonon.createPath( self.m_sound, soundOutput )
       
-      self.osdSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource("music/osd_text.wav"))
-      self.buttonSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource("music/button.wav"))
+      self.osdSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/osd_text.wav" ) )
+      self.buttonSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/button.wav" ) )
 
       self.playMusic()
       
@@ -57,9 +57,6 @@ class BattleShip( QObject ):
       
       # Get the root object of the user interface.
       self.battleShipUi = self.view.rootObject()
-      
-      # run initializing function in the ui
-      self.battleShipUi.initialize()
       
       # connect signal and slots
       self.battleShipUi.singlePlayerGameClicked.connect( self.startGame )
@@ -78,18 +75,19 @@ class BattleShip( QObject ):
       
     def testFunction( self ):
       # get ready to test the ships
-      self.battleShipUi.setShip( 23, 1, "red", False )
-      self.battleShipUi.setShip( 3, 2, "blue", False )
-      self.battleShipUi.setShip( 45, 3, "red", True )
-      self.battleShipUi.setShip( 70, 4, "blue", True )
+      # self.battleShipUi.setShip( 23, 1, "red", False )
+      # self.battleShipUi.setShip( 3, 2, "blue", False )
+      # self.battleShipUi.setShip( 45, 3, "red", True )
+      # self.battleShipUi.setShip( 70, 4, "blue", True )
+      pass
         
     @pyqtSlot()
     def startGame( self ):
         print( "Yeah someone has pressed the single player button" )
-#        print( "Player Name:", self.battleShipUi.property( "playerName" ) )
+        gameSize = 10
+        self.battleShipUi.initializeField( gameSize )
         player1 = Player( self.battleShipUi.property( "playerName" ), "blue" )
         player2 = Player( "Computer", "red" )
-
         player1.gameField.placeShip( shipSize = 3, rotate = True, y = 2, x = 2 ) 
         print( player2.XYcordinates() )
         player2.computerPlaceShip( shipAmount = 5 )
@@ -122,20 +120,22 @@ class BattleShip( QObject ):
             self.m_sound.play()
         return "Muhahaha"
     
-    @pyqtSlot(bool)
-    def muteMusic(self, mute):
-      print("test")
+    @pyqtSlot( bool )
+    def muteMusic( self, mute ):
+      print( "test" )
       if mute:
-         self.musicOutput.setVolume(0.0)
+         self.musicOutput.setVolume( 0.0 )
       else:
-         self.musicOutput.setVolume(0.0)
+         self.musicOutput.setVolume( 0.0 )
     
     def syncField( self, player ):
         self.battleShipUi.clearField()
+        print( "player name: ", player.name )
         for y in range( player.fieldSize ):
             for x in range( player.fieldSize ):
                 test = player.gameField.matrix[y][x]
-
+                print( test.shipType )
+                self.battleShipUi.setShip( y * player.fieldSize + x, test.shipType, player.color )
 
 app = QApplication( sys.argv )
 app.setApplicationName( "Battleship Game" )
