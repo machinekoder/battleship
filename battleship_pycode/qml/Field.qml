@@ -38,8 +38,8 @@ Rectangle {
                 if (placeMode == true)
                 {
                     currentIndex = gridView.indexAt(mouseX,mouseY)
-                    testShip.y = Math.floor(currentIndex / 10) * gridView.cellHeight
-                    testShip.x = currentIndex % 10 * gridView.cellWidth
+                    testShip.y = Math.floor(currentIndex / gameSize) * gridView.cellHeight
+                    testShip.x = currentIndex % gameSize * gridView.cellWidth
                 }
             }
         }
@@ -50,6 +50,7 @@ Rectangle {
             baseHeight: gridView.cellHeight
             visible: placeMode
             type: placeShipType
+            shipColor: placeShipColor
         }
     }
 

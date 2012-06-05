@@ -200,6 +200,7 @@ Rectangle {
                     fontFamily: main.fontFamily
                     onClicked: {
                         main.state = "difficultyState"
+                        outputOSD("Choose your rank")
                     }
                 }
 
@@ -254,6 +255,7 @@ Rectangle {
                     onClicked: {
                         main.state = "storyState"
                         main.difficulty = 5
+                        clearOSD()
                         storyText.startText()
                     }
                 }
@@ -268,6 +270,7 @@ Rectangle {
                     onClicked: {
                         main.state = "storyState"
                         main.difficulty = 10
+                        clearOSD()
                         storyText.startText()
                     }
                 }
@@ -282,6 +285,7 @@ Rectangle {
                     onClicked: {
                         main.state = "storyState"
                         main.difficulty = 16
+                        clearOSD()
                         storyText.startText()
                     }
                 }
@@ -296,6 +300,7 @@ Rectangle {
                     onClicked: {
                         main.state = "storyState"
                         main.difficulty = 20
+                        clearOSD()
                         storyText.startText()
                     }
                 }
@@ -429,5 +434,9 @@ Rectangle {
     {
         osdText.text = text
         osdText.startText()
+    }
+    function clearOSD()
+    {
+        osdText.clearText()
     }
 }

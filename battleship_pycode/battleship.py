@@ -20,16 +20,17 @@ import time
 
 print( "Welcome to Battleship Galactica" )
 
-sound = QSound( "music/button.wav" )
-sound.play()
-print( sound.fileName() )
-
-singleplayer = True
+class GameStates:
+  InitState = 0
+  ShipPlacementState = 1
+  
+  
 class BattleShip( QObject ):
     
     def __init__( self ):
         QObject.__init__( self )
         
+        self.state = GameStates.InitState 
         self.initializeSound()
         self.initializeView()    
         
@@ -106,8 +107,9 @@ class BattleShip( QObject ):
         self.syncField( player1 )
         self.syncField( player2 )
         
+        self.state = GameStates.ShipPlacementState
         self.battleShipUi.startShipPlacement(3,"blue")
-        self.battleShipUi.outputOSD("Place your ships:")
+        self.battleShipUi.outputOSD("Place your fleet")
         
         
     @pyqtSlot()

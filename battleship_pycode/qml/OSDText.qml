@@ -52,4 +52,8 @@ Rectangle {
         output = main.text.substring(0,counter)
         text1.text = output
     }
+    function clearText()
+    {
+        text1.text = ""
+    }
 }
