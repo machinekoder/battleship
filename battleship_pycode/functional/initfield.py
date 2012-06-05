@@ -24,8 +24,7 @@ class FieldPart( QObject ):
     self.placeFull = False
     self.missed = True
     self.rotated = False
-
-    
+ 
     
 #game field initialization    
 class GameField( QObject ):    

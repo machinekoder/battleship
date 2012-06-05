@@ -108,7 +108,8 @@ class Player( QObject ):
                 y1 = coordinates.pop() 
             
     def XYcoordinates( self ):
-        i1 = random.randint( 0, 99 )
+        
+        i1 = random.randint( 0, self.fieldSize * self.fieldSize )
         y1 = i1 // self.fieldSize
         x1 = i1 % self.fieldSize
         xy = [y1, x1]
