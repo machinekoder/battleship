@@ -12,12 +12,12 @@ from PyQt4.QtDeclarative import *
 from PyQt4.QtGui import *
 from PyQt4.QtNetwork import *
 from PyQt4.phonon import *
+from asyncore import loop
+from functional.initfield import *
+from functional.player import *
 import sys
 import time
 #import functional.player
-from functional.player import *
-from functional.initfield import *
-from asyncore import loop
 
 
 print( "Welcome to Battleship Galactica" )
@@ -81,9 +81,11 @@ class BattleShip( QObject ):
         player1 = Player( self.battleShipUi.property( "playerName" ), "blue" )
         player2 = Player( "Computer", "red" )
         self.syncField( player1 )
-        print( "width", player1.width )
-        pass
-  
+        self.syncField( player2 )
+        player1.gameField.placeShip( shipSize = 3, rotate = True, y = 2, x = 2 ) 
+        player2.computerPlaceShip( shipAmount = 5 )
+        print( player2.gameField.matrix )
+        
     @pyqtSlot()
     def playOsdSound( self ):
       self.m_sound.setCurrentSource( Phonon.MediaSource( "music/osd_text.wav" ) )
@@ -113,6 +115,8 @@ class BattleShip( QObject ):
                 test = player.gameField.matrix[y][x]
                 print( test )
                 print( "player name: ", player.name )
+        
+        
                 
 #        if singleplayer == True:
 #            self.computer_KI( player2 )
@@ -127,8 +131,6 @@ class BattleShip( QObject ):
                     
         
 
-
-    
 app = QApplication( sys.argv )
 app.setApplicationName( "Battleship Game" )
 battleShip = BattleShip()
@@ -140,6 +142,7 @@ initializes field of players
 '''
 #battleShip.gamemovement()
 battleShip.testFunction()
+
 #gameField = GameField()
 
 # now = Now()
