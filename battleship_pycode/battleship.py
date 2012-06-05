@@ -22,15 +22,6 @@ from asyncore import loop
 
 print( "Welcome to Battleship Galactica" )
 
-# This class will emit the current date and time as a signal when
-# requested.
-# class Now(QObject):
-# 
-#    now = pyqtSignal(str)
-#
-#    def emit_now(self):
-#        formatted_date = QDateTime.currentDateTime().toString()
-#        self.now.emit(formatted_date)
 singleplayer = True
 class BattleShip( QObject ):
     
