@@ -2,6 +2,11 @@
 import QtQuick 1.1
 
 Rectangle {
+    property bool placeMode: false
+    property int placeShipType: 1
+    property string placeShipColor: "red"
+    property int currentIndex: 0
+
     id: main
     width: 500
     height: 500
@@ -24,11 +29,18 @@ Rectangle {
             id: mouse_area1
             hoverEnabled: true
             anchors.fill: parent
-            onClicked: initializeField()
+            onClicked: {
+                initializeField()    //testing
+                if (placeMode)
+                    shipPlaced(currentIndex)
+            }
             onMouseXChanged: {
-                var index = gridView.indexAt(mouseX,mouseY)
-                testShip.y = Math.floor(index / 10) * gridView.cellHeight
-                testShip.x = index % 10 * gridView.cellWidth
+                if (placeMode == true)
+                {
+                    currentIndex = gridView.indexAt(mouseX,mouseY)
+                    testShip.y = Math.floor(currentIndex / 10) * gridView.cellHeight
+                    testShip.x = currentIndex % 10 * gridView.cellWidth
+                }
             }
         }
 
@@ -36,7 +48,8 @@ Rectangle {
             id: testShip
             baseWidth: gridView.cellWidth
             baseHeight: gridView.cellHeight
-            visible: true
+            visible: placeMode
+            type: placeShipType
         }
     }
 
@@ -69,9 +82,19 @@ Rectangle {
         fieldModel.setProperty(index,"colored",color)
         fieldModel.setProperty(index,"rotated",rotated)
     }
-    function clearShips()
+    function clearField()
     {
         for (var i = 0; i < 100; i++)
             setShip(i,0,"red",false)
+    }
+    function startShipPlacement(shipType, color)
+    {
+        placeMode = true
+        placeShipType = shipType
+        placeShipColor = color
+    }
+    function stopShipPlacement()
+    {
+        placeMode = false
     }
 }

@@ -11,6 +11,7 @@ Rectangle {
     signal networkGameClicked
     signal playOsdSound
     signal stopOsdSound
+    signal shipPlaced (int index)
 
     id: main
     width: 500
@@ -268,5 +269,17 @@ Rectangle {
     function setShip(index, type, color,rotated)
     {
         gameField.setShip(index,type,color,rotated)
+    }
+    function clearField()
+    {
+        gameField.clearField()
+    }
+    function startShipPlacement(shipType, color)
+    {
+        gameField.startShipPlacement(shipType, color)
+    }
+    function stopShipPlacement()
+    {
+        gameField.stopShipPlacement()
     }
 }
