@@ -16,12 +16,12 @@ import time
 
 class Player( QObject ):
     
-    def __init__( self , name, color ):
+    def __init__( self , name, color, fieldSize ):
         QObject.__init__( self )
         self.name = name
         self.color = color
-        self.gameField = GameField() 
-        self.fieldSize = 10
+        self.gameField = GameField( fieldSize ) 
+        self.fieldSize = fieldSize
     
     
     def computerPlaceShip( self, shipAmount = 0 ):

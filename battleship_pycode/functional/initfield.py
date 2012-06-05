@@ -29,10 +29,10 @@ class FieldPart( QObject ):
     
 #game field initialization    
 class GameField( QObject ):    
-    def __init__( self ):
+    def __init__( self , fieldSize ):
         QObject.__init__( self )
-        self.height = 10
-        self.width = 10
+        self.height = fieldSize
+        self.width = fieldSize
         self.fill_array()
         
     def fill_array( self ):
