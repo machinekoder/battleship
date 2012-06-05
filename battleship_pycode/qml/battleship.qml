@@ -230,7 +230,57 @@ Rectangle {
         Field {
             id: gameField
             anchors.fill: parent
-    }
+        }
+
+        Rectangle {
+            id: difficultyRect
+            color: "#00000000"
+            anchors.fill: parent
+
+            Column {
+                id: column2
+                spacing: 10
+                width:  parent.width*0.5
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                Button {
+                    id: button1
+                    width: parent.width
+                    textSize: 13
+                    textColor: main.textColor
+                    fontFamily: main.fontFamily
+                    text: "Ensign (5x5)"
+                }
+
+                Button {
+                    id: button2
+                    width: parent.width
+                    textSize: 13
+                    textColor: main.textColor
+                    fontFamily: main.fontFamily
+                    text: "Lieutenant (10x10)"
+                }
+
+                Button {
+                    id: button3
+                    width: parent.width
+                    textSize: 13
+                    textColor: main.textColor
+                    fontFamily: main.fontFamily
+                    text: "Captain (16x16)"
+                }
+
+                Button {
+                    id: button4
+                    width: parent.width
+                    textSize: 13
+                    textColor: main.textColor
+                    fontFamily: main.fontFamily
+                    text: "Admiral (20x20)"
+                }
+            }
+        }
     }
 
     states: [
@@ -248,6 +298,11 @@ Rectangle {
 
             PropertyChanges {
                 target: storyRect
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: difficultyRect
                 opacity: 0
             }
         },
@@ -277,6 +332,11 @@ Rectangle {
                 target: storyRect
                 opacity: 0
             }
+
+            PropertyChanges {
+                target: difficultyRect
+                opacity: 0
+            }
         },
         State {
             name: "storyState"
@@ -290,14 +350,38 @@ Rectangle {
                 target: gameField
                 opacity: 0
             }
+
+            PropertyChanges {
+                target: difficultyRect
+                opacity: 0
+            }
+        },
+        State {
+            name: "difficultyState"
+
+            PropertyChanges {
+                target: gameField
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: startRect
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: storyRect
+                opacity: 0
+            }
         }
     ]
     transitions: Transition {
              PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear }
          }
 
-    function initialize()
+    function initializeField(gameSize)
     {
+        gameField.gameSize = gameSize
         gameField.initializeField()
     }
     function setShip(index, type, color,rotated)
