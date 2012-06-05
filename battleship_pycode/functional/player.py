@@ -1,7 +1,10 @@
 '''
-Created on Jun 2, 2012
+ Created on Jun 31, 2012
+ Main file
+ Authors: - Christian Schwarzgruber
+          - Alexander Roessler
 
-@author: christian
+<Copyright and license information goes here.>
 '''
 
 from PyQt4.QtCore import *
@@ -31,7 +34,7 @@ class Player( QObject ):
         extrasmallship = 0
         shipSize_com = 0
 #        coordinates = []
-        rotateship = False
+#        rotateship = False
         x1 = 0
         y1 = 0
         
@@ -52,10 +55,10 @@ class Player( QObject ):
             smallship = 1
             extrasmallship = 2       
         elif shipAmount == 4:
-            bigship = 1
+            bigship = 0
             mediumship = 1
             smallship = 1
-            extrasmallship = 1       
+            extrasmallship = 2      
         else :
             bigship = 1
             mediumship = 1
@@ -89,6 +92,7 @@ class Player( QObject ):
             rotateship = True if ( smallship % 2 ) == 1 else False
             smallship -= 1
             coordinates = self.XYcoordinates()
+            print( "coordinats:", coordinates )
             x1 = coordinates.pop()
             y1 = coordinates.pop()
             while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = y1, x = x1 ):
@@ -109,15 +113,20 @@ class Player( QObject ):
             
     def XYcoordinates( self ):
         
-        i1 = random.randint( 0, self.fieldSize * self.fieldSize )
+        i1 = random.randint( 0, self.fieldSize * self.fieldSize - 1 )
         y1 = i1 // self.fieldSize
         x1 = i1 % self.fieldSize
         xy = [y1, x1]
+        print( xy )
         return xy
         
     def computerKI( self ):
-        i1 = random.randint( 0, self.fieldSize * self.fieldSize )
+        hitlastround = False
+        shipdestroyed = False
+        
+        i1 = random.randint( 0, self.fieldSize * self.fieldSize - 1 )
         y1 = i1 // self.fieldSize
         x1 = i1 % self.fieldSize
-        self.gameField.matrix[]
+
+        self.gameField.matrix[x1][y1]
         
