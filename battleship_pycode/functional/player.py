@@ -30,7 +30,7 @@ class Player( QObject ):
         smallship = 0
         extrasmallship = 0
         shipSize_com = 0
-        cordinates = []
+#        cordinates = []
         rotateship = False
         x1 = 0
         y1 = 0
@@ -50,7 +50,7 @@ class Player( QObject ):
             smallship = 1
             extrasmallship = 2
         while bigship > 0:
-            shipSize_com = 4
+            shipSize_com = 4 
             rotateship = True if ( bigship % 2 ) == 1 else False
             bigship -= 1
             cordinates = self.XYcordinates()
@@ -62,7 +62,7 @@ class Player( QObject ):
                 x1 = cordinates.pop()
                 y1 = cordinates.pop()                
         while mediumship > 0:
-            shipSize_com = 4
+            shipSize_com = 3
             rotateship = True if ( mediumship % 2 ) == 1 else False
             mediumship -= 1
             cordinates = self.XYcordinates()
@@ -73,7 +73,7 @@ class Player( QObject ):
                 x1 = cordinates.pop()
                 y1 = cordinates.pop()    
         while smallship > 0:
-            shipSize_com = 4
+            shipSize_com = 2
             rotateship = True if ( smallship % 2 ) == 1 else False
             smallship -= 1
             cordinates = self.XYcordinates()
@@ -84,7 +84,7 @@ class Player( QObject ):
                 x1 = cordinates.pop()
                 y1 = cordinates.pop()    
         while extrasmallship > 0:
-            shipSize_com = 4
+            shipSize_com = 1
             rotateship = True if ( extrasmallship % 2 ) == 1 else False
             extrasmallship -= 1
             cordinates = self.XYcordinates()

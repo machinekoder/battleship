@@ -23,6 +23,7 @@ class FieldPart( QObject ):
     self.shipHit = True
     self.placeFull = False
     self.missed = True
+    self.rotated = False
 
     
     
@@ -64,12 +65,14 @@ class GameField( QObject ):
                            
         if boolvar == True:
             if rotate == True :
+                self.matrix[y][x].shipType = shipSize
+                self.matrix[y][x].rotated = rotate
                 for i in range( x, x + shipSize ):
-                    self.matrix[y][x].shipType = shipSize
                     self.matrix[y][x].placeFull = True
             else :
+                self.matrix[y][x].shipType = shipSize
+                self.matrix[y][x].rotated = rotate
                 for i in range( y, y + shipSize ):
-                    self.matrix[y][x].shipType = shipSize
                     self.matrix[y][x].placeFull = True
 
         return boolvar
