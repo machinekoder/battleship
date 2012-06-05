@@ -115,5 +115,9 @@ class Player( QObject ):
         xy = [y1, x1]
         return xy
         
-
+    def computerKI( self ):
+        i1 = random.randint( 0, self.fieldSize * self.fieldSize )
+        y1 = i1 // self.fieldSize
+        x1 = i1 % self.fieldSize
+        self.gameField.matrix[]
         
