@@ -39,14 +39,14 @@ class Player( QObject ):
         y1 = 0
         
         #standard ship size is 5
-        if shipAmount == 8:
+        if shipAmount == 12:
+            bigship = 3
+            mediumship = 3
+            smallship = 3
+            extrasmallship = 3
+        elif shipAmount == 8:
             bigship = 2
             mediumship = 2
-            smallship = 2
-            extrasmallship = 2
-        elif shipAmount == 7:
-            bigship = 2
-            mediumship = 1
             smallship = 2
             extrasmallship = 2   
         elif shipAmount == 6:
