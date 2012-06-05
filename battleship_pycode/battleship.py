@@ -89,12 +89,13 @@ class BattleShip( QObject ):
 #        print( "Player Name:", self.battleShipUi.property( "playerName" ) )
         player1 = Player( self.battleShipUi.property( "playerName" ), "blue" )
         player2 = Player( "Computer", "red" )
-        self.syncField( player1 )
-        self.syncField( player2 )
+
         player1.gameField.placeShip( shipSize = 3, rotate = True, y = 2, x = 2 ) 
         print( player2.XYcordinates() )
         player2.computerPlaceShip( shipAmount = 5 )
         print( player2.gameField.matrix )
+        self.syncField( player1 )
+        self.syncField( player2 )
         
         
     @pyqtSlot()
