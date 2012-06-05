@@ -6,6 +6,7 @@ Rectangle {
     property int placeShipType: 1
     property string placeShipColor: "red"
     property int currentIndex: 0
+    property int gameSize: 10
 
     id: main
     width: 500
@@ -20,8 +21,8 @@ Rectangle {
         anchors.topMargin: 5
         anchors.fill: parent
         interactive: false
-        cellWidth: width / 10
-        cellHeight: height / 10
+        cellWidth: width / gameSize
+        cellHeight: height / gameSize
         delegate: gridItem
         model: fieldModel
 
@@ -73,7 +74,7 @@ Rectangle {
 
     function initializeField()
     {
-        for (var i = 0; i < 100; i++)
+        for (var i = 0; i < gameSize*gameSize; i++)
             fieldModel.append({"type":0,"hitter":false,"colored":"red","rotated":false})
     }
     function setShip(index, type, color,rotated)
@@ -84,7 +85,7 @@ Rectangle {
     }
     function clearField()
     {
-        for (var i = 0; i < 100; i++)
+        for (var i = 0; i < gameSize*gameSize; i++)
             setShip(i,0,"red",false)
     }
     function startShipPlacement(shipType, color)
