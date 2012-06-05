@@ -83,6 +83,7 @@ class BattleShip( QObject ):
         
     @pyqtSlot()
     def startGame( self ):
+
         print( "Yeah someone has pressed the single player button" )
         gameSize = self.battleShipUi.property( "difficulty" )
         self.battleShipUi.initializeField( gameSize )
@@ -91,8 +92,16 @@ class BattleShip( QObject ):
 #        player1.fieldsize = gameSize
 #        player2.fieldsize = gameSize
         player1.gameField.placeShip( shipSize = 3, rotate = True, y = 2, x = 2 ) 
-#        player2.XYcordinates() 
-        player2.computerPlaceShip( shipAmount = 5 )
+#        player2.XYcordinates()
+        if gameSize == 5:
+            player2.computerPlaceShip( shipAmount = 4 )
+        if gameSize == 10:
+            player2.computerPlaceShip( shipAmount = 6 )
+        if gameSize == 16:
+            player2.computerPlaceShip( shipAmount = 7 )
+        if gameSize == 20:
+            player2.computerPlaceShip( shipAmount = 8 )
+        
 #        player2.gameField.matrix 
         self.syncField( player1 )
         self.syncField( player2 )
