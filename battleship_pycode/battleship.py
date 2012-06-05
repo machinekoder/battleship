@@ -14,7 +14,8 @@ from PyQt4.QtNetwork import *
 from PyQt4.phonon import *
 import sys
 import time
-import functional.players
+import functional.movement
+from functional.movement import *
 from functional.initfield import *
 from asyncore import loop
 
@@ -63,9 +64,9 @@ class BattleShip( QObject ):
       self.battleShipUi.initialize()
       
       # connect signal and slots
-      self.battleShipUi.singlePlayerGameClicked.connect(self.startGame)
-      self.battleShipUi.playOsdSound.connect(self.playOsdSound)
-      self.battleShipUi.stopOsdSound.connect(self.stopOsdSound)
+      self.battleShipUi.singlePlayerGameClicked.connect( self.startGame )
+      self.battleShipUi.playOsdSound.connect( self.playOsdSound )
+      self.battleShipUi.stopOsdSound.connect( self.stopOsdSound )
       
       # Display the user interface and allow the user to interact with it.
       desktopWidget = QDesktopWidget()
@@ -77,15 +78,15 @@ class BattleShip( QObject ):
       
     def testFunction( self ):
       # get ready to test the ships
-      self.battleShipUi.setShip(23,1,"red",False)
-      self.battleShipUi.setShip(3,2,"blue",False)
-      self.battleShipUi.setShip(45,3,"red",True)
-      self.battleShipUi.setShip(70,4,"blue",True)
+      self.battleShipUi.setShip( 23, 1, "red", False )
+      self.battleShipUi.setShip( 3, 2, "blue", False )
+      self.battleShipUi.setShip( 45, 3, "red", True )
+      self.battleShipUi.setShip( 70, 4, "blue", True )
         
     @pyqtSlot()
     def startGame( self ):
-        print("Yeah someone has pressed the single player button")
-        print("Player Name:", self.battleShipUi.property("playerName"))
+        print( "Yeah someone has pressed the single player button" )
+        print( "Player Name:", self.battleShipUi.property( "playerName" ) )
         pass
   
     @pyqtSlot()
@@ -109,9 +110,23 @@ class BattleShip( QObject ):
             self.m_sound.enqueue( Phonon.MediaSource( "music/predator_laugh.wav" ) )
             self.m_sound.play()
         return "Muhahaha"
+    def gamemovement( self ):
+        
+        player1 = GameField()
+        player2 = GameField()
+        print( "width", player1.width )
+        player1.computer_KI
+        pass
+
+def computer_KI( player2, hit = 0 ):
+    for y in range( player2.height ):
+        for x in range( player2.widgetTreeItemHandlers ):
+            field = player2.matrix[y][x]
+            if
+
+
+
     
-
-
 app = QApplication( sys.argv )
 app.setApplicationName( "Battleship Game" )
 battleShip = BattleShip()
@@ -121,14 +136,9 @@ print( battleShip.playSound() )
 '''
 initializes field of players
 '''
-player1 = functional.initfield.init_player_field()
-player2 = functional.initfield.init_player_field()
-player1.fill_array()
-
-    
+battleShip.gamemovement()
 battleShip.testFunction()
-
-gameField = GameField()
+#gameField = GameField()
 
 # now = Now()
 

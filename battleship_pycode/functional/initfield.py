@@ -19,18 +19,18 @@ import time
 Auch eine möglichkeit!
 '''
 #self.mut_array_player1 = matrix10x10 = [[0 for height in range( 10 )] for width in range( 10 )]
-class MATRIX( object ):    
-    def __init__( self, height = 10, width = 10 ):
-        self.Height = height
-        self.Width = width
-        self.mut_array_player1 = [[0 for y in range( height )] for x in range( width )]
-        self.mut_array_player2 = [[0 for y in range( height )] for x in range( width )]
-        print ( self.mut_array_player1 )
-    def fill_array( self, x = 0, y = 0 ):
-        for i1 in range( self.Height ):
-            for i2 in range( self.Width ):
-                self.mut_array_player1[i1][i2] = 2
-        print( "array filled\n", self.mut_array_player1 )
+class GameField( object ):    
+    def __init__( self ):
+        self.height = 10
+        self.width = 10
+        self.fill_array()
+       
+    def fill_array( self ):
+        self.matrix = [[0 ] * self.height for x in range( self.width )]
+        for i1 in range( self.height ):
+            for i2 in range( self.width ):
+                self.matrix[i1][i2] = 2
+        print( "array filled\n", self.matrix )
     #===========================================================================
     # operation=0 (get the array it self)
     # operation=1 (return specific field)
@@ -38,44 +38,57 @@ class MATRIX( object ):
     # operation=3 (return specific column; need get_col argument)
     #===========================================================================
     
-    def get_info( self, operation = 0, get_row = 0, get_col = 0 ):
+    
+    def get_info( self, operation = 0, get_row = 0, get_col = 0, ):
         
         if operation == 1:
-            return self.mut_array_player1[get_row][get_col]
+            return self.matrix[get_row][get_col]
         elif operation == 2:
             print( "second get 'array col'\n" )
-            return self.mut_array_player1[:, get_col]
+            return self.matrix[:, get_col]
         elif operation == 3:
-            return self.mut_array_player1[:]
+            return self.matrix[:]
         elif operation == 4:
             for y in range( self.Height ):
                 for x in range( self.Width ):
-                    check = self.mut_array_player2[y][x]
+                    check = self.matrix[y][x]
                     if check == -1:
-                        self.mut_array_player1[y][x] = 0
+                        self.matrix[y][x] = 0
                         #player mist the ship
                     elif check == 0:
-                        self.mut_array_player1[y][x] = 3
+                        self.matrix[y][x] = 3
                         pass
                         # nothing happens
                     elif check == 1 :
                         pass
                         #ship has been shot
                     elif check == 2:
-                        self.mut_array_player1[y][x] = -1
+                        self.matrix[y][x] = -1
                         pass
                         #ship ok
-            print( self.mut_array_player1 )     
-    def get_array( self ):
-        return self.mut_array_player1
+            print( self.matrix )     
+
+    def computer_KI( self ):
+        
+        pass
+    
+    def fire_to( self, y = 0, x = 0 , field = 0 ):
+        pass
+        
+    def creatRandnum( self ):
+        a = random( 0, 9 )
+        b = random( 0, 9 )
+    
+    def get_field( self ):
+        return self.matrix
     
     def tester( self ):
         for i in range( 10 ):
-            self.mut_array_player2[i][i] = 2
+            self.matrix[i][i] = -1
+        print( self.matrix )
                    
-def init_player_field():
-    init_field = MATRIX( 10, 10 )
-    return init_field
+
+
 #print( player1_matrix.get_array() )
 #print( "dim\n", player1_matrix.get_info() )
 #player1_matrix.fill_array()
@@ -83,30 +96,30 @@ def init_player_field():
 #player1_matrix.tester()
 #player1_matrix.get_info( 4 )
 
-
-class FieldPart( QObject ):
-  
-  def __init__( self ):
-    QObject.__init__( self )
-    
-class GameField( QObject ):
-  
-  def __init__( self ):
-    QObject.__init__( self )
-    
-    self.width = 10
-    self.height = 10
-    self.initializeField()
-    
-  def initializeField( self ):
-    # create a matrix
-    initValue = None
-    self.matrix = [[initValue] * self.width for i in range( 0, self.height )]
-    # initialize with lots of objects
-    for y in range( 0, self.width ):
-      for x in range( 0, self.height ):
-         self.matrix[y][x] = FieldPart()
-         
-    # print the result
-    print ( self.matrix )
+#
+#class FieldPart( QObject ):
+#  
+#  def __init__( self ):
+#    QObject.__init__( self )
+#    
+#class GameField( QObject ):
+#  
+#  def __init__( self ):
+#    QObject.__init__( self )
+#    
+#    self.width = 10
+#    self.height = 10
+#    self.initializeField()
+#    
+#  def initializeField( self ):
+#    # create a matrix
+#    initValue = None
+#    self.matrix = [[initValue] * self.width for i in range( 0, self.height )]
+#    # initialize with lots of objects
+#    for y in range( 0, self.width ):
+#      for x in range( 0, self.height ):
+#         self.matrix[y][x] = FieldPart()
+#         
+#    # print the result
+#    print ( self.matrix )
 
