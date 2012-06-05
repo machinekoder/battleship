@@ -46,7 +46,7 @@ class GameField( QObject ):
         for y in range( 0, self.width ):
             for x in range( 0, self.height ):
                 self.matrix[y][x] = FieldPart()
-            print( "array filled\n", self.matrix )
+#            print( "array filled\n", self.matrix )
     #===========================================================================
     # operation=0 (get the array it self)
     # operation=1 (return specific field)
