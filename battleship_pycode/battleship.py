@@ -113,8 +113,8 @@ class BattleShip( QObject ):
         for y in range( player.fieldSize ):
             for x in range( player.fieldSize ):
                 test = player.gameField.matrix[y][x]
-                print( test )
-                print( "player name: ", player.name )
+#                print( test )
+#                print( "player name: ", player.name )
         
         
                 
