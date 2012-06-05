@@ -49,7 +49,7 @@ class GameField( QObject ):
     #check if player can place the ship
     def placeShip( self, shipSize = 0, rotate = False , x = 0, y = 0 ):
         boolvar = False
-        print( "x:", x, "y:", y )
+#        print( "x:", x, "y:", y )
         if rotate == True:
             if x + shipSize < self.width:
                 if self.matrix[y][x].placeFull == False:

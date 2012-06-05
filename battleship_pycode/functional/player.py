@@ -69,7 +69,7 @@ class Player( QObject ):
             rotateship = True if ( bigship % 2 ) == 1 else False
             bigship -= 1
             coordinates = self.XYcoordinates()
-            print( "coordinates:", coordinates )
+#            print( "coordinates:", coordinates )
             x1 = coordinates.pop()
             y1 = coordinates.pop()
             while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = y1, x = x1 ):
@@ -92,7 +92,7 @@ class Player( QObject ):
             rotateship = True if ( smallship % 2 ) == 1 else False
             smallship -= 1
             coordinates = self.XYcoordinates()
-            print( "coordinats:", coordinates )
+#            print( "coordinats:", coordinates )
             x1 = coordinates.pop()
             y1 = coordinates.pop()
             while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = y1, x = x1 ):
@@ -117,7 +117,7 @@ class Player( QObject ):
         y1 = i1 // self.fieldSize
         x1 = i1 % self.fieldSize
         xy = [y1, x1]
-        print( xy )
+#        print( xy )
         return xy
         
     def computerKI( self ):
