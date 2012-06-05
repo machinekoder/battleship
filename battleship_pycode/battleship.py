@@ -98,9 +98,9 @@ class BattleShip( QObject ):
         if gameSize == 10:
             player2.computerPlaceShip( shipAmount = 6 )
         if gameSize == 16:
-            player2.computerPlaceShip( shipAmount = 7 )
-        if gameSize == 20:
             player2.computerPlaceShip( shipAmount = 8 )
+        if gameSize == 20:
+            player2.computerPlaceShip( shipAmount = 12 )
         
 #        player2.gameField.matrix 
         self.syncField( player1 )
