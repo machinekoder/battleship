@@ -78,10 +78,11 @@ class BattleShip( QObject ):
       
     def testFunction( self ):
       # get ready to test the ships
-      self.battleShipUi.setShip( 23, 1, "red", False )
-      self.battleShipUi.setShip( 3, 2, "blue", False )
-      self.battleShipUi.setShip( 45, 3, "red", True )
-      self.battleShipUi.setShip( 70, 4, "blue", True )
+      # self.battleShipUi.setShip( 23, 1, "red", False )
+      # self.battleShipUi.setShip( 3, 2, "blue", False )
+      # self.battleShipUi.setShip( 45, 3, "red", True )
+      # self.battleShipUi.setShip( 70, 4, "blue", True )
+      pass
         
     @pyqtSlot()
     def startGame( self ):
@@ -89,11 +90,11 @@ class BattleShip( QObject ):
 #        print( "Player Name:", self.battleShipUi.property( "playerName" ) )
         player1 = Player( self.battleShipUi.property( "playerName" ), "blue" )
         player2 = Player( "Computer", "red" )
+        player1.gameField.placeShip( shipSize = 3, rotate = True, y = 2, x = 2 ) 
+        player2.computerPlaceShips( shipAmount = 5 )
+        print( player2.gameField.matrix )
         self.syncField( player1 )
         self.syncField( player2 )
-        player1.gameField.placeShip( shipSize = 3, rotate = True, y = 2, x = 2 ) 
-        player2.computerPlaceShip( shipAmount = 5 )
-        print( player2.gameField.matrix )
         
     @pyqtSlot()
     def playOsdSound( self ):
@@ -129,11 +130,12 @@ class BattleShip( QObject ):
     
     def syncField( self, player ):
         self.battleShipUi.clearField()
+        print( "player name: ", player.name )
         for y in range( player.fieldSize ):
             for x in range( player.fieldSize ):
                 test = player.gameField.matrix[y][x]
-                print( test )
-                print( "player name: ", player.name )
+                print(test.shipType)
+                self.battleShipUi.setShip(y*player.fieldSize+x,test.shipType,"red")
 
 app = QApplication( sys.argv )
 app.setApplicationName( "Battleship Game" )
