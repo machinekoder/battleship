@@ -30,14 +30,26 @@ class Player( QObject ):
         smallship = 0
         extrasmallship = 0
         shipSize_com = 0
-#        cordinates = []
+#        coordinates = []
         rotateship = False
         x1 = 0
         y1 = 0
-        if shipAmount == 6:
-            bigship = 1
+        
+        #standard ship size is 5
+        if shipAmount == 8:
+            bigship = 2
+            mediumship = 2
+            smallship = 2
+            extrasmallship = 2
+        elif shipAmount == 7:
+            bigship = 2
             mediumship = 1
             smallship = 2
+            extrasmallship = 2   
+        elif shipAmount == 6:
+            bigship = 2
+            mediumship = 1
+            smallship = 1
             extrasmallship = 2       
         elif shipAmount == 4:
             bigship = 1
@@ -53,49 +65,49 @@ class Player( QObject ):
             shipSize_com = 4 
             rotateship = True if ( bigship % 2 ) == 1 else False
             bigship -= 1
-            cordinates = self.XYcordinates()
-            print( "cordinates:", cordinates )
-            x1 = cordinates.pop()
-            y1 = cordinates.pop()
+            coordinates = self.XYcoordinates()
+            print( "coordinates:", coordinates )
+            x1 = coordinates.pop()
+            y1 = coordinates.pop()
             while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = y1, x = x1 ):
-                cordinates = self.XYcordinates()
-                x1 = cordinates.pop()
-                y1 = cordinates.pop()                
+                coordinates = self.XYcoordinates()
+                x1 = coordinates.pop()
+                y1 = coordinates.pop()                
         while mediumship > 0:
             shipSize_com = 3
             rotateship = True if ( mediumship % 2 ) == 1 else False
             mediumship -= 1
-            cordinates = self.XYcordinates()
-            x1 = cordinates.pop()
-            y1 = cordinates.pop()
+            coordinates = self.XYcoordinates()
+            x1 = coordinates.pop()
+            y1 = coordinates.pop()
             while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = y1, x = x1 ):
-                cordinates = self.XYcordinates()
-                x1 = cordinates.pop()
-                y1 = cordinates.pop()    
+                coordinates = self.XYcoordinates()
+                x1 = coordinates.pop()
+                y1 = coordinates.pop()    
         while smallship > 0:
             shipSize_com = 2
             rotateship = True if ( smallship % 2 ) == 1 else False
             smallship -= 1
-            cordinates = self.XYcordinates()
-            x1 = cordinates.pop()
-            y1 = cordinates.pop()
+            coordinates = self.XYcoordinates()
+            x1 = coordinates.pop()
+            y1 = coordinates.pop()
             while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = y1, x = x1 ):
-                cordinates = self.XYcordinates()
-                x1 = cordinates.pop()
-                y1 = cordinates.pop()    
+                coordinates = self.XYcoordinates()
+                x1 = coordinates.pop()
+                y1 = coordinates.pop()    
         while extrasmallship > 0:
             shipSize_com = 1
             rotateship = True if ( extrasmallship % 2 ) == 1 else False
             extrasmallship -= 1
-            cordinates = self.XYcordinates()
-            x1 = cordinates.pop()
-            y1 = cordinates.pop()
+            coordinates = self.XYcoordinates()
+            x1 = coordinates.pop()
+            y1 = coordinates.pop()
             while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = y1, x = x1 ):
-                cordinates = self.XYcordinates()
-                x1 = cordinates.pop()
-                y1 = cordinates.pop() 
+                coordinates = self.XYcoordinates()
+                x1 = coordinates.pop()
+                y1 = coordinates.pop() 
             
-    def XYcordinates( self ):
+    def XYcoordinates( self ):
         i1 = random.randint( 0, 99 )
         y1 = i1 // self.fieldSize
         x1 = i1 % self.fieldSize
