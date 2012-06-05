@@ -14,8 +14,8 @@ from PyQt4.QtNetwork import *
 from PyQt4.phonon import *
 import sys
 import time
-import functional.movement
-from functional.movement import *
+#import functional.player
+from functional.player import *
 from functional.initfield import *
 from asyncore import loop
 
@@ -86,7 +86,11 @@ class BattleShip( QObject ):
     @pyqtSlot()
     def startGame( self ):
         print( "Yeah someone has pressed the single player button" )
-        print( "Player Name:", self.battleShipUi.property( "playerName" ) )
+#        print( "Player Name:", self.battleShipUi.property( "playerName" ) )
+        player1 = Player( self.battleShipUi.property( "playerName" ), "blue" )
+        player2 = Player( "Computer", "red" )
+        self.syncField( player1 )
+        print( "width", player1.width )
         pass
   
     @pyqtSlot()
@@ -111,10 +115,14 @@ class BattleShip( QObject ):
             self.m_sound.play()
         return "Muhahaha"
     
-    def gamemovement( self ):
-        player1 = GameField()
-        player2 = GameField()
-        print( "width", player1.width )
+    def syncField( self, player ):
+        self.battleShipUi.clearField()
+        for y in range( player.fieldSize ):
+            for x in range( player.fieldSize ):
+                test = player.gameField.matrix[y][x]
+                print( test )
+                print( "player name: ", player.name )
+                
 #        if singleplayer == True:
 #            self.computer_KI( player2 )
 #        pass
@@ -129,7 +137,6 @@ class BattleShip( QObject ):
         
 
 
-
     
 app = QApplication( sys.argv )
 app.setApplicationName( "Battleship Game" )
@@ -140,7 +147,7 @@ print( battleShip.playSound() )
 '''
 initializes field of players
 '''
-battleShip.gamemovement()
+#battleShip.gamemovement()
 battleShip.testFunction()
 #gameField = GameField()
 
