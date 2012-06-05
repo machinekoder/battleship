@@ -58,9 +58,6 @@ class BattleShip( QObject ):
       # Get the root object of the user interface.
       self.battleShipUi = self.view.rootObject()
       
-      # run initializing function in the ui
-      self.battleShipUi.initialize()
-      
       # connect signal and slots
       self.battleShipUi.singlePlayerGameClicked.connect( self.startGame )
       self.battleShipUi.playOsdSound.connect( self.playOsdSound )
@@ -87,7 +84,8 @@ class BattleShip( QObject ):
     @pyqtSlot()
     def startGame( self ):
         print( "Yeah someone has pressed the single player button" )
-#        print( "Player Name:", self.battleShipUi.property( "playerName" ) )
+        gameSize = 10
+        self.battleShipUi.initializeField(gameSize)
         player1 = Player( self.battleShipUi.property( "playerName" ), "blue" )
         player2 = Player( "Computer", "red" )
         player1.gameField.placeShip( shipSize = 3, rotate = True, y = 2, x = 2 ) 
@@ -137,7 +135,7 @@ class BattleShip( QObject ):
             for x in range( player.fieldSize ):
                 test = player.gameField.matrix[y][x]
                 print(test.shipType)
-                self.battleShipUi.setShip(y*player.fieldSize+x,test.shipType,"red")
+                self.battleShipUi.setShip(y*player.fieldSize+x,test.shipType, player.color)
 
 app = QApplication( sys.argv )
 app.setApplicationName( "Battleship Game" )
