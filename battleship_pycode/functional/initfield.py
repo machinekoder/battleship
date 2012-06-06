@@ -24,7 +24,7 @@ class FieldPart( QObject ):
     QObject.__init__( self )
     self.shipTypeGUI = 0
     self.shipType = 0
-    self.shipHit = False
+    self.shipHit = True
     self.placeFull = False
     self.missed = False
     self.rotated = False
