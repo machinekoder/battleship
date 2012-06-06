@@ -121,11 +121,11 @@ class BattleShip( QObject ):
         self.battleShipUi.startShipPlacement( 3, "blue" )
         self.battleShipUi.outputOSD( "Place your fleet" )
 
-        #while True:
+        while True:
 #            self.syncField( player2 )
-       #     if player2.computerKI() == True:
-       #         self.syncField( player2 )
-       #         break
+            if player2.computerKI() == True:
+                self.syncField( player2 )
+                break
             
     @pyqtSlot()
     def playOsdSound( self ):
