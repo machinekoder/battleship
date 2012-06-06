@@ -19,6 +19,17 @@
   <defs
      id="defs4">
     <linearGradient
+       id="linearGradient3810">
+      <stop
+         id="stop3812"
+         offset="0"
+         style="stop-color:#00ff00;stop-opacity:1;" />
+      <stop
+         id="stop3814"
+         offset="1"
+         style="stop-color:#006c00;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
        id="linearGradient3862">
       <stop
          style="stop-color:#ff0000;stop-opacity:1;"
@@ -64,7 +75,7 @@
        gradientUnits="userSpaceOnUse" />
     <radialGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3759"
+       xlink:href="#linearGradient3862"
        id="radialGradient3799"
        cx="250.93715"
        cy="491.62537"
@@ -190,6 +201,28 @@
        fx="155.30814"
        fy="508.34811"
        r="19.585125" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3810"
+       id="radialGradient3820"
+       cx="250.93715"
+       cy="491.62537"
+       fx="250.93715"
+       fy="491.62537"
+       r="23.055374"
+       gradientTransform="matrix(1,0,0,1.1682315,0,-82.706867)"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3810"
+       id="radialGradient3822"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.1682315,0,-82.706867)"
+       cx="250.93715"
+       cy="491.62537"
+       fx="250.93715"
+       fy="491.62537"
+       r="23.055374" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -199,8 +232,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.42"
-     inkscape:cx="101.87496"
-     inkscape:cy="602.25999"
+     inkscape:cx="-21.364477"
+     inkscape:cy="574.09098"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -234,8 +267,21 @@
        id="rect3870"
        width="274.4321"
        height="434.29129"
-       x="-56.230148"
-       y="235.56865" />
+       x="-38.624527"
+       y="260.21652" />
+    <g
+       style="font-size:73.89264679px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:none;stroke:#00ff00;stroke-opacity:1;font-family:Sans"
+       id="g3802"
+       transform="matrix(1.2443596,0,0,1,-236.67103,136.61973)"
+       inkscape:export-filename="/home/alexander/Dropbox/FH/SUA/battleship/images/destroyed.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <path
+         d="m 230.33525,464.69136 7.82944,0 13.38583,20.02462 13.45799,-20.02462 7.82944,0 -17.31859,25.86964 18.47317,27.99839 -7.82945,0 -15.15377,-22.91105 -15.262,22.91105 -7.86553,0 19.23085,-28.75608 -16.77738,-25.11195"
+         style="fill:none;stroke:#00ff00;stroke-opacity:1"
+         id="path3804"
+         inkscape:connector-curvature="0" />
+    </g>
     <path
        style="opacity:0.47933888000000002;fill:url(#radialGradient3868);fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        inkscape:transform-center-y="-10.29293"
@@ -301,10 +347,10 @@
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300" />
     <g
-       style="font-size:73.89264679px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:url(#radialGradient3799);fill-opacity:1;stroke:none;font-family:Sans"
+       style="font-size:73.89264679px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;opacity:0.5;fill:url(#radialGradient3799);fill-opacity:1;stroke:none;font-family:Sans"
        id="text3786"
-       transform="matrix(1.2443596,0,0,1,18.258555,10.56338)"
-       inkscape:export-filename="/home/alexander/Dropbox/FH/SUA/battleship/images/destroyed.png"
+       transform="matrix(1.2443596,0,0,1,-162.72736,134.50704)"
+       inkscape:export-filename="/home/alexander/projects/battleship/battleship_pycode/images/destroyed.png"
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300">
       <path
@@ -423,5 +469,31 @@
        inkscape:export-filename="/home/alexander/projects/battleship/battleship_pycode/images/ship3_blue.png"
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300" />
+    <g
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/alexander/projects/battleship/battleship_pycode/images/destroyed.png"
+       transform="matrix(1.2443596,0,0,1,-162.72736,134.50704)"
+       id="g3794"
+       style="font-size:73.89264679px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:none;stroke:#ff0000;stroke-opacity:1;font-family:Sans">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3796"
+         style="fill:none;stroke:#ff0000;stroke-opacity:1"
+         d="m 230.33525,464.69136 7.82944,0 13.38583,20.02462 13.45799,-20.02462 7.82944,0 -17.31859,25.86964 18.47317,27.99839 -7.82945,0 -15.15377,-22.91105 -15.262,22.91105 -7.86553,0 19.23085,-28.75608 -16.77738,-25.11195" />
+    </g>
+    <g
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/alexander/Dropbox/FH/SUA/battleship/images/destroyed.png"
+       transform="matrix(1.2443596,0,0,1,-236.67103,136.61973)"
+       id="g3798"
+       style="font-size:73.89264679px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;opacity:0.5;fill:url(#radialGradient3820);fill-opacity:1;stroke:none;font-family:Sans">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3800"
+         style="fill:url(#radialGradient3822);fill-opacity:1"
+         d="m 230.33525,464.69136 7.82944,0 13.38583,20.02462 13.45799,-20.02462 7.82944,0 -17.31859,25.86964 18.47317,27.99839 -7.82945,0 -15.15377,-22.91105 -15.262,22.91105 -7.86553,0 19.23085,-28.75608 -16.77738,-25.11195" />
+    </g>
   </g>
 </svg>

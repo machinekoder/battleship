@@ -418,6 +418,10 @@ Rectangle {
     {
         gameField.setShip(index,type,color,rotated)
     }
+    function setHitAndMissed(index, hit, missed)
+    {
+        gameField.setHitAndMissed(index,hit,missed)
+    }
     function clearField()
     {
         gameField.clearField()

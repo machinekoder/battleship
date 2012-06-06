@@ -164,11 +164,14 @@ class BattleShip( QObject ):
         print( "player name: ", player.name )
         for y in range( player.fieldSize ):
             for x in range( player.fieldSize ):
-                test = player.gameField.matrix[y][x]
-                print( "type      :", test.shipType )
-                print( "geschossen:", test.fired )
-                print( "getroffen : ", test.shipHit )
-                self.battleShipUi.setShip( y * player.fieldSize + x, test.shipTypeGUI, player.color, test.rotated )
+                fieldPart = player.gameField.matrix[y][x]
+                print( "type      :", fieldPart.shipType )
+                print( "geschossen:", fieldPart.fired )
+                print( "getroffen : ", fieldPart.shipHit )
+                index = y * player.fieldSize + x
+                self.battleShipUi.setHitAndMissed(index,fieldPart.shipHit,fieldPart.missed)
+                if (fieldPart.head == True):
+                    self.battleShipUi.setShip(index,fieldPart.shipType, player.color, fieldPart.rotated )
 
 app = QApplication( sys.argv )
 app.setApplicationName( "Battleship Game" )

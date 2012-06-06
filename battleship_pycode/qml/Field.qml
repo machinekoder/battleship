@@ -65,6 +65,7 @@ Rectangle {
                 width: gridView.cellWidth
                 height: gridView.cellHeight
                 hit: hitter
+                missed: misser
                 shipType: type
                 shipColor: colored
                 shipRotated: rotated
@@ -75,13 +76,18 @@ Rectangle {
     function initializeField()
     {
         for (var i = 0; i < gameSize*gameSize; i++)
-            fieldModel.append({"type":0,"hitter":false,"colored":"red","rotated":false})
+            fieldModel.append({"type":0,"hitter":false,"misser":false,"colored":"red","rotated":false})
     }
     function setShip(index, type, color,rotated)
     {
         fieldModel.setProperty(index,"type",type)
         fieldModel.setProperty(index,"colored",color)
         fieldModel.setProperty(index,"rotated",rotated)
+    }
+    function setHitAndMissed(index, hit, missed)
+    {
+        fieldModel.setProperty(index,"hitter", hit)
+        fieldModel.setProperty(index,"misser", missed)
     }
     function clearField()
     {

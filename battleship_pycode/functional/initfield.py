@@ -13,7 +13,6 @@ from PyQt4.QtNetwork import *
 from PyQt4.phonon import *
 import sys
 import time
-from gi.overrides.keysyms import Break
 
 
 
@@ -25,6 +24,7 @@ class FieldPart( QObject ):
     self.shipTypeGUI = 0
     self.shipType = 0
     self.shipHit = False
+    self.hit = False
     self.placeFull = False
     self.missed = False
     self.rotated = False
@@ -75,19 +75,19 @@ class GameField( QObject ):
             if rotate == True :
                 self.matrix[y][x].head = True
                 self.matrix[y][x].shipTypeGUI = shipSize
+                self.matrix[y][x].rotated = rotate
                 for x1 in range( x, x + shipSize ):
                     self.matrix[y][x1].placeFull = True
                     self.matrix[y][x1].shipType = shipSize
-                    self.matrix[y][x1].rotated = rotate
                 self.matrix[y][x + shipSize - 1].tail = True
 
             else :
                 self.matrix[y][x].head = True
                 self.matrix[y][x].shipTypeGUI = shipSize
+                self.matrix[y][x].rotated = rotate
                 for y1 in range( y, y + shipSize ):
                     self.matrix[y1][x].placeFull = True
                     self.matrix[y1][x].shipType = shipSize
-                    self.matrix[y1][x].rotated = rotate
                 self.matrix[y + shipSize - 1][x ].tail = True
 
         return boolvar

@@ -3,6 +3,7 @@ import QtQuick 1.1
 
 Rectangle {
     property bool hit: false
+    property bool missed: false
     property int shipType: 0
     property string  shipColor: "red"
     property bool shipRotated: false
@@ -13,14 +14,15 @@ Rectangle {
 
     Image {
         id: image1
-        x: 15
-        y: 15
-        width: parent.width * 0.9
-        height: width
+        smooth: true
+        anchors.rightMargin: parent.width * 0.05
+        anchors.leftMargin: parent.width * 0.05
+        anchors.bottomMargin: parent.height * 0.05
+        anchors.topMargin: parent.height * 0.05
+        anchors.fill: parent
         fillMode: Image.PreserveAspectFit
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        source: hit?"../images/destroyed.png":""
+        source: main.hit?"../images/destroyed.png":"../images/missed.png"
+        visible: main.hit || main.missed
     }
     Ship {
         anchors.top: parent.top
@@ -40,6 +42,7 @@ Rectangle {
         x: 5
         y: 5
         color: "#00000000"
+        smooth: false
         opacity: 0.100
         border.width: 1
         border.color: "#00ff08"
