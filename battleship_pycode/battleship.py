@@ -122,7 +122,7 @@ class BattleShip( QObject ):
         self.battleShipUi.outputOSD( "Place your fleet" )
 
         while True:
-#            self.syncField( player2 )
+            self.syncField( player2 )
             if player2.computerKI() == True:
                 self.syncField( player2 )
                 break
