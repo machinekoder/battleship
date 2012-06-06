@@ -27,6 +27,7 @@ class Player( QObject ):
         self.fieldSize = fieldSize
         self.shipAmount = shipAmount
         self.ShipDestroyed = False
+        self.ShipLeft = shipAmount
     
     def computerPlaceShip( self ):
         bigship = 0
