@@ -21,7 +21,6 @@ class FieldPart( QObject ):
   
   def __init__( self ):
     QObject.__init__( self )
-    self.shipTypeGUI = 0
     self.shipType = 0
     self.shipHit = False
     self.hit = False
@@ -57,104 +56,71 @@ class GameField( QObject ):
 #        print( "x:", x, "y:", y )
         if rotate == True:
             if x + shipSize < self.width :
-                if self.matrix[y][x].placeFull == False:
-                    boolvar = True
-                    for i in range( x , x + shipSize ):
-                        if self.matrix[y][x].placeFull == True:
-                            boolvar = False
+                boolvar = True
+                for i in range( x , x + shipSize ):
+                    if self.matrix[y][i].placeFull == True:
+                       boolvar = False
+                       break
                                
         elif rotate == False:
             if y + shipSize < self.height :
-                if self.matrix[y][x].placeFull == False:
-                    boolvar = True
-                    for i in range( y , y + shipSize ):
-                        if self.matrix[y][x].shipType == True:
-                           boolvar = False
+               boolvar = True
+               for i in range( y , y + shipSize ):
+                  if self.matrix[i][x].shipType == True:
+                     boolvar = False
+                     break
                            
         if boolvar == True:
             if rotate == True :
                 self.matrix[y][x].head = True
-                self.matrix[y][x].shipTypeGUI = shipSize
-                self.matrix[y][x].rotated = rotate
                 for x1 in range( x, x + shipSize ):
                     self.matrix[y][x1].placeFull = True
                     self.matrix[y][x1].shipType = shipSize
+                    self.matrix[y][x1].rotated = rotate
                 self.matrix[y][x + shipSize - 1].tail = True
 
             else :
                 self.matrix[y][x].head = True
-                self.matrix[y][x].shipTypeGUI = shipSize
-                self.matrix[y][x].rotated = rotate
                 for y1 in range( y, y + shipSize ):
                     self.matrix[y1][x].placeFull = True
                     self.matrix[y1][x].shipType = shipSize
+                    self.matrix[y1][x].rotated = rotate
                 self.matrix[y + shipSize - 1][x ].tail = True
 
         return boolvar
     
     def IsShipDestroyed( self, coordinate = 0 ):
-        check = 0
         print( "Koordinate", coordinate )
-        if self.matrix[coordinate[0]][coordinate[1]].shipType == 1:
-            check += 1
-            
-        elif self.matrix[coordinate[0]][coordinate[1]].head == True and self.matrix[coordinate[0]][coordinate[1]].rotated == False:
-            for y in range( coordinate[0], 10 ):
-                if  self.matrix[y][coordinate[1]].shipHit == True:
-                    check += 1
-                if self.matrix[y][coordinate[1]].tail == True:
-                    break
-
-                
-        elif self.matrix[coordinate[0]][coordinate[1]].head == True and self.matrix[coordinate[0]][coordinate[1]].rotated == True:
-            for x in range( coordinate[1], 10 ):
-                if  self.matrix[coordinate[0]][x].shipHit == True:
-                    check += 1
-                if self.matrix[coordinate[0]][x].tail == True:
-                    break
-
-
-        elif self.matrix[coordinate[0]][coordinate[1]].tail == True and self.matrix[coordinate[0]][coordinate[1]].rotated == False:
-            for y in range( coordinate[0], 0, -1 ):
-                if  self.matrix[y][coordinate[1]].shipHit == True:
-                    check += 1    
-                if self.matrix[y][coordinate[1]].head == True:
-                    break                          
-        elif self.matrix[coordinate[0]][coordinate[1]].tail == True and self.matrix[coordinate[0]][coordinate[1]].rotated == True:
-            for x in range( coordinate[1], 0, -1 ):
-     
-                if  self.matrix[coordinate[0]][x].shipHit == True:
-                    check += 1
-                if self.matrix[coordinate[0]][x].head == True:
-                    break               
-        elif self.matrix[coordinate[0]][coordinate[1]].rotated == False:
-            for y in range( coordinate[0], 10 ):
-
-                if  self.matrix[y][coordinate[1]].shipHit == True:
-                    check += 1
-                if self.matrix[y][coordinate[1]].tail == True:
-                    break
-            for y in range( coordinate[0], 0, -1 ):
-
-                if  self.matrix[y][coordinate[1]].shipHit == True:
-                    check += 1
-                if self.matrix[y][coordinate[1]].head == True:
-                    break            
-                    
-        elif self.matrix[coordinate[0]][coordinate[1]].rotated == True:
-            for x in range( coordinate[1], 10 ):
-
-                if  self.matrix[coordinate[0]][x].shipHit == True:
-                    check += 1
-                if self.matrix[coordinate[0]][x].tail == True:
-                    break
-            for x in range( coordinate[1], 0, -1 ):
-
-                if  self.matrix[coordinate[0]][x].shipHit == True:
-                    check += 1
-                if self.matrix[coordinate[0]][x].head == True:
-                    break              
-                
-        if check == self.matrix[coordinate[0]][coordinate[1]].shipType:
-            return True
-        return False
+        basePoint = QPoint(coordinate[1],coordinate[0])
+        
+        #search the head of the ship
+        rotated = self.matrix[basePoint.y()][basePoint.x()].rotated
+        shipSize = self.matrix[basePoint.y()][basePoint.x()].shipType
+        tmpX = basePoint.x()
+        tmpY = basePoint.y()
+        headFound = False
+        headPoint = QPoint()
+        while not headFound:
+           headFound = self.matrix[tmpY][tmpX].head
+           if headFound:
+              headPoint = QPoint(tmpX,tmpY)
+           if rotated:
+              tmpX -= 1
+           else:
+              tmpY -= 1
+              
+        check = True
+        if rotated:
+           for x in range(headPoint.x(),headPoint.x() + shipSize):
+              if not self.matrix[headPoint.y()][x].shipHit:
+                 check = False
+                 break
+        else:
+           for y in range(headPoint.y(),headPoint.y() + shipSize):
+              if not self.matrix[y][headPoint.x()].shipHit:
+                 check = False
+                 break
+              
+        print(headPoint, check)
+        
+        return check

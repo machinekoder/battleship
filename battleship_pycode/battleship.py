@@ -114,7 +114,7 @@ class BattleShip( QObject ):
 #        player2.gameField.matrix
 
           
-        self.syncField( player1 )
+        self.syncField( player2 )
 
         
         self.state = GameStates.ShipPlacementState
