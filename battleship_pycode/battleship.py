@@ -122,7 +122,7 @@ class BattleShip( QObject ):
         self.battleShipUi.outputOSD( "Place your fleet" )
 
         while True:
-            self.syncField( player2 )
+#            self.syncField( player2 )
             if player2.computerKI() == True:
                 self.syncField( player2 )
                 break
@@ -165,10 +165,11 @@ class BattleShip( QObject ):
         for y in range( player.fieldSize ):
             for x in range( player.fieldSize ):
                 fieldPart = player.gameField.matrix[y][x]
-                #print( fieldPart.shipType )
-                #print( fieldPart.fired )
+                print( "type      :", fieldPart.shipType )
+                print( "geschossen:", fieldPart.fired )
+                print( "getroffen : ", fieldPart.shipHit )
                 index = y * player.fieldSize + x
-                self.battleShipUi.setHitAndMissed(index,fieldPart.hit,fieldPart.missed)
+                self.battleShipUi.setHitAndMissed(index,fieldPart.shipHit,fieldPart.missed)
                 if (fieldPart.head == True):
                     self.battleShipUi.setShip(index,fieldPart.shipType, player.color, fieldPart.rotated )
 

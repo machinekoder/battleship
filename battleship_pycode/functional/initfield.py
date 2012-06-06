@@ -23,7 +23,7 @@ class FieldPart( QObject ):
     QObject.__init__( self )
     self.shipTypeGUI = 0
     self.shipType = 0
-    self.shipHit = True
+    self.shipHit = False
     self.hit = False
     self.placeFull = False
     self.missed = False
@@ -96,7 +96,8 @@ class GameField( QObject ):
         check = 0
         print( "Koordinate", coordinate )
         if self.matrix[coordinate[0]][coordinate[1]].shipType == 1:
-            return True
+            check += 1
+            
         elif self.matrix[coordinate[0]][coordinate[1]].head == True and self.matrix[coordinate[0]][coordinate[1]].rotated == False:
             for y in range( coordinate[0], 10 ):
                 if  self.matrix[y][coordinate[1]].shipHit == True:
