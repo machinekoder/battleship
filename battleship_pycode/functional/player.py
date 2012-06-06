@@ -122,7 +122,7 @@ class Player( QObject ):
             self.gameField.matrix[self.coordinates[0]][self.coordinates[1]].fired = True
             print( "KI coordinates", self.coordinates )
             if self.gameField.matrix[self.coordinates[0]][self.coordinates[1]].placeFull == True:
-                self.gameField.matrix[self.coordinates[0]][self.coordinates[1]].shipHit == True
+                self.gameField.matrix[self.coordinates[0]][self.coordinates[1]].shipHit = True
                 self.hitlastround = True
                 boolvarKI = self.gameField.IsShipDestroyed( self.coordinates )
                 if boolvarKI == True:
@@ -151,7 +151,7 @@ class Player( QObject ):
                 self.gameField.matrix[self.coordinates[0]][self.coordinates[1] - 1].fired == True   
                 print( "zwei" )
                 if self.gameField.matrix[self.coordinates[0]][self.coordinates[1] - 1].placeFull == True:
-                    self.gameField.matrix[self.coordinates[0]][self.coordinates[1] - 1].shipHit == True
+                    self.gameField.matrix[self.coordinates[0]][self.coordinates[1] - 1].shipHit = True
                     self.hitlastround = True
                     coordinatesnew = self.coordinates
                     coordinatesnew[1] -= 1
@@ -164,7 +164,7 @@ class Player( QObject ):
                 print( "drei" )
                 self.gameField.matrix[self.coordinates[0] + 1][coordinates[1] ].fired == True
                 if self.gameField.matrix[self.coordinates[0] + 1][self.coordinates[1] ].placeFull == True:
-                    self.gameField.matrix[self.coordinates[0] + 1][self.coordinates[1] ].shipHit == True
+                    self.gameField.matrix[self.coordinates[0] + 1][self.coordinates[1] ].shipHit = True
                     self.hitlastround = True
                     coordinatesnew = self.coordinates
                     coordinatesnew[0] += 1
@@ -177,7 +177,7 @@ class Player( QObject ):
                 print( "vier" )
                 self.gameField.matrix[self.coordinates[0] - 1][self.coordinates[1] ].fired == True
                 if self.gameField.matrix[self.coordinates[0] - 1][self.coordinates[1] ].placeFull == True:
-                    self.gameField.matrix[self.coordinates[0] - 1][self.coordinates[1] ].shipHit == True
+                    self.gameField.matrix[self.coordinates[0] - 1][self.coordinates[1] ].shipHit = True
                     self.hitlastround = True
                     coordinatesnew = self.coordinates
                     coordinatesnew[0] -= 1
