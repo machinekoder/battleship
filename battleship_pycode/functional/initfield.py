@@ -21,7 +21,6 @@ class FieldPart( QObject ):
   
   def __init__( self ):
     QObject.__init__( self )
-    self.shipTypeGUI = 0
     self.shipType = 0
     self.shipHit = False
     self.hit = False
@@ -57,24 +56,23 @@ class GameField( QObject ):
 #        print( "x:", x, "y:", y )
         if rotate == True:
             if x + shipSize < self.width :
-                if self.matrix[y][x].placeFull == False:
-                    boolvar = True
-                    for i in range( x , x + shipSize ):
-                        if self.matrix[y][x].placeFull == True:
-                            boolvar = False
+                boolvar = True
+                for i in range( x , x + shipSize ):
+                    if self.matrix[y][i].placeFull == True:
+                       boolvar = False
+                       break
                                
         elif rotate == False:
             if y + shipSize < self.height :
-                if self.matrix[y][x].placeFull == False:
-                    boolvar = True
-                    for i in range( y , y + shipSize ):
-                        if self.matrix[y][x].shipType == True:
-                           boolvar = False
+               boolvar = True
+               for i in range( y , y + shipSize ):
+                  if self.matrix[i][x].shipType == True:
+                     boolvar = False
+                     break
                            
         if boolvar == True:
             if rotate == True :
                 self.matrix[y][x].head = True
-                self.matrix[y][x].shipTypeGUI = shipSize
                 self.matrix[y][x].rotated = rotate
                 for x1 in range( x, x + shipSize ):
                     self.matrix[y][x1].placeFull = True
@@ -83,7 +81,6 @@ class GameField( QObject ):
 
             else :
                 self.matrix[y][x].head = True
-                self.matrix[y][x].shipTypeGUI = shipSize
                 self.matrix[y][x].rotated = rotate
                 for y1 in range( y, y + shipSize ):
                     self.matrix[y1][x].placeFull = True

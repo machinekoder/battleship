@@ -114,18 +114,18 @@ class BattleShip( QObject ):
 #        player2.gameField.matrix
 
           
-        self.syncField( player1 )
+        self.syncField( player2 )
 
         
         self.state = GameStates.ShipPlacementState
         self.battleShipUi.startShipPlacement( 3, "blue" )
         self.battleShipUi.outputOSD( "Place your fleet" )
 
-        while True:
+        #while True:
 #            self.syncField( player2 )
-            if player2.computerKI() == True:
-                self.syncField( player2 )
-                break
+       #     if player2.computerKI() == True:
+       #         self.syncField( player2 )
+       #         break
             
     @pyqtSlot()
     def playOsdSound( self ):
