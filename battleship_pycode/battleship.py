@@ -88,28 +88,29 @@ class BattleShip( QObject ):
         print( "Yeah someone has pressed the single player button" )
         gameSize = self.battleShipUi.property( "difficulty" )
         self.battleShipUi.initializeField( gameSize )
-        player1 = Player( self.battleShipUi.property( "playerName" ), "blue", gameSize )
-        player2 = Player( "Computer", "red", gameSize )
-#        player1.fieldsize = gameSize
+        player1 = Player( self.battleShipUi.property( "playerName" ), "blue", gameSize, )
+        #        player1.fieldsize = gameSize
 #        player2.fieldsize = gameSize
         player1.gameField.placeShip( shipSize = 3, rotate = True, y = 2, x = 2 ) 
 #        player2.XYcordinates()
         if gameSize == 5:
-            player2.computerPlaceShip( shipAmount = 4 )
+            player2 = Player( "Computer", "red", gameSize, shipAmount = 3 )
         if gameSize == 10:
-            player2.computerPlaceShip( shipAmount = 6 )
+            player2 = Player( "Computer", "red", gameSize, shipAmount = 6 )
         if gameSize == 16:
-            player2.computerPlaceShip( shipAmount = 8 )
+            player2 = Player( "Computer", "red", gameSize , shipAmount = 8 )
         if gameSize == 20:
-            player2.computerPlaceShip( shipAmount = 12 )
+            player2 = Player( "Computer", "red", gameSize, shipAmount = 12 )
+
+        player2.computerPlaceShip()
         
 #        player2.gameField.matrix 
         self.syncField( player1 )
         self.syncField( player2 )
         
         self.state = GameStates.ShipPlacementState
-        self.battleShipUi.startShipPlacement(3,"blue")
-        self.battleShipUi.outputOSD("Place your fleet")
+        self.battleShipUi.startShipPlacement( 3, "blue" )
+        self.battleShipUi.outputOSD( "Place your fleet" )
         
         
     @pyqtSlot()

@@ -24,8 +24,9 @@ class FieldPart( QObject ):
     self.shipType = 0
     self.shipHit = True
     self.placeFull = False
-    self.missed = True
+    self.missed = false
     self.rotated = False
+    self.fired = False
  
     
 #game field initialization    
@@ -57,9 +58,7 @@ class GameField( QObject ):
                     for i in range( x , x + shipSize ):
                         if self.matrix[y][x].placeFull == True:
                             boolvar = False
-                            
-
-                  
+                               
         elif rotate == False:
             if y + shipSize < self.height:
                 if self.matrix[y][x].placeFull == False:
@@ -83,24 +82,9 @@ class GameField( QObject ):
 
 
         return boolvar
-
-    def computer_KI( self ):
-        
-        pass
     
-    def fire_to( self, y = 0, x = 0 , field = 0 ):
-        pass
-        
-    def creatRandnum( self ):
-        a = random( 0, 9 )
-        b = random( 0, 9 )
-    
-    def get_field( self ):
-        return self.matrix
-    
-    def tester( self ):
-        for i in range( 10 ):
-            self.matrix[i][i] = -1
-        print( self.matrix )
+    def IsShipDestroyed( self, coordinate = 0 ):
+        self.matrix[coordinate[1]][coordinate[0]]
+        pass    
                    
 
