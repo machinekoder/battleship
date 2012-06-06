@@ -29,6 +29,9 @@ class Player( QObject ):
         self.hitlastround = False
         self.coordinates = []
         self.movement = 0
+        self.movefurther = True
+        self.mouse = 0
+        self.cros = 0
     
     def computerPlaceShip( self ):
         bigship = 0
@@ -70,6 +73,7 @@ class Player( QObject ):
             mediumship = 1
             smallship = 1
             extrasmallship = 2
+            self.ShipLeft = 5
         while bigship > 0:
             shipSize_com = 4 
             rotateship = True if ( bigship % 2 ) == 1 else False
@@ -114,13 +118,14 @@ class Player( QObject ):
         print( "Hello KI" )
         testtest = False
         
-#        if self.hitlastround == False:
-        if testtest == False:
+        
+        if self.hitlastround == False:
+#        if testtest == False:
             self.coordinates = self.YXcoordinates()
             while self.gameField.matrix[self.coordinates[0]][self.coordinates[1]].fired == True:
                 self.coordinates = self.YXcoordinates() 
             self.gameField.matrix[self.coordinates[0]][self.coordinates[1]].fired = True
-            print( "KI coordinates", self.coordinates )
+#            print( "KI coordinates", self.coordinates )
             if self.gameField.matrix[self.coordinates[0]][self.coordinates[1]].placeFull == True:
                 self.gameField.matrix[self.coordinates[0]][self.coordinates[1]].shipHit = True
                 self.hitlastround = True
@@ -133,58 +138,89 @@ class Player( QObject ):
                 self.hitlastround = False
                 
         elif self.hitlastround == True:
-            print( "eins" )
+           
             if   not self.coordinates[1] == 10 and  self.gameField.matrix[self.coordinates[0]][self.coordinates[1] + 1].fired == False:
-                self.gameField.matrix[self.coordinates[0]][self.coordinates[1] + 1].fired = True
-                if self.gameField.matrix[self.coordinates[0]][self.coordinates[1] + 1].placeFull == True:
-                    self.gameField.matrix[self.coordinates[0]][self.coordinates[1] + 1].shipHit = True
-                    self.hitlastround = True
-#                    print( "Die kordin", self.coordinates )
-                    coordinatesnew = self.coordinates
-                    coordinatesnew[1] += 1
-                    boolvarKi = self.gameField.IsShipDestroyed( coordinatesnew ) 
-                    if boolvarKi == True:
-                        self.ShipLeft -= 1
-                        self.hitlastround = False
-                    
+                if self.movefurther == True or self.cros == 0:
+                    self.gameField.matrix[self.coordinates[0]][self.coordinates[1] + 1].fired = True
+                    if self.gameField.matrix[self.coordinates[0]][self.coordinates[1] + 1].placeFull == True:
+                        self.gameField.matrix[self.coordinates[0]][self.coordinates[1] + 1].shipHit = True
+                        self.hitlastround = True
+                        self.movefurther = True
+        #                    print( "Die kordin", self.coordinates )
+                        coordinatesnew = self.coordinates
+                        coordinatesnew[1] += ( 1 + self.mouse )
+                        self.mouse += 1
+                        boolvarKi = self.gameField.IsShipDestroyed( coordinatesnew ) 
+                        print( "eins" )
+                        if boolvarKi == True:
+                            self.ShipLeft -= 1
+                            self.hitlastround = False
+                            self.cros = 1
+                else:
+                    self.hitlastround = False 
+                    self.movefurther = False   
+                    self.cros = 1
             elif not  self.coordinates[1] == 0 and  self.gameField.matrix[self.coordinates[0]][self.coordinates[1] - 1].fired == False:
-                self.gameField.matrix[self.coordinates[0]][self.coordinates[1] - 1].fired = True   
-                print( "zwei" )
-                if self.gameField.matrix[self.coordinates[0]][self.coordinates[1] - 1].placeFull == True:
-                    self.gameField.matrix[self.coordinates[0]][self.coordinates[1] - 1].shipHit = True
-                    self.hitlastround = True
-                    coordinatesnew = self.coordinates
-                    coordinatesnew[1] -= 1
-                    boolvarKi = self.gameField.IsShipDestroyed( coordinatesnew )
-                    if boolvarKi == True:
-                        self.ShipLeft -= 1
-                        self.hitlastround = False
+                if self.movefurther == True or self.cros == 1:
+                    self.gameField.matrix[self.coordinates[0]][self.coordinates[1] - 1].fired = True   
                     
+                    if self.gameField.matrix[self.coordinates[0]][self.coordinates[1] - 1].placeFull == True:
+                        self.gameField.matrix[self.coordinates[0]][self.coordinates[1] - 1].shipHit = True
+                        self.hitlastround = True
+                        coordinatesnew = self.coordinates
+                        coordinatesnew[1] -= ( 1 + self.mouse )
+                        self.mouse += 1
+                        boolvarKi = self.gameField.IsShipDestroyed( coordinatesnew )
+                        print( "zwei" )
+                        if boolvarKi == True:
+                            self.ShipLeft -= 1 
+                            self.hitlastround = False
+                            self.cros = 2
+                else:
+                    self.movefurther = False
+                    self.hitlastround = False
+                    self.cros = 2
+                        
             elif  not self.coordinates[0] == 10 and  self.gameField.matrix[self.coordinates[0] + 1][self.coordinates[1] ].fired == False:
-                print( "drei" )
-                self.gameField.matrix[self.coordinates[0] + 1][coordinates[1] ].fired = True
-                if self.gameField.matrix[self.coordinates[0] + 1][self.coordinates[1] ].placeFull == True:
-                    self.gameField.matrix[self.coordinates[0] + 1][self.coordinates[1] ].shipHit = True
-                    self.hitlastround = True
-                    coordinatesnew = self.coordinates
-                    coordinatesnew[0] += 1
-                    boolvarKi = self.gameField.IsShipDestroyed( coordinatesnew )
-                    if boolvarKi == True:
-                        self.ShipLeft -= 1
-                        self.hitlastround = False
+                if self.movefurther == True or self.cros == 2:
+                    self.gameField.matrix[self.coordinates[0] + 1][self.coordinates[1] ].fired = True
+                    if self.gameField.matrix[self.coordinates[0] + 1][self.coordinates[1] ].placeFull == True:
+                        self.gameField.matrix[self.coordinates[0] + 1][self.coordinates[1] ].shipHit = True
+                        self.hitlastround = True
+                        coordinatesnew = self.coordinates
+                        coordinatesnew[0] += ( 1 + self.mouse )
+                        self.mouse += 1
+                        boolvarKi = self.gameField.IsShipDestroyed( coordinatesnew )
+                        print( "drei" )
+                        if boolvarKi == True:
+                            self.ShipLeft -= 1
+                            self.hitlastround = False
+                            self.cros = 3
+                else:
+                    self.movefurther = False
+                    self.hitlastround = False
+                    self.cros = 3
                     
             elif not  self.coordinates[0] == 0 and  self.gameField.matrix[self.coordinates[0] - 1][self.coordinates[1] ].fired == False:
-                print( "vier" )
-                self.gameField.matrix[self.coordinates[0] - 1][self.coordinates[1] ].fired = True
-                if self.gameField.matrix[self.coordinates[0] - 1][self.coordinates[1] ].placeFull == True:
-                    self.gameField.matrix[self.coordinates[0] - 1][self.coordinates[1] ].shipHit = True
-                    self.hitlastround = True
-                    coordinatesnew = self.coordinates
-                    coordinatesnew[0] -= 1
-                    boolvarKi = self.gameField.IsShipDestroyed( coordinatesnew )
-                    if boolvarKi == True:
-                        self.ShipLeft -= 1    
-                        self.hitlastround = False   
+                if self.movefurther == True or self.cros == 3:
+                    self.gameField.matrix[self.coordinates[0] - 1][self.coordinates[1] ].fired = True
+                    if self.gameField.matrix[self.coordinates[0] - 1][self.coordinates[1] ].placeFull == True:
+                        self.gameField.matrix[self.coordinates[0] - 1][self.coordinates[1] ].shipHit = True
+                        self.hitlastround = True
+                        coordinatesnew = self.coordinates
+                        coordinatesnew[0] -= ( 1 + self.mouse )
+                        self.mouse += 1
+                        boolvarKi = self.gameField.IsShipDestroyed( coordinatesnew )
+                        print( "vier" )
+                        if boolvarKi == True:
+                            self.ShipLeft -= 1    
+                            self.hitlastround = False
+                            self.cros = 4
+                else:
+                    self.movefurther = False
+                    self.hitlastround = False
+                    self.cros = 4
+                    
 #        else:
 #            self.coordinates = self.YXcoordinates()
 #            while self.gameField.matrix[self.coordinates[0]][self.coordinates[1]].fired == True:
