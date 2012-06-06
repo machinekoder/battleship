@@ -20,6 +20,19 @@ import time
 
 print( "Welcome to Battleship Galactica" )
 
+'''
+FIX ME
+
+Alex da jetzt überrall der Schiff Type steht wird auch das  Schiff x-Mal platziert
+ich habe einen neun Typ ins der Klasse FieldPart deklariert,
+mit dem namen Head nach welchen wir uns orientieren können!
+EDIT:
+
+Ich habe jezt eine Variable mit shipTypeGUI Deklariert
+Das mit head hat nicht funktioniert
+:-)
+'''
+
 class GameStates:
   InitState = 0
   ShipPlacementState = 1
@@ -88,31 +101,32 @@ class BattleShip( QObject ):
         print( "Yeah someone has pressed the single player button" )
         gameSize = self.battleShipUi.property( "difficulty" )
         self.battleShipUi.initializeField( gameSize )
-        player1 = Player( self.battleShipUi.property( "playerName" ), "blue", gameSize, )
+
         #        player1.fieldsize = gameSize
 #        player2.fieldsize = gameSize
-        player1.gameField.placeShip( shipSize = 3, rotate = True, y = 2, x = 2 ) 
+ 
 #        player2.XYcordinates()
-        if gameSize == 5:
-            player2 = Player( "Computer", "red", gameSize, shipAmount = 3 )
-        if gameSize == 10:
-            player2 = Player( "Computer", "red", gameSize, shipAmount = 6 )
-        if gameSize == 16:
-            player2 = Player( "Computer", "red", gameSize , shipAmount = 8 )
-        if gameSize == 20:
-            player2 = Player( "Computer", "red", gameSize, shipAmount = 12 )
-
+        player1 = Player( self.battleShipUi.property( "playerName" ), "blue", gameSize )
+        player2 = Player( "Computer", "red", gameSize )
+            
+#        player1.gameField.placeShip( shipSize = 3, rotate = True, y = 2, x = 2 )
         player2.computerPlaceShip()
-        
-#        player2.gameField.matrix 
+#        player2.gameField.matrix
+
+          
         self.syncField( player1 )
-        self.syncField( player2 )
+
         
         self.state = GameStates.ShipPlacementState
         self.battleShipUi.startShipPlacement( 3, "blue" )
         self.battleShipUi.outputOSD( "Place your fleet" )
-        
-        
+
+        while True:
+            self.syncField( player2 )
+            if player2.computerKI() == True:
+                self.syncField( player2 )
+                break
+            
     @pyqtSlot()
     def playOsdSound( self ):
       self.osdSound.play()
@@ -152,12 +166,15 @@ class BattleShip( QObject ):
             for x in range( player.fieldSize ):
                 test = player.gameField.matrix[y][x]
                 print( test.shipType )
-                self.battleShipUi.setShip( y * player.fieldSize + x, test.shipType, player.color, test.rotated )
+                print( test.fired )
+                self.battleShipUi.setShip( y * player.fieldSize + x, test.shipTypeGUI, player.color, test.rotated )
 
 app = QApplication( sys.argv )
 app.setApplicationName( "Battleship Game" )
+
 battleShip = BattleShip()
 
 battleShip.testFunction()
 
+        
 app.exec_() 
