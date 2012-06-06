@@ -106,8 +106,10 @@ class Player( QObject ):
         return yx
         
     def computerKI( self ):
+        
         hitlastround = False
         coordinates = []
+        
         if hitlastround == False:
             coordinates = self.YXcoordinates()
             while self.gameField.matrix[coordinates[0]][coordinates[1]].fired == True:
@@ -116,8 +118,22 @@ class Player( QObject ):
             if self.gameField.matrix[coordinates[0]][coordinates[1]].placeFull == True:
                 self.gameField.matrix[coordinates[0]][coordinates[1]].shipHit == True
                 hitlastround = True
-                self.gameField.IsShipDestroyed( coordinates )
+                if self.gameField.IsShipDestroyed( coordinates ) == True:
+                    self.ShipLeft -= 1
+                    hitlastround = False
             else:
                 self.gameField.matrix[coordinates[0]][coordinates[1]].missed == True
                 hitlastround = False
+        elif hitlastround == True:
+            if   coordinates[1] < 10 and  self.gameField.matrix[coordinates[0]][coordinates[1] + 1].fired == False:
+                self.gameField.matrix[coordinates[0]][coordinates[1] + 1].fired == True
+                if self.gameField.matrix[coordinates[0]][coordinates[1]].placeFull == True:
+                    self.gameField.matrix[coordinates[0]][coordinates[1]].shipHit == True
+                    hitlastround = True
+                if self.gameField.IsShipDestroyed( coordinates ) == True:
+                    self.ShipLeft -= 1
+            elif coor
+            
+        else:
+            print( "error" )
 

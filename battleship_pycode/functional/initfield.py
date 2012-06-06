@@ -89,29 +89,53 @@ class GameField( QObject ):
         return boolvar
     
     def IsShipDestroyed( self, coordinate = 0 ):
+        check = 0
         if self.matrix[coordinate[0]][coordinate[1]].shipType == 1:
             return True
         elif self.matrix[coordinate[0]][coordinate[1]].head == True and self.matrix[coordinate[0]][coordinate[1]].rotated == False:
             for y in range( coordinate[0], coordinate[0] + self.matrix[coordinate[0]][coordinate[1]].shipType ):
-                if  self.matrix[y][coordinate[1]].shipType == True:
-                    return True
-                else:
-                    return False
+                if  self.matrix[y][coordinate[1]].shipHit == True:
+                    check += 1
+
         elif self.matrix[coordinate[0]][coordinate[1]].head == True and self.matrix[coordinate[0]][coordinate[1]].rotated == True:
             for x in range( coordinate[1], coordinate[1] + self.matrix[coordinate[0]][coordinate[1]].shipType ):
-                if  self.matrix[coordinate[0]][coordinate[x]].shipType == True:
-                    return True
-                else:
-                    return False
+                if  self.matrix[coordinate[0]][coordinate[x]].shipHit == True:
+                    check += 1
+
         elif self.matrix[coordinate[0]][coordinate[1]].tail == True and self.matrix[coordinate[0]][coordinate[1]].rotated == False:
             for y in range( coordinate[0], coordinate[0] - self.matrix[coordinate[0]][coordinate[1]].shipType, -1 ):
-                if  self.matrix[y][coordinate[1]].shipType == True:
-                    return True
-                else:
-                    return False            
+                if  self.matrix[y][coordinate[1]].shipHit == True:
+                    check += 1    
+                          
         elif self.matrix[coordinate[0]][coordinate[1]].tail == True and self.matrix[coordinate[0]][coordinate[1]].rotated == True:
             for x in range( coordinate[1], coordinate[1] - self.matrix[coordinate[0]][coordinate[1]].shipType, -1 ):
-                if  self.matrix[coordinate[0]][coordinate[x]].shipType == True:
-                    return True
-                else:
-                    return False
+                if  self.matrix[coordinate[0]][coordinate[x]].shipHit == True:
+                    check += 1
+                    
+        elif self.matrix[coordinate[0]][coordinate[1]].rotated == False:
+            for y in range( coordinate[0], coordinate[0] + self.matrix[coordinate[0]][coordinate[1]].shipType ):
+                if  self.matrix[y][coordinate[1]].shipHit == True:
+                    check += 1
+                if self.matrix[y][coordinate[1]].tail == True:
+                    break
+            for y in range( coordinate[0], coordinate[0] - self.matrix[coordinate[0]][coordinate[1]].shipType, -1 ):
+                if  self.matrix[y][coordinate[1]].shipHit == True:
+                    check += 1
+                if self.matrix[y][coordinate[1]].head == True:
+                    break            
+                    
+        elif self.matrix[coordinate[0]][coordinate[1]].rotated == True:
+            for x in range( coordinate[1], coordinate[1] + self.matrix[coordinate[0]][coordinate[1]].shipType ):
+                if  self.matrix[coordinate[0]][coordinate[x]].shipHit == True:
+                    check += 1
+                if self.matrix[y][coordinate[1]].head == True:
+                    break
+            for x in range( coordinate[1], coordinate[1] - self.matrix[coordinate[0]][coordinate[1]].shipType, -1 ):
+                if  self.matrix[coordinate[0]][coordinate[x]].shipHit == True:
+                    check += 1
+                if self.matrix[y][coordinate[1]].head == True:
+                    break      
+                              
+        if check == self.matrix[coordinate[0][coordinate[1]].shipType]:
+            return True
+        return False
