@@ -110,7 +110,6 @@ class Player( QObject ):
         y1 = i1 // self.fieldSize
         x1 = i1 % self.fieldSize
         yx = [y1, x1]
-#        print( xy )
         return yx
         
     def computerKI( self ):
@@ -170,11 +169,12 @@ class Player( QObject ):
             else:
                 self.cros = 2
                 self.mouse = 0
+                var = y + 1 + self.mouse  
 #                self.hitlastround = False
 #                self.cros = 0
 
                 #Move down
-                var = y + 1 + self.mouse   
+ 
             if  var < self.fieldSize and self.cros == 2:
                 if self.gameField.matrix[var][x ].fired == False:
                     self.gameField.matrix[var][x].fired = True
@@ -207,25 +207,6 @@ class Player( QObject ):
                 self.hitlastround = False
                 self.mouse = 0
                 self.cros = 0
-#                    
-#        else:
-#            self.coordinates = self.YXcoordinates()
-#            while self.gameField.matrix[self.coordinates[0]][self.coordinates[1]].fired == True:
-#                self.coordinates = self.YXcoordinates() 
-#            self.gameField.matrix[self.coordinates[0]][self.coordinates[1]].fired = True
-#            
-#            if self.gameField.matrix[self.coordinates[0]][self.coordinates[1]].placeFull == True:
-#                self.gameField.matrix[self.coordinates[0]][self.coordinates[1]].shipHit == True
-#                self.hitlastround = True
-#                
-#                boolvarKi = self.gameField.IsShipDestroyed( self.coordinates )
-#                if boolvarKi == True:
-#                    self.ShipLeft -= 1
-#                    self.hitlastround = False
-#            else:
-#
-#                self.gameField.matrix[self.coordinates[0]][self.coordinates[1]].missed == True
-#                self.hitlastround = False
           
         print( "shipleft", self.ShipLeft )  
         self.movement += 1
