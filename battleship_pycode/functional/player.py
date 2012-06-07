@@ -54,16 +54,16 @@ class Player( QObject ):
             self.ShipLeft = 12 
         elif self.fieldSize == 10:
             bigship = 2
-            mediumship = 1
+            mediumship = 2
             smallship = 1
             extrasmallship = 2   
-            self.ShipLeft = 6    
+            self.ShipLeft = 7    
         elif self.fieldSize == 5:
-            bigship = 1
+            bigship = 2
             mediumship = 1
             smallship = 0
-            extrasmallship = 1 
-            self.ShipLeft = 3     
+            extrasmallship = 4
+            self.ShipLeft = 7    
         else :
             bigship = 1
             mediumship = 1
@@ -112,6 +112,7 @@ class Player( QObject ):
         var = 0
 #       Move randomly
         if self.hitlastround == False:
+#        if True:
             self.coordinates = self.YXcoordinates()
             x = self.coordinates[1]
             y = self.coordinates[0]
@@ -130,6 +131,7 @@ class Player( QObject ):
                     self.hitlastround = False
             else: 
                 self.gameField.matrix[y][x].missed = True
+
 #       Move right
         elif self.hitlastround == True:
             x = self.coordinates[1]
