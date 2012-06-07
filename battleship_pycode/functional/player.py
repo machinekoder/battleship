@@ -140,11 +140,11 @@ class Player( QObject ):
                 var = x + 1 + self.mouse
                 if var < self.fieldSize:
                     if  self.gameField.matrix[y][var].fired == False:
-                        self.mouse += 1
                         self.movement += 1
                         self.gameField.matrix[y][var].fired = True
                         if self.gameField.matrix[y][var].placeFull == True:
                             self.gameField.matrix[y][var].shipHit = True
+                            self.movement += 1
                             coordinatesnew = [y, var]
                             boolvarKi = self.gameField.IsShipDestroyed( coordinatesnew )
                             if boolvarKi == True:
@@ -166,12 +166,12 @@ class Player( QObject ):
                 var = x - 1 - self.mouse
                 if var >= 0:
                     if self.gameField.matrix[y][var].fired == False:
-                        self.mouse += 1
                         self.movement += 1
                         self.gameField.matrix[y][var].fired = True   
                         if self.gameField.matrix[y][var].placeFull == True:
                             self.gameField.matrix[y][var].shipHit = True
                             coordinatesnew = [y, var]
+                            self.mouse += 1
                             boolvarKi = self.gameField.IsShipDestroyed( coordinatesnew )
                             if boolvarKi == True:
                                 self.ShipLeft -= 1 
@@ -195,11 +195,11 @@ class Player( QObject ):
                 var = y + 1 + self.mouse 
                 if var < self.fieldSize:
                     if self.gameField.matrix[var][x ].fired == False:
-                        self.mouse += 1
                         self.movement += 1
                         self.gameField.matrix[var][x].fired = True
                         if self.gameField.matrix[var][x ].placeFull == True:
                             self.gameField.matrix[var][x].shipHit = True
+                            self.mouse += 1
                             coordinatesnew = [var, x]
                             boolvarKi = self.gameField.IsShipDestroyed( coordinatesnew )
                             if boolvarKi == True:
@@ -221,9 +221,9 @@ class Player( QObject ):
                     if self.gameField.matrix[var][x ].fired == False:
                         self.gameField.matrix[var][x].fired = True
                         self.movement += 1
-                        self.mouse += 1
                         if self.gameField.matrix[var][x ].placeFull == True:
                             self.gameField.matrix[var][x ].shipHit = True
+                            self.mouse += 1
                             coordinatesnew = [var, x]
                             boolvarKi = self.gameField.IsShipDestroyed( coordinatesnew )
                             if boolvarKi == True:
