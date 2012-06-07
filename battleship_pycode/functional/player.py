@@ -147,6 +147,8 @@ class Player( QObject ):
                         if boolvarKi == True:
                             self.ShipLeft -= 1
                             self.hitlastround = False 
+                    self.hitlastround = False
+                self.mouse += 1
                 
             else:
                 self.cros = 1
@@ -165,6 +167,8 @@ class Player( QObject ):
                         if boolvarKi == True:
                             self.ShipLeft -= 1 
                             self.hitlastround = False
+                    self.hitlastround = False
+                self.mouse += 1
             else:
                 self.cros = 2
                 self.mouse = 0
@@ -184,6 +188,8 @@ class Player( QObject ):
                         if boolvarKi == True:
                             self.ShipLeft -= 1
                             self.hitlastround = False
+                    self.hitlastround = False
+                self.mouse += 1
             else:
 #                self.hitlastround = False
                 self.cros = 3
@@ -201,6 +207,9 @@ class Player( QObject ):
                         if boolvarKi == True:
                             self.ShipLeft -= 1    
                             self.hitlastround = False
+                    self.hitlastround = False
+                self.mouse += 1
+                     
             else:
                 self.hitlastround = False
                 self.mouse = 0
