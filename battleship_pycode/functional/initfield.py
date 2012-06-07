@@ -97,7 +97,10 @@ class GameField( QObject ):
         shipSize = self.matrix[basePoint.y()][basePoint.x()].shipType
         tmpX = basePoint.x()
         tmpY = basePoint.y()
+        print( "temp", tmpX )
+        print( "temp", tmpY )
         headFound = False
+        
         headPoint = QPoint()
         while not headFound:
            headFound = self.matrix[tmpY][tmpX].head
