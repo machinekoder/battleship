@@ -66,7 +66,7 @@ class GameField( QObject ):
             if y + shipSize < self.height :
                boolvar = True
                for i in range( y , y + shipSize ):
-                  if self.matrix[i][x].shipType == True:
+                  if self.matrix[i][x].placeFull == True:
                      boolvar = False
                      break
                            
@@ -91,9 +91,8 @@ class GameField( QObject ):
     
     def IsShipDestroyed( self, coordinate = 0 ):
         print( "Koordinate", coordinate )
-        basePoint = QPoint(coordinate[1],coordinate[0])
-        
-        #search the head of the ship
+        basePoint = QPoint( coordinate[1], coordinate[0] )
+
         rotated = self.matrix[basePoint.y()][basePoint.x()].rotated
         shipSize = self.matrix[basePoint.y()][basePoint.x()].shipType
         tmpX = basePoint.x()
@@ -103,7 +102,7 @@ class GameField( QObject ):
         while not headFound:
            headFound = self.matrix[tmpY][tmpX].head
            if headFound:
-              headPoint = QPoint(tmpX,tmpY)
+              headPoint = QPoint( tmpX, tmpY )
            if rotated:
               tmpX -= 1
            else:
@@ -111,16 +110,16 @@ class GameField( QObject ):
               
         check = True
         if rotated:
-           for x in range(headPoint.x(),headPoint.x() + shipSize):
+           for x in range( headPoint.x(), headPoint.x() + shipSize ):
               if not self.matrix[headPoint.y()][x].shipHit:
                  check = False
                  break
         else:
-           for y in range(headPoint.y(),headPoint.y() + shipSize):
+           for y in range( headPoint.y(), headPoint.y() + shipSize ):
               if not self.matrix[y][headPoint.x()].shipHit:
                  check = False
                  break
               
-        print(headPoint, check)
+        print( headPoint, check )
         
         return check
