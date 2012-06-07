@@ -62,10 +62,10 @@ class Player( QObject ):
             extrasmallship = 2   
             self.ShipLeft = 6    
         elif self.fieldSize == 5:
-            bigship = 0
-            mediumship = 0
-            smallship = 1
-            extrasmallship = 2 
+            bigship = 1
+            mediumship = 1
+            smallship = 0
+            extrasmallship = 1 
             self.ShipLeft = 3     
         else :
             bigship = 1
@@ -144,21 +144,26 @@ class Player( QObject ):
                         self.gameField.matrix[y][var].fired = True
                         if self.gameField.matrix[y][var].placeFull == True:
                             self.gameField.matrix[y][var].shipHit = True
-                            self.movement += 1
+                            self.mouse += 1
                             coordinatesnew = [y, var]
                             boolvarKi = self.gameField.IsShipDestroyed( coordinatesnew )
                             if boolvarKi == True:
                                 self.ShipLeft -= 1
-                                self.hitlastround = False 
+                                self.hitlastround = False
+                                self.mouse = 0
+                                self.cros = 0 
                         else:
                             self.cros = 1
                             self.mouse = 0
+                            return 0
                     else:
                         self.cros = 1
                         self.mouse = 0
+                        return 0
                 else:
                     self.cros = 1
                     self.mouse = 0
+                    return 0
 #                self.hitlastround = False
 
                 # move left
@@ -176,15 +181,20 @@ class Player( QObject ):
                             if boolvarKi == True:
                                 self.ShipLeft -= 1 
                                 self.hitlastround = False
+                                self.mouse = 0
+                                self.cros = 0 
                         else:
                             self.cros = 2
                             self.mouse = 0
+                            return 0
                     else:
                         self.cros = 2
                         self.mouse = 0
+                        return 0
                 else:
                     self.cros = 2
                     self.mouse = 0
+                    return 0
                 
      
 #                self.hitlastround = False
@@ -205,15 +215,20 @@ class Player( QObject ):
                             if boolvarKi == True:
                                 self.ShipLeft -= 1
                                 self.hitlastround = False
+                                self.cros = 0
+                                self.mouse = 0
                         else:
                             self.cros = 3
                             self.mouse = 0
+                            return 0
                     else:
                         self.cros = 3
                         self.mouse = 0
+                        return 0
                 else:
                     self.cros = 3
                     self.mouse = 0
+                    return 0
         #move up
             if self.cros == 3:
                 var = y - 1 - self.mouse
@@ -229,10 +244,13 @@ class Player( QObject ):
                             if boolvarKi == True:
                                 self.ShipLeft -= 1    
                                 self.hitlastround = False
+                                self.mouse = 0
+                                self.cros = 0
                         else:
                             self.mouse = 0
                             self.cros = 0
                             self.hitlastround = False
+                            
                     else:
                         self.mouse = 0
                         self.cros = 0
