@@ -90,15 +90,15 @@ class GameField( QObject ):
         return boolvar
     
     def IsShipDestroyed( self, coordinate = 0 ):
-        print( "Koordinate", coordinate )
+#        print( "Koordinate", coordinate )
         basePoint = QPoint( coordinate[1], coordinate[0] )
 
         rotated = self.matrix[basePoint.y()][basePoint.x()].rotated
         shipSize = self.matrix[basePoint.y()][basePoint.x()].shipType
         tmpX = basePoint.x()
         tmpY = basePoint.y()
-        print( "temp", tmpX )
-        print( "temp", tmpY )
+#        print( "temp", tmpX )
+#        print( "temp", tmpY )
         headFound = False
         
         headPoint = QPoint()
@@ -123,6 +123,6 @@ class GameField( QObject ):
                  check = False
                  break
               
-        print( headPoint, check )
+#        print( headPoint, check )
         
         return check

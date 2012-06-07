@@ -38,23 +38,20 @@ class Player( QObject ):
         smallship = 0
         extrasmallship = 0
         shipSize_com = 0
-#        coordinates = []
-#        rotateship = False
-        x1 = 0
-        y1 = 0
+
         #standard ship size is 5
         if self.fieldSize == 20:
-            bigship = 3
-            mediumship = 3
-            smallship = 3
-            extrasmallship = 3
-            self.ShipLeft = 12
+            bigship = 10
+            mediumship = 5
+            smallship = 6
+            extrasmallship = 4
+            self.ShipLeft = 25
         elif self.fieldSize == 16:
             bigship = 3
             mediumship = 3
-            smallship = 2
-            extrasmallship = 2  
-            self.ShipLeft = 10 
+            smallship = 3
+            extrasmallship = 3  
+            self.ShipLeft = 12 
         elif self.fieldSize == 10:
             bigship = 2
             mediumship = 1
@@ -113,6 +110,7 @@ class Player( QObject ):
         
     def computerKI( self ):
         var = 0
+#       Move randomly
         if self.hitlastround == False:
             self.coordinates = self.YXcoordinates()
             x = self.coordinates[1]
@@ -130,9 +128,9 @@ class Player( QObject ):
                 if boolvarKI == True:
                     self.ShipLeft -= 1
                     self.hitlastround = False
-            
-            self.gameField.matrix[y][x].missed = True
-##        move right
+            else: 
+                self.gameField.matrix[y][x].missed = True
+#       Move right
         elif self.hitlastround == True:
             x = self.coordinates[1]
             y = self.coordinates[0]
@@ -155,6 +153,7 @@ class Player( QObject ):
                         else:
                             self.cros = 1
                             self.mouse = 0
+                            self.gameField.matrix[y][x].missed = True                            
                             return 0
                     else:
                         self.cros = 1
@@ -166,7 +165,7 @@ class Player( QObject ):
                     return 0
 #                self.hitlastround = False
 
-                # move left
+             # move left
             if  self.cros == 1:
                 var = x - 1 - self.mouse
                 if var >= 0:
@@ -186,6 +185,7 @@ class Player( QObject ):
                         else:
                             self.cros = 2
                             self.mouse = 0
+                            self.gameField.matrix[y][x].missed = True
                             return 0
                     else:
                         self.cros = 2
@@ -220,6 +220,7 @@ class Player( QObject ):
                         else:
                             self.cros = 3
                             self.mouse = 0
+                            self.gameField.matrix[y][x].missed = True
                             return 0
                     else:
                         self.cros = 3
@@ -250,6 +251,7 @@ class Player( QObject ):
                             self.mouse = 0
                             self.cros = 0
                             self.hitlastround = False
+                            self.gameField.matrix[y][x].missed = True
                             
                     else:
                         self.mouse = 0
@@ -260,18 +262,16 @@ class Player( QObject ):
                     self.mouse = 0
                     self.cros = 0
                    
-          
-        print( "shipleft", self.ShipLeft )  
+#          
+#        print( "shipleft", self.ShipLeft )  
 
         if self.ShipLeft == 0 :
-            print( "Computer won after", self.movement )
+            print( "Computer won after", self.movement, "tries" )
             return True
-        else:
-#            print( "schleife" )
-#            print( "movefurther:" , self.movefurther )
-            print( "hitlastround: ", self.hitlastround )
-            print( "cros        :", self.cros )
-            print( "fieldsize        :", self.fieldSize )
-            print( "mouse        :", self.mouse )
+#        else:
+#            print( "hitlastround: ", self.hitlastround )
+#            print( "cros        :", self.cros )
+#            print( "fieldsize        :", self.fieldSize )
+#            print( "mouse        :", self.mouse )
             
             
