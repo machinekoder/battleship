@@ -126,7 +126,7 @@ class Player( QObject ):
                         else:
                             self.cros = 1
                             self.mouse = 0
-                            self.gameField.matrix[y][x].missed = True                            
+                            self.gameField.matrix[y][var].missed = True                            
                             return 0
                     else:
                         self.cros = 1
@@ -158,7 +158,7 @@ class Player( QObject ):
                         else:
                             self.cros = 2
                             self.mouse = 0
-                            self.gameField.matrix[y][x].missed = True
+                            self.gameField.matrix[y][var].missed = True
                             return 0
                     else:
                         self.cros = 2
@@ -193,7 +193,7 @@ class Player( QObject ):
                         else:
                             self.cros = 3
                             self.mouse = 0
-                            self.gameField.matrix[y][x].missed = True
+                            self.gameField.matrix[var][x].missed = True
                             return 0
                     else:
                         self.cros = 3
@@ -224,7 +224,7 @@ class Player( QObject ):
                             self.mouse = 0
                             self.cros = 0
                             self.hitlastround = False
-                            self.gameField.matrix[y][x].missed = True
+                            self.gameField.matrix[var][x].missed = True
                             
                     else:
                         self.mouse = 0
