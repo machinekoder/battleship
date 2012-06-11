@@ -5,6 +5,9 @@ Rectangle {
     property string labelText: "Test:"
     property int textSize: 13
     property string text: input.text
+    property bool unedited: true
+
+    signal clicked
 
     id: main
     width: 200
@@ -25,6 +28,7 @@ Rectangle {
         font.family: fontFamily
         color: textColor
     }
+
 
     Rectangle {
         id: rect1
@@ -50,4 +54,18 @@ Rectangle {
             }
     }
 
+
+    MouseArea {
+        id: mouse_area1
+        anchors.fill: parent
+        onClicked: {
+            main.clicked()
+            input.focus = true
+        }
+    }
+
+    function setText(text)
+    {
+        input.text = text
+    }
 }
