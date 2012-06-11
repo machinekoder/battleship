@@ -101,14 +101,6 @@ Rectangle {
 
     }
 
-
-
-
-
-
-
-
-
     Rectangle {
         id: bottomInterface
         width: parent.width
@@ -148,6 +140,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 fontFamily: main.fontFamily
                 anchors.right: musicMuteButton.left
+                visible: gameField.placeMode
                 onClicked: {
                     gameField.rotateShip()
                 }
@@ -238,6 +231,14 @@ Rectangle {
                     id: playerNameEdit
                     width: parent.width
                     labelText: "Nickname:"
+                    onClicked: {
+                        console.log(text)
+                        if (unedited)
+                        {
+                            setText("")
+                            unedited = false
+                        }
+                    }
                 }
 
         }

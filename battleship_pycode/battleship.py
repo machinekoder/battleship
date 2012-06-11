@@ -104,16 +104,15 @@ class BattleShip( QObject ):
 #        player2.XYcordinates()
         self.player1 = Player( self.battleShipUi.property( "playerName" ), "blue", gameSize )
         self.player2 = Player( "Computer", "red", gameSize )
-
-        self.player2.ships()
-        self.player2.computerPlaceShip()
-          
-        self.syncField( self.player2 )
+        
+        self.player1.human = False
+        self.player2.human = False
 
         # start the ship placement
         self.state = GameStates.ShipPlacementState
         self.player1ShipPlacement()
         self.player2ShipPlacement()
+        self.player1Turn()
 
         #while True:
 #       #     self.syncField( player2 )
@@ -140,14 +139,20 @@ class BattleShip( QObject ):
          pass
        
     def player1ShipPlacement( self ):
-      self.currentShip = 3
-      self.battleShipUi.startShipPlacement( self.currentShip, "blue" )
-      self.battleShipUi.outputOSD( "Place your fleet" )
+      if self.player1.human:
+        self.currentShip = 3
+        self.battleShipUi.startShipPlacement( self.currentShip, "blue" )
+        self.battleShipUi.outputOSD( "Place your fleet" )
+      else:
+        self.player1.computerPlaceShip()
       
     def player2ShipPlacement( self ):
-      self.currentShip = 3
-      self.battleShipUi.startShipPlacement( self.currentShip, "red" )
-      self.battleShipUi.outputOSD( "Place your fleet" )
+      if self.player2.human:
+        self.currentShip = 3
+        self.battleShipUi.startShipPlacement( self.currentShip, "red" )
+        self.battleShipUi.outputOSD( "Place your fleet" )
+      else:
+        self.player2.computerPlaceShip()
     
     @pyqtSlot()
     def player1Turn( self ):
@@ -157,29 +162,41 @@ class BattleShip( QObject ):
       self.syncField( self.player2 )
       
       self.state = GameStates.Player1State
-      if not destroyed:
+      if self.player2.ShipLeft != 0:
         # thinking...
         timer = QTimer(self)
         timer.setInterval(200)
         timer.setSingleShot(True)
         timer.timeout.connect(self.player2Turn)
         timer.start()
+      else:
+        self.gameFinished()
          
     @pyqtSlot()
     def player2Turn( self ):
       self.battleShipUi.outputOSD(self.player2.name + "'s turn")
       #self.battleShipUi.startSelectionMode()
-      destroyed =  self.player2.computerKI()
-      self.syncField( self.player2 )
+      self.player1.computerKI()
+      self.syncField( self.player1 )
       # thinking...
       self.state = GameStates.Player2State
-      if not destroyed:
+      if self.player1.ShipLeft != 0:
          # thinking...
         timer = QTimer(self)
         timer.setInterval(200)
         timer.setSingleShot(True)
         timer.timeout.connect(self.player1Turn)
         timer.start()
+      else:
+        self.gameFinished()
+        
+    def gameFinished( self ):
+      if (self.player1.ShipLeft == 0):
+        self.syncField( self.player1, showAll=True)
+        self.battleShipUi.outputOSD(self.player2.name + " won!")
+      else:
+        self.syncField( self.player2, showAll=True)
+        self.battleShipUi.outputOSD(self.player1.name + " won!")
       
     @pyqtSlot()
     def playOsdSound( self ):
@@ -213,7 +230,7 @@ class BattleShip( QObject ):
       else:
          self.musicOutput.setVolume( 1.0 )
     
-    def syncField( self, player ):
+    def syncField( self, player ,showAll=False):
         self.battleShipUi.clearField()
         print( "player name: ", player.name )
         for y in range( player.fieldSize ):
@@ -224,7 +241,7 @@ class BattleShip( QObject ):
                 #print( "getroffen : ", fieldPart.shipHit )
                 index = y * player.fieldSize + x
                 self.battleShipUi.setHitAndMissed(index,fieldPart.shipHit,fieldPart.missed)
-                if (fieldPart.head == True):
+                if ((showAll == True) and (fieldPart.head == True)):
                     self.battleShipUi.setShip(index,fieldPart.shipType, player.color, fieldPart.rotated )
 
 app = QApplication( sys.argv )
