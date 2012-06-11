@@ -35,10 +35,11 @@ Das mit head hat nicht funktioniert
 
 class GameStates:
   InitState = 0
-  ShipPlacementState = 1
-  Player1State = 2
-  Player2State = 3
-  StatsState = 4
+  Player1ShipPlacementState = 1
+  Player2ShipPlacementState = 2
+  Player1GameState = 3
+  Player2GameState = 4
+  StatsState = 5
   
   
 class BattleShip( QObject ):
@@ -82,6 +83,7 @@ class BattleShip( QObject ):
       self.battleShipUi.buttonSound.connect( self.playButtonSound )
       self.battleShipUi.musicMuteChanged.connect( self.muteMusic )
       self.battleShipUi.shipPlaced.connect( self.shipPlaced )
+      self.battleShipUi.fieldPressed.connect( self.fieldPressed )
       
       # Display the user interface and allow the user to interact with it.
       desktopWidget = QDesktopWidget()
@@ -109,10 +111,10 @@ class BattleShip( QObject ):
         self.player2.human = False
 
         # start the ship placement
-        self.state = GameStates.ShipPlacementState
+        #self.state = GameStates.ShipPlacementState
         self.player1ShipPlacement()
-        self.player2ShipPlacement()
-        self.player1Turn()
+        #self.player2ShipPlacement()
+        #self.player1Turn()
 
         #while True:
 #       #     self.syncField( player2 )
@@ -131,64 +133,86 @@ class BattleShip( QObject ):
       
       # if self.player1.allShipsPlaced():
       self.battleShipUi.stopShipPlacement()
-      self.player1Turn()
+      if self.state == GameStates.Player1ShipPlacementState:
+        self.player2ShipPlacement()
+      else:
+        self.player1Turn()
       
     @pyqtSlot(int)
     def fieldPressed(self,index):
-      if (self.state == GameStates.Player1State):
-         pass
+      print (index)
+      if (self.state == GameStates.Player1GameState):
+        if self.player2.ShipLeft != 0:
+          #place the frekkin ship
+           self.player2Turn()
+        else:
+          self.gameFinished()
+      else:
+        if self.player1.ShipLeft != 0:
+          #place the frekkin ship
+           self.player1Turn()
+        else:
+          self.gameFinished()
        
     def player1ShipPlacement( self ):
+      self.state = GameStates.Player1ShipPlacementState
       if self.player1.human:
         self.currentShip = 3
-        self.battleShipUi.startShipPlacement( self.currentShip, "blue" )
+        self.battleShipUi.startShipPlacement( self.currentShip, self.player1.color )
         self.battleShipUi.outputOSD( "Place your fleet" )
       else:
         self.player1.computerPlaceShip()
+        self.player2ShipPlacement()
       
     def player2ShipPlacement( self ):
+      self.state = GameStates.Player2ShipPlacementState
       if self.player2.human:
         self.currentShip = 3
-        self.battleShipUi.startShipPlacement( self.currentShip, "red" )
+        self.battleShipUi.startShipPlacement( self.currentShip, self.player2.color )
         self.battleShipUi.outputOSD( "Place your fleet" )
       else:
         self.player2.computerPlaceShip()
+        self.player1Turn()
     
     @pyqtSlot()
     def player1Turn( self ):
-      self.battleShipUi.outputOSD(self.player1.name + "'s turn")
-      #self.battleShipUi.startSelectionMode()
-      destroyed = self.player2.computerKI()
+      self.state = GameStates.Player1GameState
       self.syncField( self.player2 )
-      
-      self.state = GameStates.Player1State
-      if self.player2.ShipLeft != 0:
-        # thinking...
-        timer = QTimer(self)
-        timer.setInterval(200)
-        timer.setSingleShot(True)
-        timer.timeout.connect(self.player2Turn)
-        timer.start()
+      self.battleShipUi.outputOSD(self.player1.name + "'s turn")
+      if self.player1.human:
+        self.battleShipUi.startSelectionMode()
       else:
-        self.gameFinished()
+        self.player2.computerKI()
+        self.syncField( self.player2 )
+        if self.player2.ShipLeft != 0:
+          # thinking...
+          timer = QTimer(self)
+          timer.setInterval(200)
+          timer.setSingleShot(True)
+          timer.timeout.connect(self.player2Turn)
+          timer.start()
+        else:
+          self.gameFinished()
          
     @pyqtSlot()
     def player2Turn( self ):
-      self.battleShipUi.outputOSD(self.player2.name + "'s turn")
-      #self.battleShipUi.startSelectionMode()
-      self.player1.computerKI()
+      self.state = GameStates.Player2GameState
       self.syncField( self.player1 )
-      # thinking...
-      self.state = GameStates.Player2State
-      if self.player1.ShipLeft != 0:
-         # thinking...
-        timer = QTimer(self)
-        timer.setInterval(200)
-        timer.setSingleShot(True)
-        timer.timeout.connect(self.player1Turn)
-        timer.start()
+      self.battleShipUi.outputOSD(self.player2.name + "'s turn")
+      if self.player2.human:
+        self.battleShipUi.startSelectionMode()
       else:
-        self.gameFinished()
+        self.player1.computerKI()
+        self.syncField( self.player1 ) 
+        if self.player1.ShipLeft != 0:
+          # thinking...
+          timer = QTimer(self)
+          timer.setInterval(200)
+          timer.setSingleShot(True)
+          timer.timeout.connect(self.player1Turn)
+          timer.start()
+        else:
+          self.gameFinished()
         
     def gameFinished( self ):
       if (self.player1.ShipLeft == 0):
