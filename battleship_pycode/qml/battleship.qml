@@ -13,7 +13,8 @@ Rectangle {
     signal playOsdSound
     signal stopOsdSound
     signal buttonSound
-    signal shipPlaced (int index)
+    signal shipPlaced (int index, int size, bool rotation)
+    signal fieldPressed(int index)
     signal musicMuteChanged (bool muted)
 
     id: main
@@ -131,8 +132,24 @@ Rectangle {
                 textSize: 13
                 fontFamily: main.fontFamily
                 checkable: true
-                onClicked: {
+                sound: false
+                onCheckedChanged:{
                     musicMuteChanged(checked)
+                }
+            }
+
+            Button {
+                id: rotateButton
+                height: parent.height -10
+                text: "Rotate"
+                textColor: main.textColor
+                textSize: 13
+                anchors.rightMargin: 5
+                anchors.verticalCenter: parent.verticalCenter
+                fontFamily: main.fontFamily
+                anchors.right: musicMuteButton.left
+                onClicked: {
+                    gameField.rotateShip()
                 }
             }
         }
@@ -433,6 +450,14 @@ Rectangle {
     function stopShipPlacement()
     {
         gameField.stopShipPlacement()
+    }
+    function startSelectionMode()
+    {
+        gameField.selectionMode = true
+    }
+    function stopSelectionMode()
+    {
+        gameField.selectionMode = false
     }
     function outputOSD(text)
     {

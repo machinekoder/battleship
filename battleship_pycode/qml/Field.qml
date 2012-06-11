@@ -3,6 +3,7 @@ import QtQuick 1.1
 
 Rectangle {
     property bool placeMode: false
+    property bool selectionMode: false
     property int placeShipType: 1
     property string placeShipColor: "red"
     property int currentIndex: 0
@@ -32,7 +33,9 @@ Rectangle {
             anchors.fill: parent
             onClicked: {
                 if (placeMode)
-                    shipPlaced(currentIndex)
+                    shipPlaced(currentIndex, testShip.type, testShip.rotated)
+                else if (selectionMode)
+                    fieldPressed(currentIndex)
             }
             onMouseXChanged: {
                 if (placeMode == true)
@@ -41,7 +44,14 @@ Rectangle {
                     testShip.y = Math.floor(currentIndex / gameSize) * gridView.cellHeight
                     testShip.x = currentIndex % gameSize * gridView.cellWidth
                 }
+                else if (selectionMode == true)
+                {
+                    currentIndex = gridView.indexAt(mouseX,mouseY)
+                    selectionRect.y = Math.floor(currentIndex / gameSize) * gridView.cellHeight
+                    selectionRect.x = currentIndex % gameSize * gridView.cellWidth
+                }
             }
+
         }
 
         Ship {
@@ -51,6 +61,14 @@ Rectangle {
             visible: placeMode
             type: placeShipType
             shipColor: placeShipColor
+        }
+
+        Rectangle {
+            id: selectionRect
+            width: gridView.cellWidth
+            height: gridView.cellHeight
+            color: "#4637fd00"
+            visible: selectionMode
         }
     }
 
@@ -103,5 +121,9 @@ Rectangle {
     function stopShipPlacement()
     {
         placeMode = false
+    }
+    function rotateShip()
+    {
+        testShip.rotated = !testShip.rotated
     }
 }

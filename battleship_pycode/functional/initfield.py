@@ -52,25 +52,25 @@ class GameField( QObject ):
 
     #check if player can place the ship
     def placeShip( self, shipSize = 0, rotate = False , x = 0, y = 0 ):
-        boolvar = False
+        placement = False
 #        print( "x:", x, "y:", y )
         if rotate == True:
-            if x + shipSize < self.width :
-                boolvar = True
+            if x + shipSize <= self.width :
+                placement = True
                 for i in range( x , x + shipSize ):
                     if self.matrix[y][i].placeFull == True:
-                       boolvar = False
+                       placement = False
                        break
                                
         elif rotate == False:
-            if y + shipSize < self.height :
-               boolvar = True
+            if y + shipSize <= self.height :
+               placement = True
                for i in range( y , y + shipSize ):
                   if self.matrix[i][x].placeFull == True:
-                     boolvar = False
+                     placement = False
                      break
                            
-        if boolvar == True:
+        if placement == True:
             if rotate == True :
                 self.matrix[y][x].head = True
                 for x1 in range( x, x + shipSize ):
@@ -87,7 +87,7 @@ class GameField( QObject ):
                     self.matrix[y1][x].rotated = rotate
                 self.matrix[y + shipSize - 1][x ].tail = True
 
-        return boolvar
+        return placement
     
     def IsShipDestroyed( self, coordinate = 0 ):
         print( "Koordinate", coordinate )
@@ -97,8 +97,6 @@ class GameField( QObject ):
         shipSize = self.matrix[basePoint.y()][basePoint.x()].shipType
         tmpX = basePoint.x()
         tmpY = basePoint.y()
-        print( "temp", tmpX )
-        print( "temp", tmpY )
         headFound = False
         
         headPoint = QPoint()

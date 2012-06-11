@@ -16,7 +16,6 @@ from functional.initfield import *
 import math, random
 import sys
 import time
-from numpy.numarray.numerictypes import Int8
 
 class Player( QObject ):
     

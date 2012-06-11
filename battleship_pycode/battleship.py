@@ -36,6 +36,9 @@ Das mit head hat nicht funktioniert
 class GameStates:
   InitState = 0
   ShipPlacementState = 1
+  Player1State = 2
+  Player2State = 3
+  StatsState = 4
   
   
 class BattleShip( QObject ):
@@ -78,6 +81,7 @@ class BattleShip( QObject ):
       self.battleShipUi.stopOsdSound.connect( self.stopOsdSound )
       self.battleShipUi.buttonSound.connect( self.playButtonSound )
       self.battleShipUi.musicMuteChanged.connect( self.muteMusic )
+      self.battleShipUi.shipPlaced.connect( self.shipPlaced )
       
       # Display the user interface and allow the user to interact with it.
       desktopWidget = QDesktopWidget()
@@ -86,14 +90,6 @@ class BattleShip( QObject ):
       self.view.setWindowTitle( "Battleship Galactica" )
       self.view.setGeometry( desktopWidget.width() / 2 - viewWidth / 2, desktopWidget.height() / 2 - viewHeight / 2, viewWidth, viewHeight )
       self.view.show()
-      
-    def testFunction( self ):
-      # get ready to test the ships
-      # self.battleShipUi.setShip( 23, 1, "red", False )
-      # self.battleShipUi.setShip( 3, 2, "blue", False )
-      # self.battleShipUi.setShip( 45, 3, "red", True )
-      # self.battleShipUi.setShip( 70, 4, "blue", True )
-      pass
         
     @pyqtSlot()
     def startGame( self ):
@@ -106,27 +102,85 @@ class BattleShip( QObject ):
 #        player2.fieldsize = gameSize
  
 #        player2.XYcordinates()
-        player1 = Player( self.battleShipUi.property( "playerName" ), "blue", gameSize )
-        player2 = Player( "Computer", "red", gameSize )
+        self.player1 = Player( self.battleShipUi.property( "playerName" ), "blue", gameSize )
+        self.player2 = Player( "Computer", "red", gameSize )
             
-#        player1.gameField.placeShip( shipSize = 3, rotate = True, y = 2, x = 2 )
-        player2.computerPlaceShip()
-#        player2.gameField.matrix
+        self.player2.computerPlaceShip()
 
           
-        self.syncField( player2 )
+        self.syncField( self.player2 )
 
-        
+        # start the ship placement
         self.state = GameStates.ShipPlacementState
-        self.battleShipUi.startShipPlacement( 3, "blue" )
-        self.battleShipUi.outputOSD( "Place your fleet" )
+        self.player1ShipPlacement()
+        self.player2ShipPlacement()
 
-        while True:
-#            self.syncField( player2 )
-            if player2.computerKI() == True:
-                self.syncField( player2 )
-                break
+        #while True:
+#       #     self.syncField( player2 )
+        #    if self.player2.computerKI() == True:
+        #        self.syncField( self.player2 )
+        #        break
             
+    @pyqtSlot(int,int,bool)
+    def shipPlaced(self,index,size,rotation):
+      print("Ship:", index)
+      fieldSize = self.player1.fieldSize
+      x = index % fieldSize
+      y = index // fieldSize
+      self.player1.gameField.placeShip(size,rotation, x , y)
+      self.syncField( self.player1 )
+      
+      # if self.player1.allShipsPlaced():
+      self.battleShipUi.stopShipPlacement()
+      self.player1Turn()
+      
+    @pyqtSlot(int)
+    def fieldPressed(self,index):
+      if (self.state == GameStates.Player1State):
+         pass
+       
+    def player1ShipPlacement( self ):
+      self.currentShip = 3
+      self.battleShipUi.startShipPlacement( self.currentShip, "blue" )
+      self.battleShipUi.outputOSD( "Place your fleet" )
+      
+    def player2ShipPlacement( self ):
+      self.currentShip = 3
+      self.battleShipUi.startShipPlacement( self.currentShip, "red" )
+      self.battleShipUi.outputOSD( "Place your fleet" )
+    
+    @pyqtSlot()
+    def player1Turn( self ):
+      self.battleShipUi.outputOSD(self.player1.name + "'s turn")
+      #self.battleShipUi.startSelectionMode()
+      destroyed = self.player2.computerKI()
+      self.syncField( self.player2 )
+      
+      self.state = GameStates.Player1State
+      if not destroyed:
+        # thinking...
+        timer = QTimer(self)
+        timer.setInterval(200)
+        timer.setSingleShot(True)
+        timer.timeout.connect(self.player2Turn)
+        timer.start()
+         
+    @pyqtSlot()
+    def player2Turn( self ):
+      self.battleShipUi.outputOSD(self.player2.name + "'s turn")
+      #self.battleShipUi.startSelectionMode()
+      destroyed =  self.player2.computerKI()
+      self.syncField( self.player2 )
+      # thinking...
+      self.state = GameStates.Player2State
+      if not destroyed:
+         # thinking...
+        timer = QTimer(self)
+        timer.setInterval(200)
+        timer.setSingleShot(True)
+        timer.timeout.connect(self.player1Turn)
+        timer.start()
+      
     @pyqtSlot()
     def playOsdSound( self ):
       self.osdSound.play()
@@ -157,7 +211,7 @@ class BattleShip( QObject ):
       if mute:
          self.musicOutput.setVolume( 0.0 )
       else:
-         self.musicOutput.setVolume( 0.0 )
+         self.musicOutput.setVolume( 1.0 )
     
     def syncField( self, player ):
         self.battleShipUi.clearField()
@@ -165,9 +219,9 @@ class BattleShip( QObject ):
         for y in range( player.fieldSize ):
             for x in range( player.fieldSize ):
                 fieldPart = player.gameField.matrix[y][x]
-                print( "type      :", fieldPart.shipType )
-                print( "geschossen:", fieldPart.fired )
-                print( "getroffen : ", fieldPart.shipHit )
+                #print( "type      :", fieldPart.shipType )
+                #print( "geschossen:", fieldPart.fired )
+                #print( "getroffen : ", fieldPart.shipHit )
                 index = y * player.fieldSize + x
                 self.battleShipUi.setHitAndMissed(index,fieldPart.shipHit,fieldPart.missed)
                 if (fieldPart.head == True):
@@ -177,8 +231,5 @@ app = QApplication( sys.argv )
 app.setApplicationName( "Battleship Game" )
 
 battleShip = BattleShip()
-
-battleShip.testFunction()
-
         
 app.exec_() 

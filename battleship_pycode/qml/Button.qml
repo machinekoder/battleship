@@ -12,6 +12,7 @@ Rectangle {
     property color textColor: "black"
     property int textSize: 9
     property string fontFamily: ""
+    property bool sound: true
     signal clicked
     signal pressed
     signal released
@@ -33,7 +34,8 @@ Rectangle {
             base.clicked()
             if (checkable)
                 checked = !checked;
-            buttonSound()
+            if (sound)
+                buttonSound()
         }
         onPressed: base.pressed()
         onReleased: base.released()
