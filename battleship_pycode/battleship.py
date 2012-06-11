@@ -20,18 +20,6 @@ import time
 
 print( "Welcome to Battleship Galactica" )
 
-'''
-FIX ME
-
-Alex da jetzt überrall der Schiff Type steht wird auch das  Schiff x-Mal platziert
-ich habe einen neun Typ ins der Klasse FieldPart deklariert,
-mit dem namen Head nach welchen wir uns orientieren können!
-EDIT:
-
-Ich habe jezt eine Variable mit shipTypeGUI Deklariert
-Das mit head hat nicht funktioniert
-:-)
-'''
 
 class GameStates:
   InitState = 0
@@ -121,22 +109,22 @@ class BattleShip( QObject ):
         #        self.syncField( self.player2 )
         #        break
             
-    @pyqtSlot(int,int,bool)
-    def shipPlaced(self,index,size,rotation):
-      print("Ship:", index)
+    @pyqtSlot( int, int, bool )
+    def shipPlaced( self, index, size, rotation ):
+      print( "Ship:", index )
       fieldSize = self.player1.fieldSize
       x = index % fieldSize
       y = index // fieldSize
-      self.player1.gameField.placeShip(size,rotation, x , y)
+      self.player1.gameField.placeShip( size, rotation, x , y )
       self.syncField( self.player1 )
       
       # if self.player1.allShipsPlaced():
       self.battleShipUi.stopShipPlacement()
       self.player1Turn()
       
-    @pyqtSlot(int)
-    def fieldPressed(self,index):
-      if (self.state == GameStates.Player1State):
+    @pyqtSlot( int )
+    def fieldPressed( self, index ):
+      if ( self.state == GameStates.Player1State ):
          pass
        
     def player1ShipPlacement( self ):
@@ -151,7 +139,7 @@ class BattleShip( QObject ):
     
     @pyqtSlot()
     def player1Turn( self ):
-      self.battleShipUi.outputOSD(self.player1.name + "'s turn")
+      self.battleShipUi.outputOSD( self.player1.name + "'s turn" )
       #self.battleShipUi.startSelectionMode()
       destroyed = self.player2.computerKI()
       self.syncField( self.player2 )
@@ -159,26 +147,26 @@ class BattleShip( QObject ):
       self.state = GameStates.Player1State
       if not destroyed:
         # thinking...
-        timer = QTimer(self)
-        timer.setInterval(200)
-        timer.setSingleShot(True)
-        timer.timeout.connect(self.player2Turn)
+        timer = QTimer( self )
+        timer.setInterval( 200 )
+        timer.setSingleShot( True )
+        timer.timeout.connect( self.player2Turn )
         timer.start()
          
     @pyqtSlot()
     def player2Turn( self ):
-      self.battleShipUi.outputOSD(self.player2.name + "'s turn")
+      self.battleShipUi.outputOSD( self.player2.name + "'s turn" )
       #self.battleShipUi.startSelectionMode()
-      destroyed =  self.player2.computerKI()
+      destroyed = self.player2.computerKI()
       self.syncField( self.player2 )
       # thinking...
       self.state = GameStates.Player2State
       if not destroyed:
          # thinking...
-        timer = QTimer(self)
-        timer.setInterval(200)
-        timer.setSingleShot(True)
-        timer.timeout.connect(self.player1Turn)
+        timer = QTimer( self )
+        timer.setInterval( 500 )
+        timer.setSingleShot( True )
+        timer.timeout.connect( self.player1Turn )
         timer.start()
       
     @pyqtSlot()
@@ -203,7 +191,6 @@ class BattleShip( QObject ):
 #           QSound.play( "music/predator_laugh.wav" )
             self.m_sound.enqueue( Phonon.MediaSource( "music/predator_laugh.wav" ) )
             self.m_sound.play()
-        return "Muhahaha"
     
     @pyqtSlot( bool )
     def muteMusic( self, mute ):
@@ -223,9 +210,9 @@ class BattleShip( QObject ):
                 #print( "geschossen:", fieldPart.fired )
                 #print( "getroffen : ", fieldPart.shipHit )
                 index = y * player.fieldSize + x
-                self.battleShipUi.setHitAndMissed(index,fieldPart.shipHit,fieldPart.missed)
-                if (fieldPart.head == True):
-                    self.battleShipUi.setShip(index,fieldPart.shipType, player.color, fieldPart.rotated )
+                self.battleShipUi.setHitAndMissed( index, fieldPart.shipHit, fieldPart.missed )
+                if ( fieldPart.head == True ):
+                    self.battleShipUi.setShip( index, fieldPart.shipType, player.color, fieldPart.rotated )
 
 app = QApplication( sys.argv )
 app.setApplicationName( "Battleship Game" )
