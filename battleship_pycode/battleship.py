@@ -110,6 +110,7 @@ class BattleShip( QObject ):
         player2 = Player( "Computer", "red", gameSize )
             
 #        player1.gameField.placeShip( shipSize = 3, rotate = True, y = 2, x = 2 )
+        player2.ships()
         player2.computerPlaceShip()
 #        player2.gameField.matrix
 
@@ -126,6 +127,7 @@ class BattleShip( QObject ):
             if player2.computerKI() == True:
                 self.syncField( player2 )
                 break
+        player2.statistic()
             
     @pyqtSlot()
     def playOsdSound( self ):
