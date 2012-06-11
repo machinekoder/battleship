@@ -30,75 +30,43 @@ class Player( QObject ):
         self.movement = 0
         self.mouse = 0
         self.cros = 0
+        self.bigship = 0
+        self.mediumship = 0
+        self.smallship = 0
+        self.extrasmallship = 0
+        self.shipSize_com = 0
+        self.human = False
+        
     
     def computerPlaceShip( self ):
-        bigship = 0
-        mediumship = 0
-        smallship = 0
-        extrasmallship = 0
-        shipSize_com = 0
-#        coordinates = []
-#        rotateship = False
-        x1 = 0
-        y1 = 0
-        #standard ship size is 5
-        if self.fieldSize == 20:
-            bigship = 3
-            mediumship = 3
-            smallship = 3
-            extrasmallship = 3
-            self.ShipLeft = 12
-        elif self.fieldSize == 16:
-            bigship = 3
-            mediumship = 3
-            smallship = 2
-            extrasmallship = 2  
-            self.ShipLeft = 10 
-        elif self.fieldSize == 10:
-            bigship = 2
-            mediumship = 1
-            smallship = 1
-            extrasmallship = 2   
-            self.ShipLeft = 6    
-        elif self.fieldSize == 5:
-            bigship = 1
-            mediumship = 1
-            smallship = 0
-            extrasmallship = 1 
-            self.ShipLeft = 3     
-        else :
-            bigship = 1
-            mediumship = 1
-            smallship = 1
-            extrasmallship = 2
-            self.ShipLeft = 5
-        while bigship > 0:
+
+        while self.bigship > 0:
             shipSize_com = 4 
-            rotateship = True if ( bigship % 2 ) == 1 else False
-            bigship -= 1
+            rotateship = True if ( self.bigship % 2 ) == 1 else False
+            self.bigship -= 1
             coordinates = self.YXcoordinates()
 #            print( "coordinates:", coordinates )
             while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = coordinates[ 0 ], x = coordinates[ 1] ):
                 coordinates = self.YXcoordinates()                
-        while mediumship > 0:
+        while self.mediumship > 0:
             shipSize_com = 3
-            rotateship = True if ( mediumship % 2 ) == 1 else False
-            mediumship -= 1
+            rotateship = True if ( self.mediumship % 2 ) == 1 else False
+            self.mediumship -= 1
             coordinates = self.YXcoordinates()
             while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = coordinates[ 0 ], x = coordinates[ 1 ] ):
                 coordinates = self.YXcoordinates()   
-        while smallship > 0:
+        while self.smallship > 0:
             shipSize_com = 2
-            rotateship = True if ( smallship % 2 ) == 1 else False
-            smallship -= 1
+            rotateship = True if ( self.smallship % 2 ) == 1 else False
+            self.smallship -= 1
             coordinates = self.YXcoordinates()
 #            print( "coordinats:", coordinates )
             while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = coordinates[ 0 ], x = coordinates[ 1 ] ):
                 coordinates = self.YXcoordinates()  
-        while extrasmallship > 0:
+        while self.extrasmallship > 0:
             shipSize_com = 1
-            rotateship = True if ( extrasmallship % 2 ) == 1 else False
-            extrasmallship -= 1
+            rotateship = True if ( self.extrasmallship % 2 ) == 1 else False
+            self.extrasmallship -= 1
             coordinates = self.YXcoordinates()
             while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = coordinates[ 0 ], x = coordinates[ 1 ] ):
                 coordinates = self.YXcoordinates()
@@ -112,7 +80,9 @@ class Player( QObject ):
         
     def computerKI( self ):
         var = 0
+#       Move randomly
         if self.hitlastround == False:
+#        if True:
             self.coordinates = self.YXcoordinates()
             x = self.coordinates[1]
             y = self.coordinates[0]
@@ -129,9 +99,10 @@ class Player( QObject ):
                 if boolvarKI == True:
                     self.ShipLeft -= 1
                     self.hitlastround = False
-            
-            self.gameField.matrix[y][x].missed = True
-##        move right
+            else: 
+                self.gameField.matrix[y][x].missed = True
+
+#       Move right
         elif self.hitlastround == True:
             x = self.coordinates[1]
             y = self.coordinates[0]
@@ -154,6 +125,7 @@ class Player( QObject ):
                         else:
                             self.cros = 1
                             self.mouse = 0
+                            self.gameField.matrix[y][var].missed = True                            
                             return 0
                     else:
                         self.cros = 1
@@ -165,7 +137,7 @@ class Player( QObject ):
                     return 0
 #                self.hitlastround = False
 
-                # move left
+             # move left
             if  self.cros == 1:
                 var = x - 1 - self.mouse
                 if var >= 0:
@@ -185,6 +157,7 @@ class Player( QObject ):
                         else:
                             self.cros = 2
                             self.mouse = 0
+                            self.gameField.matrix[y][var].missed = True
                             return 0
                     else:
                         self.cros = 2
@@ -219,6 +192,7 @@ class Player( QObject ):
                         else:
                             self.cros = 3
                             self.mouse = 0
+                            self.gameField.matrix[var][x].missed = True
                             return 0
                     else:
                         self.cros = 3
@@ -249,6 +223,7 @@ class Player( QObject ):
                             self.mouse = 0
                             self.cros = 0
                             self.hitlastround = False
+                            self.gameField.matrix[var][x].missed = True
                             
                     else:
                         self.mouse = 0
@@ -259,18 +234,67 @@ class Player( QObject ):
                     self.mouse = 0
                     self.cros = 0
                    
-          
-        print( "shipleft", self.ShipLeft )  
-
+#          
+#        print( "shipleft", self.ShipLeft )  
         if self.ShipLeft == 0 :
-            print( "Computer won after", self.movement )
+            print( "Computer won after", self.movement, "tries" )
             return True
-        else:
-#            print( "schleife" )
-#            print( "movefurther:" , self.movefurther )
-            print( "hitlastround: ", self.hitlastround )
-            print( "cros        :", self.cros )
-            print( "fieldsize        :", self.fieldSize )
-            print( "mouse        :", self.mouse )
-            
-            
+#        else:
+#            print( "hitlastround: ", self.hitlastround )
+#            print( "cros        :", self.cros )
+#            print( "fieldsize        :", self.fieldSize )
+#            print( "mouse        :", self.mouse )
+    def ships( self ):
+        #standard ship size is 5
+        if self.fieldSize == 20:
+           self.bigship = 10
+           self.mediumship = 5
+           self.smallship = 6
+           self.extrasmallship = 4
+           self.ShipLeft = 25
+        elif self.fieldSize == 16:
+           self.bigship = 3
+           self.mediumship = 3
+           self.smallship = 3
+           self.extrasmallship = 3  
+           self.ShipLeft = 12 
+        elif self.fieldSize == 10:
+           self.bigship = 2
+           self.mediumship = 2
+           self.smallship = 1
+           self.extrasmallship = 2   
+           self.ShipLeft = 7    
+        elif self.fieldSize == 5:
+           self.bigship = 0
+           self.mediumship = 2
+           self.smallship = 0
+           self.extrasmallship = 2
+           self.ShipLeft = 4   
+        else :
+           self.bigship = 1
+           self.mediumship = 1
+           self.smallship = 1
+           self.extrasmallship = 2
+           self.ShipLeft = 5 
+                      
+    def statistic( self ):  
+        bigship_left = self.bigship
+        mediumship_left = self.mediumship
+        smallship_left = self.smallship
+        extrasmallship_left = self.extrasmallship
+        self.ships()
+        shipparts = 0
+        shipparts_destroyed = 0
+        fields = 0
+        for y in range( self.fieldSize ):
+            for x in range( self.fieldSize ):
+                fields += 1
+                if self.gameField.matrix[y][x].shipType > 0:
+                    shipparts += 1
+                if self.gameField.matrix[y][x].shipHit == True:
+                    shipparts_destroyed += 1
+        percentdestr = ( shipparts_destroyed * 100 ) // shipparts
+        print( "Percentage destroyed:", percentdestr )    
+#        print( self.bigship )
+#        print( self.smallship )
+                   

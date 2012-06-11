@@ -23,7 +23,6 @@ class FieldPart( QObject ):
     QObject.__init__( self )
     self.shipType = 0
     self.shipHit = False
-    self.hit = False
     self.placeFull = False
     self.missed = False
     self.rotated = False
@@ -90,7 +89,7 @@ class GameField( QObject ):
         return placement
     
     def IsShipDestroyed( self, coordinate = 0 ):
-        print( "Koordinate", coordinate )
+#        print( "Koordinate", coordinate )
         basePoint = QPoint( coordinate[1], coordinate[0] )
 
         rotated = self.matrix[basePoint.y()][basePoint.x()].rotated
@@ -121,6 +120,6 @@ class GameField( QObject ):
                  check = False
                  break
               
-        print( headPoint, check )
+#        print( headPoint, check )
         
         return check

@@ -104,9 +104,9 @@ class BattleShip( QObject ):
 #        player2.XYcordinates()
         self.player1 = Player( self.battleShipUi.property( "playerName" ), "blue", gameSize )
         self.player2 = Player( "Computer", "red", gameSize )
-            
-        self.player2.computerPlaceShip()
 
+        self.player2.ships()
+        self.player2.computerPlaceShip()
           
         self.syncField( self.player2 )
 
