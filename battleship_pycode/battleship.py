@@ -95,7 +95,7 @@ class BattleShip( QObject ):
         self.player1 = Player( self.battleShipUi.property( "playerName" ), "blue", gameSize )
         self.player2 = Player( "Computer", "red", gameSize )
         
-        self.player1.human = False
+        self.player1.human = True
         self.player2.human = False
 
         # start the ship placement
@@ -110,6 +110,7 @@ class BattleShip( QObject ):
         #        self.syncField( self.player2 )
         #        break
             
+<<<<<<< HEAD
     @pyqtSlot( int, int, bool )
     def shipPlaced( self, index, size, rotation ):
       print( "Ship:", index )
@@ -118,33 +119,73 @@ class BattleShip( QObject ):
       y = index // fieldSize
       self.player1.gameField.placeShip( size, rotation, x , y )
       self.syncField( self.player1 )
+=======
+    @pyqtSlot(int,int,bool)
+    def shipPlaced(self,index,size,rotation):
+      print("Ship:", index)
+>>>>>>> d15267659e10b821af634d772d1358b0d8602fec
+      
+      if self.state == GameStates.Player1ShipPlacementState:
+        fieldSize = self.player1.fieldSize
+        x = index % fieldSize
+        y = index // fieldSize
+        ret = self.player1.gameField.placeShip(size,rotation, x , y)
+        self.syncField( self.player1 )
+        if ret == True:
+          if self.currentShip == 1:
+            self.player1.extrasmallship -= 1
+            if self.player1.extrasmallship == 0:
+              self.currentShip == 2
+          elif self.currentShip == 2:
+            self.player1.smallship -= 1
+            if self.player1.smallship == 0:
+              self.currentShip == 3
+          elif self.currentShip == 3:
+            self.player1.mediumship -= 1
+            if self.player1.mediumship == 0:
+              self.currentShip == 4
+          elif self.currentShip == 4:
+            self.player1.bigship -= 1
+            if self.player1.bigship == 0:
+              self.battleShipUi.stopShipPlacement()
+              self.player2ShipPlacement()
+              return
+          
+          self.battleShipUi.startShipPlacement( self.currentShip, self.player1.color )
       
       # if self.player1.allShipsPlaced():
-      self.battleShipUi.stopShipPlacement()
-      if self.state == GameStates.Player1ShipPlacementState:
-        self.player2ShipPlacement()
-      else:
-        self.player1Turn()
+      #self.battleShipUi.stopShipPlacement()
+      #if self.state == GameStates.Player1ShipPlacementState:
+      #  self.player2ShipPlacement()
+      #else:
+      #  self.player1Turn()
       
+<<<<<<< HEAD
     @pyqtSlot( int )
     def fieldPressed( self, index ):
       print ( index )
       if ( self.state == GameStates.Player1GameState ):
+=======
+    @pyqtSlot(int)
+    def fieldPressed(self,index):
+      print (index)
+      if ((self.player1.human) and (self.state == GameStates.Player1GameState)):
+>>>>>>> d15267659e10b821af634d772d1358b0d8602fec
         if self.player2.ShipLeft != 0:
-          #place the frekkin ship
+          #destroy the frekkin ship
            self.player2Turn()
         else:
           self.gameFinished()
-      else:
+      elif ((self.player2.human) and (self.state == GameStates.Player2GameState)):
         if self.player1.ShipLeft != 0:
-          #place the frekkin ship
+          #destroy the frekkin ship
            self.player1Turn()
         else:
           self.gameFinished()       
     def player1ShipPlacement( self ):
       self.state = GameStates.Player1ShipPlacementState
       if self.player1.human:
-        self.currentShip = 3
+        self.currentShip = 1
         self.battleShipUi.startShipPlacement( self.currentShip, self.player1.color )
         self.battleShipUi.outputOSD( "Place your fleet" )
       else:
@@ -154,7 +195,7 @@ class BattleShip( QObject ):
     def player2ShipPlacement( self ):
       self.state = GameStates.Player2ShipPlacementState
       if self.player2.human:
-        self.currentShip = 3
+        self.currentShip = 1
         self.battleShipUi.startShipPlacement( self.currentShip, self.player2.color )
         self.battleShipUi.outputOSD( "Place your fleet" )
       else:
