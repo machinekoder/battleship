@@ -306,9 +306,10 @@ class Player( QObject ):
                 if self.gameField.matrix[y][x].shipHit == True:
                     shipparts_destroyed += 1
         percentdestr = ( shipparts_destroyed * 100 ) // shipparts
-
         
-        print( "Percentage destroyed:", percentdestr )    
+        
+        print( "Percentage destroyed:", percentdestr ) 
+        print( "Ships destroyed", "-"*50 )   
 #        print( self.bigship )
 #        print( self.smallship )
                    

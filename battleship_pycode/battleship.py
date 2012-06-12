@@ -171,7 +171,7 @@ class BattleShip( QObject ):
       if self.player1.ShipLeft != 0:
          # thinking...
         timer = QTimer( self )
-        timer.setInterval( 500 )
+        timer.setInterval( 200 )
         timer.setSingleShot( True )
         timer.timeout.connect( self.player1Turn )
         timer.start()
@@ -185,6 +185,8 @@ class BattleShip( QObject ):
       else:
         self.syncField( self.player2, showAll = True )
         self.battleShipUi.outputOSD( self.player1.name + " won!" )
+      self.player1.statistic()
+      self.player2.statistic()
       
     @pyqtSlot()
     def playOsdSound( self ):
@@ -229,7 +231,7 @@ class BattleShip( QObject ):
                 index = y * player.fieldSize + x
 
                 self.battleShipUi.setHitAndMissed( index, fieldPart.shipHit, fieldPart.missed )
-                if ( fieldPart.head == True ):
+                if ( ( showAll == True ) and ( fieldPart.head == True ) ):
                     self.battleShipUi.setShip( index, fieldPart.shipType, player.color, fieldPart.rotated )
 
 app = QApplication( sys.argv )
