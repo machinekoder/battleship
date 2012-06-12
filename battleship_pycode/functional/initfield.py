@@ -111,10 +111,7 @@ class GameField( QObject ):
               tmpY -= 1
               
         if callfunktion == 1:
-            if rotated:
-                return headPoint.x()
-            else:
-                return headPoint.y()
+            return headPoint
               
         check = True
         if rotated:

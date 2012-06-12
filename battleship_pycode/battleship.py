@@ -308,7 +308,7 @@ class BattleShip( QObject ):
     
     def syncField( self, player , showAll = False ):
         self.battleShipUi.clearField()
-        print( "player name: ", player.name )
+#        print( "player name: ", player.name )
         for y in range( player.fieldSize ):
             for x in range( player.fieldSize ):
                 fieldPart = player.gameField.matrix[y][x]
