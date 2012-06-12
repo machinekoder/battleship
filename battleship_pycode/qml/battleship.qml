@@ -324,6 +324,25 @@ Rectangle {
                 }
             }
         }
+
+        Rectangle {
+            id: statsRect
+            color: "#00000000"
+            anchors.fill: parent
+
+            Text {
+                id: gameTitle1
+                color: "#ffffff"
+                text: qsTr("Game Stats")
+                anchors.top: parent.top
+                anchors.topMargin: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                style: Text.Raised
+                font.family: fontFamily
+                font.pointSize: 22
+                horizontalAlignment: Text.AlignHCenter
+            }
+        }
     }
 
     states: [
@@ -346,6 +365,11 @@ Rectangle {
 
             PropertyChanges {
                 target: difficultyRect
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: statsRect
                 opacity: 0
             }
         },
@@ -380,6 +404,11 @@ Rectangle {
                 target: difficultyRect
                 opacity: 0
             }
+
+            PropertyChanges {
+                target: statsRect
+                opacity: 0
+            }
         },
         State {
             name: "storyState"
@@ -403,6 +432,11 @@ Rectangle {
                 target: continueToGameButton
                 anchors.bottomMargin: 20
             }
+
+            PropertyChanges {
+                target: statsRect
+                opacity: 0
+            }
         },
         State {
             name: "difficultyState"
@@ -419,6 +453,34 @@ Rectangle {
 
             PropertyChanges {
                 target: storyRect
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: statsRect
+                opacity: 0
+            }
+        },
+        State {
+            name: "statsState"
+
+            PropertyChanges {
+                target: storyRect
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: startRect
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: gameField
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: difficultyRect
                 opacity: 0
             }
         }
