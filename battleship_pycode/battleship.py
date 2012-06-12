@@ -47,8 +47,10 @@ class BattleShip( QObject ):
       
       self.osdSound = pygame.mixer.Sound("music/osd_text.wav" )  #load sound
       self.buttonSound = pygame.mixer.Sound("music/button.wav" )
-      self.explosionSound = pygame.mixer.Sound("music/inderno_largex.wav" )
-      self.lazerSound = pygame.mixer.Sound("music/lazer.wav" )
+      self.smallExplosionSound = pygame.mixer.Sound("music/small_explosion.wav" )
+      self.lazerSound = pygame.mixer.Sound("music/scifi002.wav" )
+      self.errorSound = pygame.mixer.Sound("music/error.wav" )
+      self.okSound = pygame.mixer.Sound("music/scifi011.wav" )
       
       #self.osdSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/osd_text.wav" ) )
       #self.buttonSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/button.wav" ) )
@@ -97,7 +99,7 @@ class BattleShip( QObject ):
         self.battleShipUi.setProperty("player1Name", self.player1.name)
         self.battleShipUi.setProperty("player2Name", self.player2.name)
         
-        self.player1.human = not self.battleShipUi.property( "demoMode" )
+        self.player1.human = not self.battleShipUi.property( "demoMode" ).toBool()
         self.player2.human = False
 
         self.player1.thinkSpeed = self.battleShipUi.property( "speed" ).toInt()[0]
@@ -131,6 +133,7 @@ class BattleShip( QObject ):
       x = index % fieldSize
       y = index // fieldSize
       if currentPlayer.gameField.placeShip(size,rotation, x , y) == True:
+        self.okSound.play()
         self.syncField( currentPlayer , showAll=True)
         allShipsPlaced = False
         if self.currentShip == 1:
@@ -164,6 +167,8 @@ class BattleShip( QObject ):
           return
         
         self.battleShipUi.startShipPlacement( self.currentShip, currentPlayer.color )
+      else:
+        self.errorSound.play()
       
     @pyqtSlot(int)
     def fieldPressed(self,index):
@@ -299,7 +304,8 @@ class BattleShip( QObject ):
     @pyqtSlot( int, int)
     def explodeShip( self, x,y):
       self.battleShipUi.explodeShip(1,x,y)
-      self.explosionSound.play()
+      self.lazerSound.play()
+      self.smallExplosionSound.play()
       
     @pyqtSlot(int, int)
     def missShip(self,x,y):

@@ -22,7 +22,7 @@ class Player( QObject ):
     
     shipHit = pyqtSignal( int, int )
     shipMissed = pyqtSignal( int, int )
-    shipDestroyed = pyqtSignal( int, int )
+    shipDestroyed = pyqtSignal( int, int, int, bool)
     
     def __init__( self , name, color, fieldSize ):
         QObject.__init__( self )
