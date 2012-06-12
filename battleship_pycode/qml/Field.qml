@@ -97,6 +97,11 @@ Rectangle {
         x: 100
         y: 100
     }
+    SmallShipExplosion {
+        id: shipMissedEffect
+        x: 100
+        y: 100
+    }
 
     function initializeField()
     {
@@ -141,5 +146,11 @@ Rectangle {
             smallshipExplosion.y = y * gridView.cellHeight + gridView.cellHeight/2
             smallshipExplosion.burst(100,500)
         }
+    }
+    function missShip(x,y)
+    {
+        shipMissedEffect.x = x * gridView.cellWidth + gridView.cellWidth/2
+        shipMissedEffect.y =  y * gridView.cellHeight + gridView.cellHeight/2
+        shipMissedEffect.burst(100,500)
     }
 }

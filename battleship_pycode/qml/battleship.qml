@@ -769,4 +769,8 @@ Rectangle {
     {
         gameField.explodeShip(size,x,y)
     }
+    function missShip(x,y)
+    {
+
+    }
 }
