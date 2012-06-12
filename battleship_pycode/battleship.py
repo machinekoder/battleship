@@ -53,6 +53,7 @@ class BattleShip( QObject ):
       self.osdSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/osd_text.wav" ) )
       self.buttonSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/button.wav" ) )
       self.explosionSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/inderno_largex.wav" ) )
+      self.lazerSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/lazer.wav" ) )
 
       self.playMusic()
       
@@ -107,6 +108,8 @@ class BattleShip( QObject ):
         
         self.player1.shipHit.connect(self.explodeShip)
         self.player2.shipHit.connect(self.explodeShip)
+        self.player1.shipMissed.connect(self.missShip)
+        self.player2.shipMissed.connect(self.missShip)
 
         # start the ship placement
         #self.state = GameStates.ShipPlacementState
@@ -299,6 +302,11 @@ class BattleShip( QObject ):
     def explodeShip( self, x,y):
       self.battleShipUi.explodeShip(1,x,y)
       self.explosionSound.play()
+      
+    @pyqtSlot(int, int)
+    def missShip(self,x,y):
+      self.battleShipUi.missShip(x,y)
+      self.lazerSound.play()
     
     def syncField( self, player , showAll = False ):
         self.battleShipUi.clearField()
