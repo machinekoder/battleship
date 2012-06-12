@@ -19,9 +19,9 @@ import time
 
 class Player( QObject ):
     
-    shipHit = pyqtSignal(int,int)
-    shipMissed = pyqtSignal(int,int)
-    shipDestroyed = pyqtSignal(int,int)
+    shipHit = pyqtSignal( int, int )
+    shipMissed = pyqtSignal( int, int )
+    shipDestroyed = pyqtSignal( int, int )
     
     def __init__( self , name, color, fieldSize ):
         QObject.__init__( self )
@@ -100,6 +100,7 @@ class Player( QObject ):
             self.movement += 1
             if self.gameField.matrix[y][x].placeFull == True:
                 self.gameField.matrix[y][x].shipHit = True
+                self.shipHit.emit( x, var )
                 self.hitlastround = True
                 boolvarKI = self.gameField.IsShipDestroyed( self.coordinates )
                 if boolvarKI == True:
@@ -120,6 +121,7 @@ class Player( QObject ):
                         self.gameField.matrix[y][var].fired = True
                         if self.gameField.matrix[y][var].placeFull == True:
                             self.gameField.matrix[y][var].shipHit = True
+                            self.shipHit.emit( x, var )
                             self.mouse += 1
                             self.shipHit.emit( var, y )
                             coordinatesnew = [y, var]
@@ -189,6 +191,7 @@ class Player( QObject ):
                         self.gameField.matrix[var][x].fired = True
                         if self.gameField.matrix[var][x ].placeFull == True:
                             self.gameField.matrix[var][x].shipHit = True
+                            self.shipHit.emit( x, var )
                             self.mouse += 1
                             coordinatesnew = [var, x]
                             self.shipHit.emit( x, var )

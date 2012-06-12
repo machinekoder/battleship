@@ -52,6 +52,7 @@ class BattleShip( QObject ):
       
       self.osdSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/osd_text.wav" ) )
       self.buttonSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/button.wav" ) )
+      self.explosionSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/inderno_largex.wav" ) )
 
       self.playMusic()
       
@@ -101,8 +102,8 @@ class BattleShip( QObject ):
         
         self.player1.human = False
         self.player2.human = False
-        self.player1.thinkSpeed = 100
-        self.player2.thinkSpeed = 100
+        self.player1.thinkSpeed = 200
+        self.player2.thinkSpeed = 200
         
         self.player1.shipHit.connect(self.explodeShip)
         self.player2.shipHit.connect(self.explodeShip)
@@ -297,6 +298,7 @@ class BattleShip( QObject ):
     @pyqtSlot( int, int)
     def explodeShip( self, x,y):
       self.battleShipUi.explodeShip(1,x,y)
+      self.explosionSound.play()
     
     def syncField( self, player , showAll = False ):
         self.battleShipUi.clearField()
