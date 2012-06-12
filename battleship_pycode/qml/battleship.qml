@@ -835,6 +835,6 @@ Rectangle {
     }
     function missShip(x,y)
     {
-
+        gameField.missShip(x,y)
     }
 }
