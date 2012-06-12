@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 '''
  Created on Jun 31, 2012
  Main file
@@ -18,6 +18,7 @@ from functional.initfield import *
 from functional.player import *
 import sys
 import time
+import pygame
 
 print( "Welcome to Battleship Galactica" )
 
@@ -41,20 +42,18 @@ class BattleShip( QObject ):
         self.initializeView()    
         
     def initializeSound( self ):
-      self.m_media = Phonon.MediaObject( self )
-      self.musicOutput = Phonon.AudioOutput( Phonon.GameCategory, self )
-      Phonon.createPath( self.m_media, self.musicOutput )
-      # loop not working
-      self.m_media.aboutToFinish.connect( self.m_media.play )
+      pygame.mixer.pre_init(44100, -16, 2, 2048) # setup mixer to avoid sound lag
+      pygame.init()                      #initialize pygame
       
-#      self.m_sound = Phonon.MediaObject( self )
-#      soundOutput = Phonon.AudioOutput( Phonon.GameCategory, self )
-#      Phonon.createPath( self.m_sound, soundOutput )
+      self.osdSound = pygame.mixer.Sound("music/osd_text.wav" )  #load sound
+      self.buttonSound = pygame.mixer.Sound("music/button.wav" )
+      self.explosionSound = pygame.mixer.Sound("music/inderno_largex.wav" )
+      self.lazerSound = pygame.mixer.Sound("music/lazer.wav" )
       
-      self.osdSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/osd_text.wav" ) )
-      self.buttonSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/button.wav" ) )
-      self.explosionSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/inderno_largex.wav" ) )
-      self.lazerSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/lazer.wav" ) )
+      #self.osdSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/osd_text.wav" ) )
+      #self.buttonSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/button.wav" ) )
+      #self.explosionSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/inderno_largex.wav" ) )
+      #self.lazerSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/lazer.wav" ) )
 
       self.playMusic()
       
@@ -89,10 +88,10 @@ class BattleShip( QObject ):
     def startGame( self ):
 
         print( "Yeah someone has pressed the single player button" )
-        gameSize = self.battleShipUi.property( "difficulty" )
+        gameSize = self.battleShipUi.property( "difficulty" ).toInt()[0]
         self.battleShipUi.initializeField( gameSize )
 
-        self.player1 = Player( self.battleShipUi.property( "playerName" ), "blue", gameSize )
+        self.player1 = Player( self.battleShipUi.property( "playerName" ).toString(), "blue", gameSize )
         self.player2 = Player( "Computer", "red", gameSize )
         
         self.battleShipUi.setProperty("player1Name", self.player1.name)
@@ -101,8 +100,8 @@ class BattleShip( QObject ):
         self.player1.human = not self.battleShipUi.property( "demoMode" )
         self.player2.human = False
 
-        self.player1.thinkSpeed = self.battleShipUi.property( "speed" )
-        self.player2.thinkSpeed = self.battleShipUi.property( "speed" )
+        self.player1.thinkSpeed = self.battleShipUi.property( "speed" ).toInt()[0]
+        self.player2.thinkSpeed = self.battleShipUi.property( "speed" ).toInt()[0]
 
         self.player1.shipHit.connect(self.explodeShip)
         self.player2.shipHit.connect(self.explodeShip)
@@ -279,30 +278,23 @@ class BattleShip( QObject ):
     
     @pyqtSlot()
     def stopOsdSound( self ):
-      self.osdSound.pause()
+      self.osdSound.stop()
       
     @pyqtSlot()
     def playButtonSound( self ):
       self.buttonSound.play()
       
     def playMusic( self ):
-            self.m_media.setCurrentSource( Phonon.MediaSource( "music/carmina_burana.mp3" ) )
-            self.m_media.play()
-        
-    def playSound( self ):
-
-        for a  in range( 3, 0, -1 ):
-#           QSound.play( "music/predator_laugh.wav" )
-            self.m_sound.enqueue( Phonon.MediaSource( "music/predator_laugh.wav" ) )
-            self.m_sound.play()
+      pygame.mixer.music.load('music/carmina_burana.ogg')#load music
+      pygame.mixer.music.play()
     
     @pyqtSlot( bool )
     def muteMusic( self, mute ):
       print( "test" )
       if mute:
-         self.m_media.stop()
+        pygame.mixer.music.stop()
       else:
-         self.m_media.play()
+        pygame.mixer.music.play()
          
     @pyqtSlot( int, int)
     def explodeShip( self, x,y):
