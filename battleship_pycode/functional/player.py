@@ -308,7 +308,7 @@ class Player( QObject ):
         percentdestr = ( shipparts_destroyed * 100 ) // shipparts
         
         
-        print( "Percentage destroyed:", percentdestr ) 
+        print( percentdestr, "Percentage of the fleed destroyed:" ) 
         print( "Ships destroyed", "-"*50 )   
 #        print( self.bigship )
 #        print( self.smallship )
