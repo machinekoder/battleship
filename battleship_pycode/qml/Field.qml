@@ -32,7 +32,6 @@ Rectangle {
             hoverEnabled: true
             anchors.fill: parent
             onClicked: {
-                explode(1,3,3)
                 if (placeMode)
                     shipPlaced(currentIndex, testShip.type, testShip.rotated)
                 else if (selectionMode)
@@ -97,7 +96,7 @@ Rectangle {
         x: 100
         y: 100
     }
-    SmallShipExplosion {
+    ShipMissedEffect {
         id: shipMissedEffect
         x: 100
         y: 100
@@ -105,6 +104,7 @@ Rectangle {
 
     function initializeField()
     {
+        fieldModel.clear()
         for (var i = 0; i < gameSize*gameSize; i++)
             fieldModel.append({"type":0,"hitter":false,"misser":false,"colored":"red","rotated":false})
     }

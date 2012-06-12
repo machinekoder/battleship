@@ -91,10 +91,6 @@ class BattleShip( QObject ):
         gameSize = self.battleShipUi.property( "difficulty" )
         self.battleShipUi.initializeField( gameSize )
 
-        #        player1.fieldsize = gameSize
-#        player2.fieldsize = gameSize
- 
-#        player2.XYcordinates()
         self.player1 = Player( self.battleShipUi.property( "playerName" ), "blue", gameSize )
         self.player2 = Player( "Computer", "red", gameSize )
         
@@ -103,8 +99,8 @@ class BattleShip( QObject ):
         
         self.player1.human = False
         self.player2.human = False
-        self.player1.thinkSpeed = 200
-        self.player2.thinkSpeed = 200
+        self.player1.thinkSpeed = 100
+        self.player2.thinkSpeed = 100
         
         self.player1.shipHit.connect(self.explodeShip)
         self.player2.shipHit.connect(self.explodeShip)
@@ -112,18 +108,8 @@ class BattleShip( QObject ):
         self.player2.shipMissed.connect(self.missShip)
 
         # start the ship placement
-        #self.state = GameStates.ShipPlacementState
         self.state = GameStates.Player1ShipPlacementState
-        self.playerShipPlacement()
-        #self.player2ShipPlacement()
-        #self.player1Turn()
-
-        #while True:
-#       #     self.syncField( player2 )
-        #    if self.player2.computerKI() == True:
-        #        self.syncField( self.player2 )
-        #        break
-            
+        self.playerShipPlacement()            
 
     @pyqtSlot(int)
     def showBattlefield(self,index):
@@ -194,12 +180,18 @@ class BattleShip( QObject ):
         x = index % fieldSize
         y = index // fieldSize
         if targetPlayer.playerShoot(x=x,y=y):
+          self.battleShipUi.stopSelectionMode()
+          self.syncField(targetPlayer)
           if targetPlayer.ShipLeft != 0:
             if self.state == GameStates.Player1GameState:
               self.state = GameStates.Player2GameState
             elif self.state == GameStates.Player2GameState:
               self.state = GameStates.Player1GameState
-            self.playerTurn()
+            timer = QTimer(self)
+            timer.setInterval(currentPlayer.thinkSpeed)
+            timer.setSingleShot(True)
+            timer.timeout.connect(self.playerTurn)
+            timer.start()
           else:
             self.gameFinished()
        
