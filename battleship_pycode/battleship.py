@@ -320,9 +320,9 @@ class BattleShip( QObject ):
         for y in range( player.fieldSize ):
             for x in range( player.fieldSize ):
                 fieldPart = player.gameField.matrix[y][x]
-                #print( "type      :", fieldPart.shipType )
-                #print( "geschossen:", fieldPart.fired )
-                #print( "getroffen : ", fieldPart.shipHit )
+#                print( "type      :", fieldPart.shipType )
+#                print( "geschossen:", fieldPart.fired )
+#                print( "getroffen : ", fieldPart.shipHit )
                 index = y * player.fieldSize + x
 
                 self.battleShipUi.setHitAndMissed( index, fieldPart.shipHit, fieldPart.missed )

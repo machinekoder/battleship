@@ -85,24 +85,22 @@ class Player( QObject ):
                 x = self.coordinates[1]
                 y = self.coordinates[0]
             self.gameField.matrix[y][x].fired = True
-            self.movement += 1
+#            self.movement += 1
             if self.gameField.matrix[y][x].placeFull == True:
                 self.gameField.matrix[y][x].shipHit = True
                 self.shipHit.emit( x, y )
                 self.hitlastround = True
                 boolvarKI = self.gameField.IsShipDestroyed( self.coordinates )
                 if boolvarKI == True:
-                    head_tail = self.gameField.IsShipDestroyed( self.coordinates, 1 ) 
+                    head_tail = self.gameField.IsShipDestroyed( self.coordinates, callfunktion = 1 ) 
                     shipSize = self.gameField.matrix[y][x].shipType
                     rotated = self.gameField.matrix[y][x].rotated
                     if rotated:
-                       for x in range( head_tail, head_tail + shipSize ):
-                          if self.gameField.matrix[head_tail][x].shipHit:
-                              self.shipDestroyed.emit( x, y )
+                       for x1 in range( head_tail, head_tail + shipSize ):
+                          self.shipHit.emit( x1, y )
                     else:
-                       for y in range( head_tail, head_tail + shipSize ):
-                          if self.gameField.matrix[y][head_tail].shipHit:
-                              self.shipDestroyed.emit( x, y )
+                       for y1 in range( head_tail, head_tail + shipSize ):
+                          self.shipHit.emit( x, y1 )
                     self.ShipLeft -= 1
                     self.hitlastround = False
             else: 
@@ -173,7 +171,7 @@ class Player( QObject ):
         
         if self.gameField.matrix[y][x ].fired == False:
             self.gameField.matrix[y][x].fired = True
-            self.movement += 1
+#            self.movement += 1
             if self.gameField.matrix[y][x ].placeFull == True:
                 self.gameField.matrix[y][x ].shipHit = True
                 self.mouse += 1  
@@ -181,17 +179,17 @@ class Player( QObject ):
                 coordinatesnew = [y, x]
                 shipdestroyed = self.gameField.IsShipDestroyed( coordinatesnew )
                 if shipdestroyed == True:
-                    head_tail = self.gameField.IsShipDestroyed( coordinatesnew, 1 )
+                    head_tail = self.gameField.IsShipDestroyed( coordinatesnew, callfunktion = 1 )
                     shipSize = self.gameField.matrix[y][x].shipType
+                    print( "Tail", head_tail )
                     rotated = self.gameField.matrix[y][x].rotated
                     if rotated:
-                       for x in range( head_tail, head_tail + shipSize ):
-                          if self.gameField.matrix[head_tail][x].shipHit:
-                              self.shipDestroyed.emit( x, y )
+                        
+                       for x1 in range( head_tail, head_tail + shipSize ):
+                           self.shipHit.emit( x1, y )
                     else:
-                       for y in range( head_tail, head_tail + shipSize ):
-                          if self.gameField.matrix[y][head_tail].shipHit:
-                              self.shipDestroyed.emit( x, y )
+                       for y1 in range( head_tail, head_tail + shipSize ):
+                           self.shipHit.emit( x, y1 )
                     self.ShipLeft -= 1    
                     self.hitlastround = False
                     self.mouse = 0
@@ -219,7 +217,13 @@ class Player( QObject ):
            self.mediumship = 3
            self.smallship = 1
            self.extrasmallship = 2   
-           self.ShipLeft = 7    
+           self.ShipLeft = 9
+        elif self.fieldSize == 10:
+            self.bigship = 2
+            self.mediumship = 2
+            self.smallship = 2
+            self.extrasmallship = 2
+            self.ShipLeft = 8
         elif self.fieldSize == 5:
            self.bigship = 0
            self.mediumship = 1
@@ -252,17 +256,26 @@ class Player( QObject ):
                     if self.gameField.IsShipDestroyed( coordinate = [y, x] ) == True:
                         if shipType == 4:
                             self.bigship_destroyed += 1
+                            print( "big", self.bigship_destroyed )
                         if shipType == 3:
                             self.mediumship_destroyed += 1
+                            print( "med", self.mediumship_destroyed )
                         if shipType == 2:
                             self.smallship_destroyed += 1
+                            print( "small", self.smallship_destroyed )
                         if shipType == 1:
-                            self.extrasmallship_destroyed += 1   
+                            self.extrasmallship_destroyed += 1 
+                            print( "extrasm", self.extrasmallship_destroyed )  
                 if self.gameField.matrix[y][x].shipHit == True:
                     shipparts_destroyed += 1
+                if self.gameField.matrix[y][x].fired == True:
+                    self.movement += 1
         #get percentage of destroyed ships
         self.percentdestr = ( shipparts_destroyed * 100 ) // shipparts
-        
+        self.bigship_destroyed //= 4
+        self.mediumship_destroyed //= 3
+        self.smallship_destroyed //= 2
+        self.extrasmallship_destroyed //= 1
         
         print( self.percentdestr, "Percentage of the fleed destroyed:" ) 
         print( "-"*50 )
@@ -283,6 +296,7 @@ class Player( QObject ):
                     self.ShipLeft -= 1
             else:
                 self.gameField.matrix[y][x].missed = True
+                self.shipMissed.emit( x, y )
             return True
         
                      
