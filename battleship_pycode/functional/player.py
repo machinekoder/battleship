@@ -19,6 +19,10 @@ import time
 
 class Player( QObject ):
     
+    shipHit = pyqtSignal(int,int)
+    shipMissed = pyqtSignal(int,int)
+    shipDestroyed = pyqtSignal(int,int)
+    
     def __init__( self , name, color, fieldSize ):
         QObject.__init__( self )
         self.name = name
@@ -38,8 +42,7 @@ class Player( QObject ):
         self.human = False
         self.thinkSpeed = 1000
         self.ships()
-#        print( "bigship", self.bigship )
-        
+#        print( "bigship", self.bigship )        
     
     def computerPlaceShip( self ):
 

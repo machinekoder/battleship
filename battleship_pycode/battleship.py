@@ -72,6 +72,7 @@ class BattleShip( QObject ):
       self.battleShipUi.musicMuteChanged.connect( self.muteMusic )
       self.battleShipUi.shipPlaced.connect( self.shipPlaced )
       self.battleShipUi.fieldPressed.connect( self.fieldPressed )
+      self.battleShipUi.showBattlefield.connect( self.showBattlefield )
       
       # Display the user interface and allow the user to interact with it.
       desktopWidget = QDesktopWidget()
@@ -95,8 +96,13 @@ class BattleShip( QObject ):
         self.player1 = Player( self.battleShipUi.property( "playerName" ), "blue", gameSize )
         self.player2 = Player( "Computer", "red", gameSize )
         
-        self.player1.human = True
+        self.battleShipUi.setProperty("player1Name", self.player1.name)
+        self.battleShipUi.setProperty("player2Name", self.player2.name)
+        
+        self.player1.human = False
         self.player2.human = False
+        self.player1.thinkSpeed = 100
+        self.player2.thinkSpeed = 100
 
         # start the ship placement
         #self.state = GameStates.ShipPlacementState
@@ -112,6 +118,12 @@ class BattleShip( QObject ):
         #        break
             
 
+    @pyqtSlot(int)
+    def showBattlefield(self,index):
+      if index == 1:
+        self.syncField(self.player1, showAll=True)
+      elif index == 2:
+        self.syncField(self.player2, showAll=True)
     @pyqtSlot(int,int,bool)
     def shipPlaced(self,index,size,rotation):   
       currentPlayer = None
@@ -245,6 +257,7 @@ class BattleShip( QObject ):
         self.battleShipUi.outputOSD( self.player1.name + " won!" )
       self.player1.statistic()
       self.player2.statistic()
+      self.battleShipUi.gameFinished()
       
     @pyqtSlot()
     def playOsdSound( self ):

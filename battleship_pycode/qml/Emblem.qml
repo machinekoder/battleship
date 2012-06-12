@@ -5,7 +5,7 @@ Rectangle {
     color: "#00000000"
 
     id: master
-    Explosion {
+    EmblemEffect {
         anchors.fill: parent
         opacity: 0.3
     }
