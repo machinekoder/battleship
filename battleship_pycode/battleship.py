@@ -11,6 +11,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtDeclarative import *
 from PyQt4.QtGui import *
 from PyQt4.QtNetwork import *
+from PyQt4.QtMultimedia import *
 from PyQt4.phonon import *
 from asyncore import loop
 from functional.initfield import *
@@ -97,11 +98,11 @@ class BattleShip( QObject ):
         self.battleShipUi.setProperty("player1Name", self.player1.name)
         self.battleShipUi.setProperty("player2Name", self.player2.name)
         
-        self.player1.human = False
+        self.player1.human = not self.battleShipUi.property( "demoMode" )
         self.player2.human = False
 
-        self.player1.thinkSpeed = 10
-        self.player2.thinkSpeed = 10
+        self.player1.thinkSpeed = self.battleShipUi.property( "speed" )
+        self.player2.thinkSpeed = self.battleShipUi.property( "speed" )
 
         self.player1.shipHit.connect(self.explodeShip)
         self.player2.shipHit.connect(self.explodeShip)

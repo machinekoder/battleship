@@ -4,6 +4,8 @@ import QtQuick 1.1
 Rectangle {
     property string playerName: playerNameEdit.text
     property int difficulty: 10
+    property int speed: 1000
+    property bool demoMode: false
     property color borderColor: "#6400ff00"
     property color textColor: "white"
     property string fontFamily: "Courier"
@@ -484,8 +486,23 @@ Rectangle {
                     textColor: main.textColor
                     fontFamily: main.fontFamily
                     onClicked: {
+                        main.demoMode = false
                         main.state = "difficultyState"
                         outputOSD("Choose your rank")
+                    }
+                }
+
+                Button {
+                    id: demoModeButton
+                    width: parent.width
+                    text: "Demo Game"
+                    textSize: 13
+                    textColor: main.textColor
+                    fontFamily: main.fontFamily
+                    onClicked: {
+                        main.demoMode = true
+                        main.state = "difficultyState"
+                        outputOSD("Choose the computers rank")
                     }
                 }
 
@@ -597,6 +614,95 @@ Rectangle {
                         main.difficulty = 20
                         clearOSD()
                         storyText.startText()
+                    }
+                }
+            }
+
+            Row {
+                id: row2
+                width: parent.width * 0.9
+                height: parent.height * 0.08
+                anchors.top: column2.bottom
+                anchors.topMargin: 20
+                spacing: 5
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                Button {
+                    id: speedButton1
+                    height: parent.height -10
+                    width: (parent.width - 3*parent.spacing) / 4
+                    text: "Turtle Speed"
+                    textColor: main.textColor
+                    textSize: 10
+                    checkable: true
+                    anchors.verticalCenter: parent.verticalCenter
+                    fontFamily: main.fontFamily
+                    onClicked: {
+                        main.speed = 2000
+                        speedButton1.checked = false
+                        speedButton2.checked = false
+                        speedButton3.checked = false
+                        speedButton4.checked = false
+                    }
+                }
+
+                Button {
+                    id: speedButton2
+                    height: parent.height -10
+                    width: (parent.width - 3*parent.spacing) / 4
+                    text: "Normal Speed"
+                    textColor: main.textColor
+                    textSize: 10
+                    checkable: true
+                    checked: true
+                    anchors.rightMargin: 5
+                    anchors.verticalCenter: parent.verticalCenter
+                    fontFamily: main.fontFamily
+                    onClicked: {
+                        main.speed = 1000
+                        speedButton1.checked = false
+                        speedButton2.checked = false
+                        speedButton3.checked = false
+                        speedButton4.checked = false
+                    }
+                }
+
+                Button {
+                    id: speedButton3
+                    height: parent.height -10
+                    width: (parent.width - 3*parent.spacing) / 4
+                    text: "Sonic Speed"
+                    textColor: main.textColor
+                    textSize: 10
+                    checkable: true
+                    sound: false
+                    anchors.verticalCenter: parent.verticalCenter
+                    fontFamily: main.fontFamily
+                    onClicked: {
+                        main.speed = 500
+                        speedButton1.checked = false
+                        speedButton2.checked = false
+                        speedButton3.checked = false
+                        speedButton4.checked = false
+                    }
+                }
+
+                Button {
+                    id: speedButton4
+                    height: parent.height -10
+                    width: (parent.width - 3*parent.spacing) / 4
+                    text: "Light Speed"
+                    textColor: main.textColor
+                    textSize: 10
+                    checkable: true
+                    anchors.verticalCenter: parent.verticalCenter
+                    fontFamily: main.fontFamily
+                    onClicked: {
+                        main.speed = 10
+                        speedButton1.checked = false
+                        speedButton2.checked = false
+                        speedButton3.checked = false
+                        speedButton4.checked = false
                     }
                 }
             }
@@ -759,6 +865,11 @@ Rectangle {
             PropertyChanges {
                 target: statsRect
                 opacity: 0
+            }
+
+            PropertyChanges {
+                target: row2
+                opacity: 1
             }
         },
         State {

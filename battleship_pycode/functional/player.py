@@ -48,7 +48,7 @@ class Player( QObject ):
     def computerPlaceShip( self ):
         while self.bigship > 0:
             self.computerPlaceShipFinal( 4, self.bigship )
-            self.biship -= 1          
+            self.bigship -= 1          
         while self.mediumship > 0:
             self.computerPlaceShipFinal( 3, self.mediumship )            
             self.mediumship -= 1   
