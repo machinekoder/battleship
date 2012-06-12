@@ -36,7 +36,6 @@ class Player( QObject ):
         self.extrasmallship = 0
         self.shipSize_com = 0
         self.human = False
-        
         self.ships()
         
     
@@ -280,11 +279,21 @@ class Player( QObject ):
            self.ShipLeft = 5 
                       
     def statistic( self ):  
+        #ships left
         bigship_left = self.bigship
         mediumship_left = self.mediumship
         smallship_left = self.smallship
         extrasmallship_left = self.extrasmallship
+        #get start amount
         self.ships()
+        
+        #ships destroyed        
+        bigship_destroyed = bigship_left - self.bigship
+        smallship_destroyed = smallship_left - self.smallship
+        mediumship_destroyed = mediumship_left - self.mediumship
+        extrasmallship_destroyed = extrasmallship_left - self.extrasmallship
+        #get percentage of destroyed ships
+        
         shipparts = 0
         shipparts_destroyed = 0
         fields = 0
@@ -296,7 +305,24 @@ class Player( QObject ):
                 if self.gameField.matrix[y][x].shipHit == True:
                     shipparts_destroyed += 1
         percentdestr = ( shipparts_destroyed * 100 ) // shipparts
-        print( "Percentage destroyed:", percentdestr )    
+        
+        
+        print( percentdestr, "Percentage of the fleed destroyed:" ) 
+        print( "Ships destroyed", "-"*50 )   
 #        print( self.bigship )
 #        print( self.smallship )
-                   
+    def playerShoot( self, y = 0, x = 0 ):
+        if self.gameField.matrix[y][x].fired == True:
+            return False
+        else:
+            self.gameField.matrix[y][x].fired = True
+            if self.gameField.matrix[y][x].placeFull == True:
+                self.gameField.matrix[y][x].shipHit = True
+                coordinatesnew = [y, x]
+                self.gameField.matrix[y][x].IsShipdestroyed( coordinatesnew )
+                return True
+            else:
+                self.gameField.matrix[y][x].missed = True
+                return False
+        
+                     

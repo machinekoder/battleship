@@ -85,7 +85,7 @@ class GameField( QObject ):
                     self.matrix[y1][x].shipType = shipSize
                     self.matrix[y1][x].rotated = rotate
                 self.matrix[y + shipSize - 1][x ].tail = True
-
+#        print( "placement return", placement )
         return placement
     
     def IsShipDestroyed( self, coordinate = 0 ):

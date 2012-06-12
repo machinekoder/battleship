@@ -20,18 +20,6 @@ import time
 
 print( "Welcome to Battleship Galactica" )
 
-'''
-FIX ME
-
-Alex da jetzt überrall der Schiff Type steht wird auch das  Schiff x-Mal platziert
-ich habe einen neun Typ ins der Klasse FieldPart deklariert,
-mit dem namen Head nach welchen wir uns orientieren können!
-EDIT:
-
-Ich habe jezt eine Variable mit shipTypeGUI Deklariert
-Das mit head hat nicht funktioniert
-:-)
-'''
 
 class GameStates:
   InitState = 0
@@ -123,6 +111,7 @@ class BattleShip( QObject ):
         #        self.syncField( self.player2 )
         #        break
             
+
     @pyqtSlot(int,int,bool)
     def shipPlaced(self,index,size,rotation):
       currentPlayer = None
@@ -237,12 +226,14 @@ class BattleShip( QObject ):
           self.gameFinished()
         
     def gameFinished( self ):
-      if (self.player1.ShipLeft == 0):
-        self.syncField( self.player1, showAll=True)
-        self.battleShipUi.outputOSD(self.player2.name + " won!")
+      if ( self.player1.ShipLeft == 0 ):
+        self.syncField( self.player1, showAll = True )
+        self.battleShipUi.outputOSD( self.player2.name + " won!" )
       else:
-        self.syncField( self.player2, showAll=True)
-        self.battleShipUi.outputOSD(self.player1.name + " won!")
+        self.syncField( self.player2, showAll = True )
+        self.battleShipUi.outputOSD( self.player1.name + " won!" )
+      self.player1.statistic()
+      self.player2.statistic()
       
     @pyqtSlot()
     def playOsdSound( self ):
@@ -266,7 +257,6 @@ class BattleShip( QObject ):
 #           QSound.play( "music/predator_laugh.wav" )
             self.m_sound.enqueue( Phonon.MediaSource( "music/predator_laugh.wav" ) )
             self.m_sound.play()
-        return "Muhahaha"
     
     @pyqtSlot( bool )
     def muteMusic( self, mute ):
@@ -276,7 +266,7 @@ class BattleShip( QObject ):
       else:
          self.musicOutput.setVolume( 1.0 )
     
-    def syncField( self, player ,showAll=False):
+    def syncField( self, player , showAll = False ):
         self.battleShipUi.clearField()
         print( "player name: ", player.name )
         for y in range( player.fieldSize ):
@@ -286,9 +276,10 @@ class BattleShip( QObject ):
                 #print( "geschossen:", fieldPart.fired )
                 #print( "getroffen : ", fieldPart.shipHit )
                 index = y * player.fieldSize + x
-                self.battleShipUi.setHitAndMissed(index,fieldPart.shipHit,fieldPart.missed)
-                if ((showAll == True) and (fieldPart.head == True)):
-                    self.battleShipUi.setShip(index,fieldPart.shipType, player.color, fieldPart.rotated )
+
+                self.battleShipUi.setHitAndMissed( index, fieldPart.shipHit, fieldPart.missed )
+                if ( ( showAll == True ) and ( fieldPart.head == True ) ):
+                    self.battleShipUi.setShip( index, fieldPart.shipType, player.color, fieldPart.rotated )
 
 app = QApplication( sys.argv )
 app.setApplicationName( "Battleship Game" )
