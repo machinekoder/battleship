@@ -32,6 +32,7 @@ Rectangle {
             hoverEnabled: true
             anchors.fill: parent
             onClicked: {
+                explode(1,3,3)
                 if (placeMode)
                     shipPlaced(currentIndex, testShip.type, testShip.rotated)
                 else if (selectionMode)
@@ -91,6 +92,12 @@ Rectangle {
         }
     }
 
+    SmallShipExplosion {
+        id: smallshipExplosion
+        x: 100
+        y: 100
+    }
+
     function initializeField()
     {
         for (var i = 0; i < gameSize*gameSize; i++)
@@ -125,5 +132,14 @@ Rectangle {
     function rotateShip()
     {
         testShip.rotated = !testShip.rotated
+    }
+    function explodeShip(size,x, y)
+    {
+        if (size === 1)
+        {
+            smallshipExplosion.x = x * gridView.cellWidth + gridView.cellWidth/2
+            smallshipExplosion.y = y * gridView.cellHeight + gridView.cellHeight/2
+            smallshipExplosion.burst(100,500)
+        }
     }
 }

@@ -103,6 +103,9 @@ class BattleShip( QObject ):
         self.player2.human = False
         self.player1.thinkSpeed = 100
         self.player2.thinkSpeed = 100
+        
+        self.player1.shipHit.connect(self.explodeShip)
+        self.player2.shipHit.connect(self.explodeShip)
 
         # start the ship placement
         #self.state = GameStates.ShipPlacementState
@@ -124,6 +127,7 @@ class BattleShip( QObject ):
         self.syncField(self.player1, showAll=True)
       elif index == 2:
         self.syncField(self.player2, showAll=True)
+        
     @pyqtSlot(int,int,bool)
     def shipPlaced(self,index,size,rotation):   
       currentPlayer = None
@@ -289,6 +293,10 @@ class BattleShip( QObject ):
          self.musicOutput.setVolume( 0.0 )
       else:
          self.musicOutput.setVolume( 1.0 )
+         
+    @pyqtSlot( int, int)
+    def explodeShip( self, x,y):
+      self.battleShipUi.explodeShip(1,x,y)
     
     def syncField( self, player , showAll = False ):
         self.battleShipUi.clearField()
