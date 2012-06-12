@@ -52,6 +52,8 @@ class BattleShip( QObject ):
       self.errorSound = pygame.mixer.Sound("music/error.wav" )
       self.okSound = pygame.mixer.Sound("music/scifi011.wav" )
       
+      self.soundMuted = False
+      
       #self.osdSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/osd_text.wav" ) )
       #self.buttonSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/button.wav" ) )
       #self.explosionSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/inderno_largex.wav" ) )
@@ -74,6 +76,7 @@ class BattleShip( QObject ):
       self.battleShipUi.stopOsdSound.connect( self.stopOsdSound )
       self.battleShipUi.buttonSound.connect( self.playButtonSound )
       self.battleShipUi.musicMuteChanged.connect( self.muteMusic )
+      self.battleShipUi.soundMuteChanged.connect( self.muteSound )
       self.battleShipUi.shipPlaced.connect( self.shipPlaced )
       self.battleShipUi.fieldPressed.connect( self.fieldPressed )
       self.battleShipUi.showBattlefield.connect( self.showBattlefield )
@@ -133,7 +136,8 @@ class BattleShip( QObject ):
       x = index % fieldSize
       y = index // fieldSize
       if currentPlayer.gameField.placeShip(size,rotation, x , y) == True:
-        self.okSound.play()
+        if not self.soundMuted:
+          self.okSound.play()
         self.syncField( currentPlayer , showAll=True)
         allShipsPlaced = False
         if self.currentShip == 1:
@@ -168,7 +172,8 @@ class BattleShip( QObject ):
         
         self.battleShipUi.startShipPlacement( self.currentShip, currentPlayer.color )
       else:
-        self.errorSound.play()
+        if not self.soundMuted:
+          self.errorSound.play()
       
     @pyqtSlot(int)
     def fieldPressed(self,index):
@@ -196,7 +201,7 @@ class BattleShip( QObject ):
             timer = QTimer(self)
             timer.setInterval(currentPlayer.thinkSpeed)
             timer.setSingleShot(True)
-            timer.timeout.connect(self.playerTurn)
+            timer.timeout.connect(self.thinkingPhase)
             timer.start()
           else:
             self.gameFinished()
@@ -219,7 +224,30 @@ class BattleShip( QObject ):
           self.playerShipPlacement()
         elif self.state == GameStates.Player2ShipPlacementState:
           self.state = GameStates.Player1GameState
-          self.playerTurn()
+          self.thinkingPhase()
+          
+    @pyqtSlot()
+    def thinkingPhase(self):
+      currentPlayer = None
+      targetPlayer = None
+      if self.state == GameStates.Player1GameState:
+        currentPlayer = self.player1
+        targetPlayer = self.player2
+      elif self.state == GameStates.Player2GameState:
+        currentPlayer = self.player2
+        targetPlayer = self.player1
+        
+      self.syncField( targetPlayer, showAll=targetPlayer.human )
+      self.battleShipUi.outputOSD(currentPlayer.name + "'s turn")
+      
+      if not currentPlayer.human:
+        timer = QTimer(self)
+        timer.setInterval(currentPlayer.thinkSpeed)
+        timer.setSingleShot(True)
+        timer.timeout.connect(self.playerTurn)
+        timer.start()
+      else:
+        self.playerTurn()
     
     @pyqtSlot()
     def playerTurn( self ):
@@ -232,9 +260,6 @@ class BattleShip( QObject ):
         currentPlayer = self.player2
         targetPlayer = self.player1
         
-      self.syncField( targetPlayer, showAll=targetPlayer.human )
-        
-      self.battleShipUi.outputOSD(currentPlayer.name + "'s turn")
       if currentPlayer.human:
         self.battleShipUi.startSelectionMode()
       else:
@@ -249,7 +274,7 @@ class BattleShip( QObject ):
           timer = QTimer(self)
           timer.setInterval(currentPlayer.thinkSpeed)
           timer.setSingleShot(True)
-          timer.timeout.connect(self.playerTurn)
+          timer.timeout.connect(self.thinkingPhase)
           timer.start()
         else:
           self.gameFinished()
@@ -279,7 +304,8 @@ class BattleShip( QObject ):
       
     @pyqtSlot()
     def playOsdSound( self ):
-      self.osdSound.play()
+      if not self.soundMuted:
+        self.osdSound.play()
     
     @pyqtSlot()
     def stopOsdSound( self ):
@@ -287,7 +313,8 @@ class BattleShip( QObject ):
       
     @pyqtSlot()
     def playButtonSound( self ):
-      self.buttonSound.play()
+      if not self.soundMuted:
+        self.buttonSound.play()
       
     def playMusic( self ):
       pygame.mixer.music.load('music/carmina_burana.ogg')#load music
@@ -295,22 +322,30 @@ class BattleShip( QObject ):
     
     @pyqtSlot( bool )
     def muteMusic( self, mute ):
-      print( "test" )
       if mute:
-        pygame.mixer.music.stop()
+        pygame.mixer.music.set_volume(0.0)
       else:
-        pygame.mixer.music.play()
+        pygame.mixer.music.set_volume(1.0)
+        
+    @pyqtSlot( bool )
+    def muteSound( self, mute ):
+      if mute:
+        self.soundMuted = True
+      else:
+        self.soundMuted = False
          
     @pyqtSlot( int, int)
     def explodeShip( self, x,y):
       self.battleShipUi.explodeShip(1,x,y)
-      self.lazerSound.play()
-      self.smallExplosionSound.play()
+      if not self.soundMuted:
+        self.lazerSound.play()
+        self.smallExplosionSound.play()
       
     @pyqtSlot(int, int)
     def missShip(self,x,y):
       self.battleShipUi.missShip(x,y)
-      self.lazerSound.play()
+      if not self.soundMuted:
+        self.lazerSound.play()
     
     def syncField( self, player , showAll = False ):
         self.battleShipUi.clearField()
