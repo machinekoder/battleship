@@ -74,9 +74,8 @@ class Player( QObject ):
         return yx
         
     def computerKI( self ):
-        var = 0
-#       Move randomly
-        
+        var = 0        
+#       Move right
         if self.hitlastround == False:
             self.coordinates = self.YXcoordinates()
             x = self.coordinates[1]
@@ -86,12 +85,12 @@ class Player( QObject ):
                 x = self.coordinates[1]
                 y = self.coordinates[0]
             self.computerControl( x = x, y = y )
-            print( "coordinats False: ", self.coordinates )   
-#       Move right
-        elif self.hitlastround == True:
+            print( "coordinats False: ", self.coordinates )           
+            print( "coordinats True: ", self.coordinates )
+        if self.hitlastround == True:   
             x = self.coordinates[1]
-            y = self.coordinates[0]
-            if self.cros == 0:
+            y = self.coordinates[0]    
+            if self.cros == 0 :
                 var = x + 1 + self.mouse
                 if var < self.fieldSize:
                     boolvar = self.computerControl( x = var, y = y )
@@ -100,10 +99,8 @@ class Player( QObject ):
                 else:
                     self.cros = 1
                     self.mouse = 0
-                    return 0
-
              # move left
-            if  self.cros == 1:
+            elif  self.cros == 1 :
                 var = x - 1 - self.mouse
                 if var >= 0:
                     boolvar = self.computerControl( x = var, y = y )
@@ -112,9 +109,8 @@ class Player( QObject ):
                 else:
                     self.cros = 2
                     self.mouse = 0
-                    return 0
                 #Move down 
-            if  self.cros == 2:
+            elif  self.cros == 2 :
                 var = y + 1 + self.mouse 
                 if var < self.fieldSize:
                     boolvar = self.computerControl( x = x, y = var )
@@ -124,7 +120,7 @@ class Player( QObject ):
                     self.cros = 3
                     self.mouse = 0
         #move up
-            if self.cros == 3:
+            elif self.cros == 3 :
                 var = y - 1 - self.mouse
                 if var >= 0: 
                     boolval = self.computerControl( x = x, y = var ) 
@@ -135,9 +131,18 @@ class Player( QObject ):
                     self.mouse = 0
                     self.cros = 0
                     self.hitlastround = False
-                    
-            print( "coordinats True: ", self.coordinates )   
-                    
+#            else:
+#                self.coordinates = self.YXcoordinates()
+#                x = self.coordinates[1]
+#                y = self.coordinates[0]
+#                while self.gameField.matrix[y][x].fired == True:
+#                    self.coordinates = self.YXcoordinates() 
+#                    x = self.coordinates[1]
+#                    y = self.coordinates[0]
+#                self.computerControl( x = x, y = y )
+#                print( "coordinats False: ", self.coordinates )           
+#                print( "coordinats True: ", self.coordinates )   
+#                    
  
 #        print( "shipleft", self.ShipLeft )  
         if self.ShipLeft == 0 :
@@ -182,7 +187,7 @@ class Player( QObject ):
                     self.hitlastround = False
                     self.mouse = 0
                     self.cros = 0
-                    return True
+                return True
             else:
                 self.mouse = 0
                 self.gameField.matrix[y][x].missed = True
