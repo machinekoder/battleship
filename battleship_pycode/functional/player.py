@@ -46,38 +46,26 @@ class Player( QObject ):
 #        print( "bigship", self.bigship )        
     
     def computerPlaceShip( self ):
-
         while self.bigship > 0:
-            shipSize_com = 4 
-            rotateship = True if ( self.bigship % 2 ) == 1 else False
-            self.bigship -= 1
-            coordinates = self.YXcoordinates()
-#            print( "coordinates:", coordinates )
-            while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = coordinates[ 0 ], x = coordinates[ 1] ):
-                coordinates = self.YXcoordinates()                
+            self.computerPlaceShipFinal( 4, self.bigship )
+            self.biship -= 1          
         while self.mediumship > 0:
-            shipSize_com = 3
-            rotateship = True if ( self.mediumship % 2 ) == 1 else False
-            self.mediumship -= 1
-            coordinates = self.YXcoordinates()
-            while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = coordinates[ 0 ], x = coordinates[ 1 ] ):
-                coordinates = self.YXcoordinates()   
+            self.computerPlaceShipFinal( 3, self.mediumship )            
+            self.mediumship -= 1   
         while self.smallship > 0:
-            shipSize_com = 2
-            rotateship = True if ( self.smallship % 2 ) == 1 else False
+            self.computerPlaceShipFinal( 2, self.smallship )
             self.smallship -= 1
-            coordinates = self.YXcoordinates()
-#            print( "coordinats:", coordinates )
-            while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = coordinates[ 0 ], x = coordinates[ 1 ] ):
-                coordinates = self.YXcoordinates()  
         while self.extrasmallship > 0:
-            shipSize_com = 1
-            rotateship = True if ( self.extrasmallship % 2 ) == 1 else False
+            self.computerPlaceShipFinal( 1, self.extrasmallship )
             self.extrasmallship -= 1
-            coordinates = self.YXcoordinates()
-            while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = coordinates[ 0 ], x = coordinates[ 1 ] ):
-                coordinates = self.YXcoordinates()
-            
+
+
+    def computerPlaceShipFinal( self, shipSize_com = 0, ships = 0 ): 
+        rotateship = True if ( ships % 2 ) == 1 else False
+        coordinates = self.YXcoordinates()
+        while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = coordinates[ 0 ], x = coordinates[ 1] ):
+            coordinates = self.YXcoordinates()    
+                  
     def YXcoordinates( self ): 
         i1 = random.randint( 0, self.fieldSize * self.fieldSize - 1 )
         y1 = i1 // self.fieldSize
@@ -118,7 +106,7 @@ class Player( QObject ):
             if self.cros == 0:
                 var = x + 1 + self.mouse
                 if var < self.fieldSize:
-                    boolvar = self.control( x = var, y = y )
+                    boolvar = self.computerControl( x = var, y = y )
                     if boolvar == False:
                         self.cros = 1
                     else:
@@ -130,7 +118,7 @@ class Player( QObject ):
             if  self.cros == 1:
                 var = x - 1 - self.mouse
                 if var >= 0:
-                    boolvar = self.control( x = var, y = y )
+                    boolvar = self.computerControl( x = var, y = y )
                     if boolvar == False:
                         self.cros = 2
                 else:
@@ -141,7 +129,7 @@ class Player( QObject ):
             if  self.cros == 2:
                 var = y + 1 + self.mouse 
                 if var < self.fieldSize:
-                    boolvar = self.control( x = x, y = var )
+                    boolvar = self.computerControl( x = x, y = var )
                     if boolvar == False: 
                         self.cros = 3
                 else:
@@ -152,7 +140,7 @@ class Player( QObject ):
             if self.cros == 3:
                 var = y - 1 - self.mouse
                 if var >= 0: 
-                    boolval = self.control( x = x, y = var ) 
+                    boolval = self.computerControl( x = x, y = var ) 
                     if boolval == False:
                         self.cros = 0
                         self.hitlastround = False
@@ -171,7 +159,7 @@ class Player( QObject ):
 #            print( "cros        :", self.cros )
 #            print( "fieldsize        :", self.fieldSize )
 #            print( "mouse        :", self.mouse )
-    def control( self, x = 0, y = 0 ):
+    def computerControl( self, x = 0, y = 0 ):
         
         if self.gameField.matrix[y][x ].fired == False:
             self.gameField.matrix[y][x].fired = True
