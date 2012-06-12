@@ -101,7 +101,7 @@ class Player( QObject ):
             self.movement += 1
             if self.gameField.matrix[y][x].placeFull == True:
                 self.gameField.matrix[y][x].shipHit = True
-                self.shipHit.emit( x, var )
+                self.shipHit.emit( x, y )
                 self.hitlastround = True
                 boolvarKI = self.gameField.IsShipDestroyed( self.coordinates )
                 if boolvarKI == True:
