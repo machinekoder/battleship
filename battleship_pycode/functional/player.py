@@ -269,8 +269,8 @@ class Player( QObject ):
            self.ShipLeft = 7    
         elif self.fieldSize == 5:
            self.bigship = 0
-           self.mediumship = 2
-           self.smallship = 0
+           self.mediumship = 1
+           self.smallship = 1
            self.extrasmallship = 2
            self.ShipLeft = 4   
         else :
@@ -321,7 +321,8 @@ class Player( QObject ):
             if self.gameField.matrix[y][x].placeFull == True:
                 self.gameField.matrix[y][x].shipHit = True
                 coordinatesnew = [y, x]
-                self.gameField.matrix[y][x].IsShipdestroyed( coordinatesnew )
+                if self.gameField.IsShipDestroyed( coordinatesnew ) == True:
+                    self.ShipLeft -= 1
             else:
                 self.gameField.matrix[y][x].missed = True
             
