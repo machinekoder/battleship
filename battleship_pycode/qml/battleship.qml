@@ -765,4 +765,8 @@ Rectangle {
     {
         main.state = "gameFinishedState"
     }
+    function explodeShip(size,x,y)
+    {
+        gameField.explodeShip(size,x,y)
+    }
 }
