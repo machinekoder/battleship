@@ -311,8 +311,7 @@ class Player( QObject ):
         print( "Ships destroyed", "-"*50 )   
 #        print( self.bigship )
 #        print( self.smallship )
-    def playerShots( self, y = 0, x = 0 ):
-        
+    def playerShoot( self, y = 0, x = 0 ):
         if self.gameField.matrix[y][x].fired == True:
             return False
         else:
