@@ -36,7 +36,6 @@ class Player( QObject ):
         self.extrasmallship = 0
         self.shipSize_com = 0
         self.human = False
-        
         self.ships()
         
     
@@ -312,4 +311,19 @@ class Player( QObject ):
         print( "Ships destroyed", "-"*50 )   
 #        print( self.bigship )
 #        print( self.smallship )
-                   
+    def playerShots( self, y = 0, x = 0 ):
+        
+        if self.gameField.matrix[y][x].fired == True:
+            return False
+        else:
+            self.gameField.matrix[y][x].fired = True
+            if self.gameField.matrix[y][x].placeFull == True:
+                self.gameField.matrix[y][x].shipHit = True
+                coordinatesnew = [y, x]
+                self.gameField.matrix[y][x].IsShipdestroyed( coordinatesnew )
+                return True
+            else:
+                self.gameField.matrix[y][x].missed = True
+                return False
+        
+                     

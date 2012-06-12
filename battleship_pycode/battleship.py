@@ -110,21 +110,10 @@ class BattleShip( QObject ):
         #        self.syncField( self.player2 )
         #        break
             
-<<<<<<< HEAD
-    @pyqtSlot( int, int, bool )
-    def shipPlaced( self, index, size, rotation ):
-      print( "Ship:", index )
-      fieldSize = self.player1.fieldSize
-      x = index % fieldSize
-      y = index // fieldSize
-      self.player1.gameField.placeShip( size, rotation, x , y )
-      self.syncField( self.player1 )
-=======
+
     @pyqtSlot(int,int,bool)
     def shipPlaced(self,index,size,rotation):
       print("Ship:", index)
->>>>>>> d15267659e10b821af634d772d1358b0d8602fec
-      
       if self.state == GameStates.Player1ShipPlacementState:
         fieldSize = self.player1.fieldSize
         x = index % fieldSize
@@ -160,17 +149,11 @@ class BattleShip( QObject ):
       #else:
       #  self.player1Turn()
       
-<<<<<<< HEAD
-    @pyqtSlot( int )
-    def fieldPressed( self, index ):
-      print ( index )
-      if ( self.state == GameStates.Player1GameState ):
-=======
     @pyqtSlot(int)
     def fieldPressed(self,index):
       print (index)
       if ((self.player1.human) and (self.state == GameStates.Player1GameState)):
->>>>>>> d15267659e10b821af634d772d1358b0d8602fec
+
         if self.player2.ShipLeft != 0:
           #destroy the frekkin ship
            self.player2Turn()
