@@ -99,9 +99,10 @@ class BattleShip( QObject ):
         
         self.player1.human = False
         self.player2.human = False
+
         self.player1.thinkSpeed = 100
         self.player2.thinkSpeed = 100
-        
+
         self.player1.shipHit.connect(self.explodeShip)
         self.player2.shipHit.connect(self.explodeShip)
         self.player1.shipMissed.connect(self.missShip)

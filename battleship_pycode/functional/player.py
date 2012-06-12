@@ -117,13 +117,14 @@ class Player( QObject ):
             y = self.coordinates[0]
             if self.cros == 0:
                 var = x + 1 + self.mouse
-                boolvar = self.control( x = var, y = y )
-                if boolvar == False:
-                    self.cros = 1
-                else:
-                    self.cros = 1
-                    self.mouse = 0
-                    return 0
+                if var < self.fieldSize:
+                    boolvar = self.control( x = var, y = y )
+                    if boolvar == False:
+                        self.cros = 1
+                    else:
+                        self.cros = 1
+                        self.mouse = 0
+                        return 0
 
              # move left
             if  self.cros == 1:
