@@ -291,9 +291,9 @@ class BattleShip( QObject ):
     def muteMusic( self, mute ):
       print( "test" )
       if mute:
-         self.musicOutput.setVolume( 0.0 )
+         self.m_media.stop()
       else:
-         self.musicOutput.setVolume( 1.0 )
+         self.m_media.play()
          
     @pyqtSlot( int, int)
     def explodeShip( self, x,y):
