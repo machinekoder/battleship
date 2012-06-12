@@ -37,6 +37,7 @@ class Player( QObject ):
         self.shipSize_com = 0
         self.human = False
         self.ships()
+#        print( "bigship", self.bigship )
         
     
     def computerPlaceShip( self ):
