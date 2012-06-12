@@ -88,8 +88,10 @@ class GameField( QObject ):
 #        print( "placement return", placement )
         return placement
     
-    def IsShipDestroyed( self, coordinate = 0 ):
+    def IsShipDestroyed( self, coordinate = 0, callfunktion = -1 ):
 #        print( "Koordinate", coordinate )
+        
+            
         basePoint = QPoint( coordinate[1], coordinate[0] )
 
         rotated = self.matrix[basePoint.y()][basePoint.x()].rotated
@@ -108,6 +110,12 @@ class GameField( QObject ):
            else:
               tmpY -= 1
               
+        if callfunktion == 1:
+            if rotated:
+                return headPoint.x()
+            else:
+                return headPoint.y()
+              
         check = True
         if rotated:
            for x in range( headPoint.x(), headPoint.x() + shipSize ):
@@ -119,7 +127,8 @@ class GameField( QObject ):
               if not self.matrix[y][headPoint.x()].shipHit:
                  check = False
                  break
-              
+             
+       
 #        print( headPoint, check )
         
         return check
