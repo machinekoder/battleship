@@ -258,12 +258,6 @@ class Player( QObject ):
         elif self.fieldSize == 16:
            self.bigship = 3
            self.mediumship = 3
-           self.smallship = 3
-           self.extrasmallship = 3  
-           self.ShipLeft = 12 
-        elif self.fieldSize == 10:
-           self.bigship = 2
-           self.mediumship = 2
            self.smallship = 1
            self.extrasmallship = 2   
            self.ShipLeft = 7    
@@ -325,7 +319,6 @@ class Player( QObject ):
                     self.ShipLeft -= 1
             else:
                 self.gameField.matrix[y][x].missed = True
-            
             return True
         
                      
