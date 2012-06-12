@@ -100,8 +100,8 @@ class BattleShip( QObject ):
         self.player1.human = False
         self.player2.human = False
 
-        self.player1.thinkSpeed = 100
-        self.player2.thinkSpeed = 100
+        self.player1.thinkSpeed = 10
+        self.player2.thinkSpeed = 10
 
         self.player1.shipHit.connect(self.explodeShip)
         self.player2.shipHit.connect(self.explodeShip)
@@ -258,6 +258,18 @@ class BattleShip( QObject ):
         self.battleShipUi.outputOSD( self.player1.name + " won!" )
       self.player1.statistic()
       self.player2.statistic()
+      self.battleShipUi.setProperty("percentageShipsDestroyed1", self.player1.percentdestr)
+      self.battleShipUi.setProperty("percentageShipsDestroyed2", self.player2.percentdestr)
+      self.battleShipUi.setProperty("extraSmallDestroyed1", self.player1.extrasmallship_destroyed)
+      self.battleShipUi.setProperty("extraSmallDestroyed2", self.player2.extrasmallship_destroyed)
+      self.battleShipUi.setProperty("smallDestroyed1", self.player1.smallship_destroyed)
+      self.battleShipUi.setProperty("smallDestroyed2", self.player2.smallship_destroyed)
+      self.battleShipUi.setProperty("mediumDestroyed1", self.player1.mediumship_destroyed)
+      self.battleShipUi.setProperty("mediumDestroyed2", self.player2.mediumship_destroyed)
+      self.battleShipUi.setProperty("bigDestroyed1", self.player1.bigship_destroyed)
+      self.battleShipUi.setProperty("bigDestroyed2", self.player2.bigship_destroyed)
+      self.battleShipUi.setProperty("turns1", self.player1.movement)
+      self.battleShipUi.setProperty("turns2", self.player2.movement)
       self.battleShipUi.gameFinished()
       
     @pyqtSlot()

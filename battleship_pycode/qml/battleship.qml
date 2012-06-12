@@ -9,6 +9,18 @@ Rectangle {
     property string fontFamily: "Courier"
     property string player1Name: "Player 1"
     property string player2Name: "Player 2"
+    property int percentageShipsDestroyed1: 45
+    property int percentageShipsDestroyed2: 100
+    property int extraSmallDestroyed1: 1
+    property int extraSmallDestroyed2: 2
+    property int smallDestroyed1: 1
+    property int smallDestroyed2:3
+    property int mediumDestroyed1:2
+    property int mediumDestroyed2:1
+    property int bigDestroyed1:1
+    property int bigDestroyed2:3
+    property int turns1:20
+    property int turns2:21
 
     signal singlePlayerGameClicked
     signal networkGameClicked
@@ -295,25 +307,51 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                     }
 
+                    StatBar {
+                        width: parent.width
+                        value1: percentageShipsDestroyed1 / 100
+                        value2: 0
+                    }
+
                     Text {
-                        id: statTitle7
                         color: "#ffffff"
-                        text: "10"
+                        text: extraSmallDestroyed1
                         style: Text.Raised
                         font.family: fontFamily
                         font.pointSize: 14
                         horizontalAlignment: Text.AlignHCenter
                     }
 
-                    StatBar {
-                        id: statbar1
-                        width: parent.width
+                    Text {
+                        color: "#ffffff"
+                        text: smallDestroyed1
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
+                        horizontalAlignment: Text.AlignHCenter
                     }
 
                     Text {
-                        id: statTitle8
                         color: "#ffffff"
-                        text: "20"
+                        text: mediumDestroyed1
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    Text {
+                        color: "#ffffff"
+                        text: bigDestroyed1
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    Text {
+                        color: "#ffffff"
+                        text: turns1
                         style: Text.Raised
                         font.family: fontFamily
                         font.pointSize: 14
@@ -336,25 +374,51 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                     }
 
+                    StatBar {
+                        width: parent.width
+                        value1: percentageShipsDestroyed2 / 100
+                        value2: 0
+                    }
+
                     Text {
-                        id: statTitle9
                         color: "#ffffff"
-                        text: "10"
+                        text: extraSmallDestroyed2
                         style: Text.Raised
                         font.family: fontFamily
                         font.pointSize: 14
                         horizontalAlignment: Text.AlignHCenter
                     }
 
-                    StatBar {
-                        id: statbar2
-                        width: parent.width
+                    Text {
+                        color: "#ffffff"
+                        text: smallDestroyed2
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
+                        horizontalAlignment: Text.AlignHCenter
                     }
 
                     Text {
-                        id: statTitle10
                         color: "#ffffff"
-                        text: "20"
+                        text: mediumDestroyed2
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    Text {
+                        color: "#ffffff"
+                        text: bigDestroyed2
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    Text {
+                        color: "#ffffff"
+                        text: turns2
                         style: Text.Raised
                         font.family: fontFamily
                         font.pointSize: 14

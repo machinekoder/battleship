@@ -226,18 +226,18 @@ class Player( QObject ):
                       
     def statistic( self ):  
         #ships left
-        bigship_left = self.bigship
-        mediumship_left = self.mediumship
-        smallship_left = self.smallship
-        extrasmallship_left = self.extrasmallship
+        self.bigship_left = self.bigship
+        self.mediumship_left = self.mediumship
+        self.smallship_left = self.smallship
+        self.extrasmallship_left = self.extrasmallship
         #get start amount
         self.ships()
         
         #ships destroyed        
-        bigship_destroyed = bigship_left - self.bigship
-        smallship_destroyed = smallship_left - self.smallship
-        mediumship_destroyed = mediumship_left - self.mediumship
-        extrasmallship_destroyed = extrasmallship_left - self.extrasmallship
+        self.bigship_destroyed = self.bigship_left - self.bigship
+        self.smallship_destroyed = self.smallship_left - self.smallship
+        self.mediumship_destroyed = self.mediumship_left - self.mediumship
+        self.extrasmallship_destroyed = self.extrasmallship_left - self.extrasmallship
         #get percentage of destroyed ships
         
         shipparts = 0
@@ -250,10 +250,10 @@ class Player( QObject ):
                     shipparts += 1
                 if self.gameField.matrix[y][x].shipHit == True:
                     shipparts_destroyed += 1
-        percentdestr = ( shipparts_destroyed * 100 ) // shipparts
+        self.percentdestr = ( shipparts_destroyed * 100 ) // shipparts
         
         
-        print( percentdestr, "Percentage of the fleed destroyed:" ) 
+        print( self.percentdestr, "Percentage of the fleed destroyed:" ) 
         print( "Ships destroyed", "-"*50 )   
 #        print( self.bigship )
 #        print( self.smallship )
