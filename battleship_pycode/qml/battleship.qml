@@ -7,6 +7,8 @@ Rectangle {
     property color borderColor: "#6400ff00"
     property color textColor: "white"
     property string fontFamily: "Courier"
+    property string player1Name: "Player 1"
+    property string player2Name: "Player 2"
 
     signal singlePlayerGameClicked
     signal networkGameClicked
@@ -16,12 +18,18 @@ Rectangle {
     signal shipPlaced (int index, int size, bool rotation)
     signal fieldPressed(int index)
     signal musicMuteChanged (bool muted)
+    signal showBattlefield(int index)
 
     id: main
     width: 500
     height: 700
     color: "#000000"
     state: "gameTypeState"
+
+    SmallShipExplosion {
+        x: 300
+        y: 300
+    }
 
     BackgroundStars {
         id: backgroundStars
@@ -157,6 +165,144 @@ Rectangle {
         anchors.topMargin: 0
 
         Rectangle {
+            id: statsRect
+            color: "#00000000"
+            anchors.fill: parent
+
+            Text {
+                id: statTitle
+                color: "#ffffff"
+                text: qsTr("Game Stats")
+                anchors.top: parent.top
+                anchors.topMargin: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                style: Text.Raised
+                font.family: fontFamily
+                font.pointSize: 22
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            Column {
+                id: column3
+                width: parent.width * 0.5
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 10
+
+                Button {
+                    id: continueButton
+                    width: parent.width
+                    text: "Continue"
+                    textColor: main.textColor
+                    textSize: 13
+                    fontFamily: main.fontFamily
+                    onClicked: main.state = "gameTypeState"
+                }
+            }
+
+
+            StatBar {
+                id: statbar1
+                x: 150
+                anchors.top: row1.bottom
+                anchors.topMargin: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+
+
+
+            Row {
+                id: row1
+                width: parent.width * 0.9
+                anchors.top: statTitle.bottom
+                anchors.topMargin: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 10
+
+                Column {
+                    id: column4
+                    height: parent.height
+                    spacing: 10
+
+                    Text {
+                        id: random
+                        color: "#ffffff"
+                        text: " "
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 18
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    Text {
+                        id: statTitle4
+                        color: "#ffffff"
+                        text: "Ships left:"
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    Text {
+                        id: statTitle5
+                        color: "#ffffff"
+                        text: "Ships destroyed:"
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    Text {
+                        id: statTitle6
+                        color: "#ffffff"
+                        text: "Turns:"
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                }
+
+                Column {
+                    id: column5
+                    height: parent.height
+                    spacing: 10
+
+                    Text {
+                        id: statTitle1
+                        color: "#ffffff"
+                        text: player1Name
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 18
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                }
+
+                Column {
+                    id: column6
+                    height: parent.height
+                    spacing: 10
+
+                    Text {
+                        id: statTitle2
+                        color: "#ffffff"
+                        text: player2Name
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 18
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                }
+
+            }
+
+        }
+
+        Rectangle {
             id: storyRect
             anchors.fill: parent
             color: "#00000000"
@@ -187,6 +333,7 @@ Rectangle {
                 }
         }
         }
+
 
         Rectangle {
             id: startRect
@@ -246,10 +393,12 @@ Rectangle {
 
         }
 
+
         Field {
             id: gameField
             anchors.fill: parent
         }
+
 
         Rectangle {
             id: difficultyRect
@@ -324,6 +473,48 @@ Rectangle {
                 }
             }
         }
+
+
+        Column {
+            id: finishedColumn
+            x: 150
+            y: 152
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            width: parent.width * 0.7
+            opacity: 0
+            spacing: 5
+
+            Button {
+                id: button5
+                width: parent.width
+                text: "Show " + player1Name + "'s battlefield"
+                textColor: main.textColor
+                textSize: 13
+                fontFamily: main.fontFamily
+                onClicked: showBattlefield(1)
+            }
+
+            Button {
+                id: button6
+                width: parent.width
+                text: "Show " + player2Name + "'s battlefield"
+                textColor: main.textColor
+                textSize: 13
+                fontFamily: main.fontFamily
+                onClicked: showBattlefield(2)
+            }
+
+            Button {
+                id: button7
+                width: parent.width
+                text: "Show stats"
+                textColor: main.textColor
+                textSize: 13
+                fontFamily: main.fontFamily
+                onClicked: main.state = "statsState"
+                }
+            }
     }
 
     states: [
@@ -346,6 +537,11 @@ Rectangle {
 
             PropertyChanges {
                 target: difficultyRect
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: statsRect
                 opacity: 0
             }
         },
@@ -380,6 +576,11 @@ Rectangle {
                 target: difficultyRect
                 opacity: 0
             }
+
+            PropertyChanges {
+                target: statsRect
+                opacity: 0
+            }
         },
         State {
             name: "storyState"
@@ -403,6 +604,11 @@ Rectangle {
                 target: continueToGameButton
                 anchors.bottomMargin: 20
             }
+
+            PropertyChanges {
+                target: statsRect
+                opacity: 0
+            }
         },
         State {
             name: "difficultyState"
@@ -420,6 +626,92 @@ Rectangle {
             PropertyChanges {
                 target: storyRect
                 opacity: 0
+            }
+
+            PropertyChanges {
+                target: statsRect
+                opacity: 0
+            }
+        },
+        State {
+            name: "statsState"
+
+            PropertyChanges {
+                target: storyRect
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: startRect
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: gameField
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: difficultyRect
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: row1
+                opacity: 1
+            }
+
+            PropertyChanges {
+                target: column3
+                opacity: 1
+            }
+
+        },
+        State {
+            name: "gameFinishedState"
+            PropertyChanges {
+                target: startRect
+                opacity: "0"
+            }
+
+            PropertyChanges {
+                target: gameField
+                opacity: 0.500
+            }
+
+            PropertyChanges {
+                target: logo2
+                width: height
+            }
+
+            PropertyChanges {
+                target: backgroundSmoke
+                opacity: "0"
+            }
+
+            PropertyChanges {
+                target: storyRect
+                opacity: "0"
+            }
+
+            PropertyChanges {
+                target: difficultyRect
+                opacity: "0"
+            }
+
+            PropertyChanges {
+                target: statsRect
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: finishedColumn
+                opacity: 1
+            }
+
+            PropertyChanges {
+                target: button5
+                opacity: 1
             }
         }
     ]
@@ -468,5 +760,9 @@ Rectangle {
     function clearOSD()
     {
         osdText.clearText()
+    }
+    function gameFinished()
+    {
+        main.state = "gameFinishedState"
     }
 }
