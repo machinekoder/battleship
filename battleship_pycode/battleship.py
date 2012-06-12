@@ -95,7 +95,7 @@ class BattleShip( QObject ):
         self.player1 = Player( self.battleShipUi.property( "playerName" ), "blue", gameSize )
         self.player2 = Player( "Computer", "red", gameSize )
         
-        self.player1.human = False
+        self.player1.human = True
         self.player2.human = False
 
         # start the ship placement
@@ -113,7 +113,7 @@ class BattleShip( QObject ):
             
 
     @pyqtSlot(int,int,bool)
-    def shipPlaced(self,index,size,rotation):
+    def shipPlaced(self,index,size,rotation):   
       currentPlayer = None
       if self.state == GameStates.Player1ShipPlacementState:
         currentPlayer = self.player1
@@ -123,31 +123,38 @@ class BattleShip( QObject ):
       fieldSize = currentPlayer.fieldSize
       x = index % fieldSize
       y = index // fieldSize
-      ret = currentPlayer.gameField.placeShip(size,rotation, x , y)
-      if self.syncField( currentPlayer , showAll=True) == True:
+      if currentPlayer.gameField.placeShip(size,rotation, x , y) == True:
+        self.syncField( currentPlayer , showAll=True)
+        allShipsPlaced = False
         if self.currentShip == 1:
           currentPlayer.extrasmallship -= 1
           if currentPlayer.extrasmallship == 0:
-            self.currentShip == 2
+            self.currentShip = 2
         elif self.currentShip == 2:
           currentPlayer.smallship -= 1
           if currentPlayer.smallship == 0:
-            self.currentShip == 3
+            self.currentShip = 3
         elif self.currentShip == 3:
           currentPlayer.mediumship -= 1
           if currentPlayer.mediumship == 0:
-            self.currentShip == 4
+            if currentPlayer.bigship != 0:
+              self.currentShip = 4
+            else:
+              allShipsPlaced = True
         elif self.currentShip == 4:
           currentPlayer.bigship -= 1
           if currentPlayer.bigship == 0:
-            self.battleShipUi.stopShipPlacement()
-            if self.state == GameStates.Player1ShipPlacementState:
-              self.state = GameStates.Player2ShipPlacementState
-              self.playerShipPlacement()
-            elif self.state == GameStates.Player2ShipPlacementState:
-              self.state = GameStates.Player1GameState
-              self.playerTurn()
-            return
+            allShipsPlaced = True
+            
+        if allShipsPlaced:    
+          self.battleShipUi.stopShipPlacement()
+          if self.state == GameStates.Player1ShipPlacementState:
+            self.state = GameStates.Player2ShipPlacementState
+            self.playerShipPlacement()
+          elif self.state == GameStates.Player2ShipPlacementState:
+            self.state = GameStates.Player1GameState
+            self.playerTurn()
+          return
         
         self.battleShipUi.startShipPlacement( self.currentShip, currentPlayer.color )
       
@@ -163,15 +170,18 @@ class BattleShip( QObject ):
         targetPlayer = self.player1
       
       if currentPlayer.human:
-        if targetPlayer.ShipLeft != 0:
-          #destroy the frekkin ship
-          if self.state == GameStates.Player1GameState:
-            self.state = GameStates.Player2GameState
-          elif self.state == GameStates.Player2GameState:
-            self.state = GameStates.Player1GameState
-          self.playerTurn()
-        else:
-          self.gameFinished()
+        fieldSize = currentPlayer.fieldSize
+        x = index % fieldSize
+        y = index // fieldSize
+        if targetPlayer.playerShoot(x=x,y=y):
+          if targetPlayer.ShipLeft != 0:
+            if self.state == GameStates.Player1GameState:
+              self.state = GameStates.Player2GameState
+            elif self.state == GameStates.Player2GameState:
+              self.state = GameStates.Player1GameState
+            self.playerTurn()
+          else:
+            self.gameFinished()
        
     def playerShipPlacement( self ):
       currentPlayer = None
@@ -204,13 +214,14 @@ class BattleShip( QObject ):
         currentPlayer = self.player2
         targetPlayer = self.player1
         
-      self.syncField( targetPlayer )
+      self.syncField( targetPlayer, showAll=targetPlayer.human )
+        
       self.battleShipUi.outputOSD(currentPlayer.name + "'s turn")
       if currentPlayer.human:
         self.battleShipUi.startSelectionMode()
       else:
         targetPlayer.computerKI()
-        self.syncField( targetPlayer )
+        self.syncField( targetPlayer , showAll=targetPlayer.human)
         if targetPlayer.ShipLeft != 0:
           # thinking...
           if self.state == GameStates.Player1GameState:
@@ -218,7 +229,7 @@ class BattleShip( QObject ):
           elif self.state == GameStates.Player2GameState:
             self.state = GameStates.Player1GameState
           timer = QTimer(self)
-          timer.setInterval(200)
+          timer.setInterval(currentPlayer.thinkSpeed)
           timer.setSingleShot(True)
           timer.timeout.connect(self.playerTurn)
           timer.start()

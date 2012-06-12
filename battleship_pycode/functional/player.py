@@ -36,6 +36,7 @@ class Player( QObject ):
         self.extrasmallship = 0
         self.shipSize_com = 0
         self.human = False
+        self.thinkSpeed = 1000
         self.ships()
         
     
@@ -320,9 +321,9 @@ class Player( QObject ):
                 self.gameField.matrix[y][x].shipHit = True
                 coordinatesnew = [y, x]
                 self.gameField.matrix[y][x].IsShipdestroyed( coordinatesnew )
-                return True
             else:
                 self.gameField.matrix[y][x].missed = True
-                return False
+            
+            return True
         
                      
