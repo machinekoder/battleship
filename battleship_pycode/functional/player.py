@@ -48,7 +48,7 @@ class Player( QObject ):
     def computerPlaceShip( self ):
         while self.bigship > 0:
             self.computerPlaceShipFinal( 4, self.bigship )
-            self.biship -= 1          
+            self.bigship -= 1          
         while self.mediumship > 0:
             self.computerPlaceShipFinal( 3, self.mediumship )            
             self.mediumship -= 1   
@@ -222,10 +222,10 @@ class Player( QObject ):
         self.ships()
         
         #ships destroyed        
-        self.bigship_destroyed = self.bigship_left - self.bigship
-        self.smallship_destroyed = self.smallship_left - self.smallship
-        self.mediumship_destroyed = self.mediumship_left - self.mediumship
-        self.extrasmallship_destroyed = self.extrasmallship_left - self.extrasmallship
+        self.bigship_destroyed = self.bigship - self.bigship_left
+        self.mediumship_destroyed = self.mediumship - self.mediumship_left 
+        self.smallship_destroyed = self.smallship - self.smallship_left
+        self.extrasmallship_destroyed = self.extrasmallship - self.extrasmallship_left 
         #get percentage of destroyed ships
         
         shipparts = 0
