@@ -317,6 +317,7 @@ class Player( QObject ):
             self.gameField.matrix[y][x].fired = True
             if self.gameField.matrix[y][x].placeFull == True:
                 self.gameField.matrix[y][x].shipHit = True
+                self.shipHit.emit( x, y )
                 coordinatesnew = [y, x]
                 if self.gameField.IsShipDestroyed( coordinatesnew ) == True:
                     self.ShipLeft -= 1
