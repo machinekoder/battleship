@@ -32,6 +32,7 @@ Rectangle {
     signal shipPlaced (int index, int size, bool rotation)
     signal fieldPressed(int index)
     signal musicMuteChanged (bool muted)
+    signal soundMuteChanged (bool muted)
     signal showBattlefield(int index)
 
     id: main
@@ -146,9 +147,28 @@ Rectangle {
                 textSize: 13
                 fontFamily: main.fontFamily
                 checkable: true
+                checked: true
                 sound: false
                 onCheckedChanged:{
-                    musicMuteChanged(checked)
+                    musicMuteChanged(!checked)
+                }
+            }
+
+            Button {
+                id: soundMuteButton
+                height: parent.height -10
+                text: "Sound"
+                anchors.right: musicMuteButton.left
+                anchors.rightMargin: 5
+                anchors.verticalCenter: parent.verticalCenter
+                textColor: main.textColor
+                textSize: 13
+                fontFamily: main.fontFamily
+                checkable: true
+                checked: true
+                sound: false
+                onCheckedChanged:{
+                    soundMuteChanged(!checked)
                 }
             }
 
@@ -161,7 +181,7 @@ Rectangle {
                 anchors.rightMargin: 5
                 anchors.verticalCenter: parent.verticalCenter
                 fontFamily: main.fontFamily
-                anchors.right: musicMuteButton.left
+                anchors.right: soundMuteButton.left
                 visible: gameField.placeMode
                 onClicked: {
                     gameField.rotateShip()
