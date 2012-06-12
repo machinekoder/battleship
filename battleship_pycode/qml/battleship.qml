@@ -200,18 +200,6 @@ Rectangle {
                 }
             }
 
-
-            StatBar {
-                id: statbar1
-                x: 150
-                anchors.top: row1.bottom
-                anchors.topMargin: 10
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-
-
-
-
             Row {
                 id: row1
                 width: parent.width * 0.9
@@ -238,7 +226,7 @@ Rectangle {
                     Text {
                         id: statTitle4
                         color: "#ffffff"
-                        text: "Ships left:"
+                        text: "Ships Destroyed:"
                         style: Text.Raised
                         font.family: fontFamily
                         font.pointSize: 14
@@ -246,9 +234,35 @@ Rectangle {
                     }
 
                     Text {
-                        id: statTitle5
                         color: "#ffffff"
-                        text: "Ships destroyed:"
+                        text: "Extra Small:"
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    Text {
+                        color: "#ffffff"
+                        text: "Small:"
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    Text {
+                        color: "#ffffff"
+                        text: "Medium:"
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    Text {
+                        color: "#ffffff"
+                        text: "Big:"
                         style: Text.Raised
                         font.family: fontFamily
                         font.pointSize: 14
@@ -280,6 +294,31 @@ Rectangle {
                         font.pointSize: 18
                         horizontalAlignment: Text.AlignHCenter
                     }
+
+                    Text {
+                        id: statTitle7
+                        color: "#ffffff"
+                        text: "10"
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    StatBar {
+                        id: statbar1
+                        width: parent.width
+                    }
+
+                    Text {
+                        id: statTitle8
+                        color: "#ffffff"
+                        text: "20"
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
+                        horizontalAlignment: Text.AlignHCenter
+                    }
                 }
 
                 Column {
@@ -294,6 +333,31 @@ Rectangle {
                         style: Text.Raised
                         font.family: fontFamily
                         font.pointSize: 18
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    Text {
+                        id: statTitle9
+                        color: "#ffffff"
+                        text: "10"
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    StatBar {
+                        id: statbar2
+                        width: parent.width
+                    }
+
+                    Text {
+                        id: statTitle10
+                        color: "#ffffff"
+                        text: "20"
+                        style: Text.Raised
+                        font.family: fontFamily
+                        font.pointSize: 14
                         horizontalAlignment: Text.AlignHCenter
                     }
                 }
