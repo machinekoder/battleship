@@ -71,9 +71,7 @@ class Player( QObject ):
         i1 = random.randint( 0, self.fieldSize * self.fieldSize - 1 )
         self.y = i1 // self.fieldSize
         self.x = i1 % self.fieldSize
-#        yx = [y1, x1]
-#        return 0
-        
+
     def computerKI( self ):
         var = 0        
         if self.hitlastround == True: 
@@ -86,7 +84,6 @@ class Player( QObject ):
                     boolvar = self.computerControl( x = var, y = y )
                     if boolvar == False:
                         self.cros = 1
-                       
                     if boolvar == True:
                         self.mouse += 1
                 else:
@@ -95,7 +92,6 @@ class Player( QObject ):
             if  self.cros == 1 and self.movement == 0:
                 var = x - 1 - self.mouse
                 if var >= 0:
-                    self.mouse += 1 
                     boolvar = self.computerControl( x = var, y = y )
                     if boolvar == False:
                         self.cros = 2
@@ -108,7 +104,6 @@ class Player( QObject ):
             if  self.cros == 2 and self.movement == 0:
                 var = y + 1 + self.mouse 
                 if var < self.fieldSize:
-                    self.mouse += 1 
                     boolvar = self.computerControl( x = x, y = var )
                     if boolvar == False: 
                         self.cros = 3
@@ -121,7 +116,6 @@ class Player( QObject ):
             if self.cros == 3 and self.movement == 0:
                 var = y - 1 - self.mouse
                 if var >= 0: 
-                    self.mouse += 1 
                     boolvar = self.computerControl( x = x, y = var ) 
                     if boolvar == False:
                         self.cros = 0
@@ -186,7 +180,6 @@ class Player( QObject ):
                 return False               
         else:
             self.mouse = 0
-            self.cros += 1
             return False
 ##        self.hitlastround = True
 
@@ -198,6 +191,9 @@ class Player( QObject ):
         boolvar = self.computerControl( x = self.x, y = self.y ) 
         if boolvar == True:
             self.hitlastround = True
+        else:
+            self.hitlastround = False
+            
          
     def ships( self ):
         #standard ship size is 5
