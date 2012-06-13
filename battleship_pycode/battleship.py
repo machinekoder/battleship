@@ -347,12 +347,6 @@ class BattleShip( QObject ):
         self.lazerSound.play()
         self.smallExplosionSound.play()
         
-    @pyqtSlot()
-    def explodeShipPart( self ):
-      self.battleShipUi.explodeShip(1,self.destructionX,self.destructionY)
-      if not self.soundMuted:
-        self.bigExplosionSound.play()
-        
     @pyqtSlot(int,int,int,bool)
     def destroyShip(self,x,y,size,rotated):
       self.battleShipUi.explodeShip(x,y,size,rotated)
