@@ -138,13 +138,31 @@ Rectangle {
     {
         testShip.rotated = !testShip.rotated
     }
-    function explodeShip(size,x, y)
+    function explodeShip(x,y,size,rotated)
     {
         if (size === 1)
         {
+            smallshipExplosion.width = 1
+            smallshipExplosion.height = 1
             smallshipExplosion.x = x * gridView.cellWidth + gridView.cellWidth/2
             smallshipExplosion.y = y * gridView.cellHeight + gridView.cellHeight/2
             smallshipExplosion.burst(100,500)
+        }
+        else
+        {
+            if (rotated)
+            {
+                smallshipExplosion.width = gridView.cellWidth*size
+                smallshipExplosion.height = gridView.cellHeight
+            }
+            else
+            {
+                smallshipExplosion.width = gridView.cellWidth
+                smallshipExplosion.height = gridView.cellHeight*size
+            }
+            smallshipExplosion.x = x * gridView.cellWidth
+            smallshipExplosion.y = y * gridView.cellHeight
+            smallshipExplosion.burst(100*size,500)
         }
     }
     function missShip(x,y)

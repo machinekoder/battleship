@@ -48,6 +48,7 @@ class BattleShip( QObject ):
       self.osdSound = pygame.mixer.Sound("music/osd_text.wav" )  #load sound
       self.buttonSound = pygame.mixer.Sound("music/button.wav" )
       self.smallExplosionSound = pygame.mixer.Sound("music/small_explosion.wav" )
+      self.bigExplosionSound = pygame.mixer.Sound("music/explosion.ogg" )
       self.lazerSound = pygame.mixer.Sound("music/scifi002.wav" )
       self.errorSound = pygame.mixer.Sound("music/error.wav" )
       self.okSound = pygame.mixer.Sound("music/scifi011.wav" )
@@ -112,6 +113,8 @@ class BattleShip( QObject ):
         self.player2.shipHit.connect(self.explodeShip)
         self.player1.shipMissed.connect(self.missShip)
         self.player2.shipMissed.connect(self.missShip)
+        self.player1.shipDestroyed.connect(self.destroyShip)
+        self.player2.shipDestroyed.connect(self.destroyShip)
 
         # start the ship placement
         self.state = GameStates.Player1ShipPlacementState
@@ -205,6 +208,9 @@ class BattleShip( QObject ):
             timer.start()
           else:
             self.gameFinished()
+        else:
+          if not self.soundMuted:
+            self.errorSound.play()
        
     def playerShipPlacement( self ):
       currentPlayer = None
@@ -336,10 +342,22 @@ class BattleShip( QObject ):
          
     @pyqtSlot( int, int)
     def explodeShip( self, x,y):
-      self.battleShipUi.explodeShip(1,x,y)
+      self.battleShipUi.explodeShip(x,y,1,False)
       if not self.soundMuted:
         self.lazerSound.play()
         self.smallExplosionSound.play()
+        
+    @pyqtSlot()
+    def explodeShipPart( self ):
+      self.battleShipUi.explodeShip(1,self.destructionX,self.destructionY)
+      if not self.soundMuted:
+        self.bigExplosionSound.play()
+        
+    @pyqtSlot(int,int,int,bool)
+    def destroyShip(self,x,y,size,rotated):
+      self.battleShipUi.explodeShip(x,y,size,rotated)
+      if not self.soundMuted:
+        self.bigExplosionSound.play()
       
     @pyqtSlot(int, int)
     def missShip(self,x,y):

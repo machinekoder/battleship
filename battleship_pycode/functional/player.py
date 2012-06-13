@@ -160,15 +160,15 @@ class Player( QObject ):
                     if shipSize == 1:
                         self.extrasmallship_destroyed += 1
                         
-                    if rotated:  
-                       for x1 in range( head_tail.x(), head_tail.x() + shipSize ):
-                           self.shipHit.emit( x1, y )
+                    #if rotated:  
+                    #   for x1 in range( head_tail.x(), head_tail.x() + shipSize ):
+                    #       self.shipHit.emit( x1, y )
 #                           time.sleep( 0.1 )
-                    else:
-                       for y1 in range( head_tail.y(), head_tail.y() + shipSize ):
-                           self.shipHit.emit( x, y1 )
+                    #else:
+                    #   for y1 in range( head_tail.y(), head_tail.y() + shipSize ):
+                    #       self.shipHit.emit( x, y1 )
 #                           time.sleep( 0.1 )
-                    # self.shipDestroyed.emit( head_tail.x(), head_tail.y(), shipSize, rotated )
+                    self.shipDestroyed.emit( head_tail.x(), head_tail.y(), shipSize, rotated )
                     self.ShipLeft -= 1    
                     self.hitlastround = False
                     self.mouse = 0

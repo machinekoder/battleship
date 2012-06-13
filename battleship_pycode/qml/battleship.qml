@@ -1024,9 +1024,9 @@ Rectangle {
     {
         main.state = "gameFinishedState"
     }
-    function explodeShip(size,x,y)
+    function explodeShip(x,y,size,rotated)
     {
-        gameField.explodeShip(size,x,y)
+        gameField.explodeShip(x,y,size,rotated)
     }
     function missShip(x,y)
     {
