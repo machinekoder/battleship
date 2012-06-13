@@ -247,7 +247,6 @@ class Player( QObject ):
         #get percentage of destroyed ships
         self.percentdestr = ( shipparts_destroyed * 100 ) // shipparts
 
-
     def playerShoot( self, y = 0, x = 0 ):
         if self.gameField.matrix[y][x].fired == True:
             return False
