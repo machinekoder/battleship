@@ -298,8 +298,8 @@ class BattleShip( QObject ):
       self.battleShipUi.setProperty("mediumDestroyed2", self.player2.mediumship_destroyed)
       self.battleShipUi.setProperty("bigDestroyed1", self.player1.bigship_destroyed)
       self.battleShipUi.setProperty("bigDestroyed2", self.player2.bigship_destroyed)
-      self.battleShipUi.setProperty("turns1", self.player1.movement)
-      self.battleShipUi.setProperty("turns2", self.player2.movement)
+      self.battleShipUi.setProperty( "turns1", self.player2.movement )
+      self.battleShipUi.setProperty( "turns2", self.player1.movement )
       self.battleShipUi.gameFinished()
       
     @pyqtSlot()
