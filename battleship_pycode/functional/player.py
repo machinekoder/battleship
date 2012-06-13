@@ -42,7 +42,8 @@ class Player( QObject ):
         self.shipSize_com = 0
         self.human = False
         self.thinkSpeed = 1000
-        self.coordinates = []
+        self.x = 0
+        self.y = 0
         self.ships()
 #        print( "bigship", self.bigship )        
     
@@ -62,158 +63,156 @@ class Player( QObject ):
 
     def computerPlaceShipFinal( self, shipSize_com = 0, ships = 0 ): 
         rotateship = True if ( ships % 2 ) == 1 else False
-        coordinates = self.YXcoordinates()
-        while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = coordinates[ 0 ], x = coordinates[ 1] ):
-            coordinates = self.YXcoordinates()    
+#        coordinates = self.YXcoordinates()
+        while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = self.y, x = self.x ):
+            self.YXcoordinates()    
                   
     def YXcoordinates( self ): 
         i1 = random.randint( 0, self.fieldSize * self.fieldSize - 1 )
-        y1 = i1 // self.fieldSize
-        x1 = i1 % self.fieldSize
-        yx = [y1, x1]
-        return yx
+        self.y = i1 // self.fieldSize
+        self.x = i1 % self.fieldSize
+#        yx = [y1, x1]
+#        return 0
         
     def computerKI( self ):
         var = 0        
-#       Move right
-        if self.hitlastround == False:
-            self.coordinates = self.YXcoordinates()
-            x = self.coordinates[1]
-            y = self.coordinates[0]
-            while self.gameField.matrix[y][x].fired == True:
-                self.coordinates = self.YXcoordinates() 
-                x = self.coordinates[1]
-                y = self.coordinates[0]
-            self.computerControl( x = x, y = y )
-            print( "coordinats False: ", self.coordinates )           
-            print( "coordinats True: ", self.coordinates )
-        if self.hitlastround == True:   
-            x = self.coordinates[1]
-            y = self.coordinates[0]    
-            if self.cros == 0 :
+        if self.hitlastround == True: 
+            x = self.x
+            y = self.y   
+            if self.cros == 0 and self.movement == 0:
                 var = x + 1 + self.mouse
                 if var < self.fieldSize:
+#                    self.mouse += 1 
                     boolvar = self.computerControl( x = var, y = y )
                     if boolvar == False:
                         self.cros = 1
+                       
+                    if boolvar == True:
+                        self.mouse += 1
                 else:
                     self.cros = 1
-                    self.mouse = 0
              # move left
-            elif  self.cros == 1 :
+            if  self.cros == 1 and self.movement == 0:
                 var = x - 1 - self.mouse
                 if var >= 0:
+                    self.mouse += 1 
                     boolvar = self.computerControl( x = var, y = y )
                     if boolvar == False:
                         self.cros = 2
+                    if boolvar == True:
+                        self.mouse += 1
                 else:
                     self.cros = 2
                     self.mouse = 0
                 #Move down 
-            elif  self.cros == 2 :
+            if  self.cros == 2 and self.movement == 0:
                 var = y + 1 + self.mouse 
                 if var < self.fieldSize:
+                    self.mouse += 1 
                     boolvar = self.computerControl( x = x, y = var )
                     if boolvar == False: 
                         self.cros = 3
+                    if boolvar == True:
+                        self.mouse += 1
                 else:
                     self.cros = 3
                     self.mouse = 0
         #move up
-            elif self.cros == 3 :
+            if self.cros == 3 and self.movement == 0:
                 var = y - 1 - self.mouse
                 if var >= 0: 
-                    boolval = self.computerControl( x = x, y = var ) 
-                    if boolval == False:
+                    self.mouse += 1 
+                    boolvar = self.computerControl( x = x, y = var ) 
+                    if boolvar == False:
                         self.cros = 0
-                        self.hitlastround = False
-                else:
-                    self.mouse = 0
-                    self.cros = 0
-                    self.hitlastround = False
+                        self.hitlastround = False 
+                    if boolvar == True:
+                        self.mouse += 1
+        if self.movement == 0:                        
+            self.computerRandomKi()
 #            else:
-#                self.coordinates = self.YXcoordinates()
-#                x = self.coordinates[1]
-#                y = self.coordinates[0]
-#                while self.gameField.matrix[y][x].fired == True:
-#                    self.coordinates = self.YXcoordinates() 
-#                    x = self.coordinates[1]
-#                    y = self.coordinates[0]
-#                self.computerControl( x = x, y = y )
-#                print( "coordinats False: ", self.coordinates )           
-#                print( "coordinats True: ", self.coordinates )   
+
 #                    
  
 #        print( "shipleft", self.ShipLeft )  
         if self.ShipLeft == 0 :
-#            print( "Computer won after", self.movement, "tries" )
+            print( "Computer won after", self.movement, "tries" )
             return True
+        else:
+            self.movement = 0
+            return False
 #        else:
 #            print( "hitlastround: ", self.hitlastround )
 #        print( "cros        :" , self.cros )
 #            print( "fieldsize        :", self.fieldSize )
 #        print( "mouse        :", self.mouse )
     def computerControl( self, x = 0, y = 0 ):
-        
         if self.gameField.matrix[y][x ].fired == False:
             self.gameField.matrix[y][x].fired = True
-#            self.movement += 1
+            self.movement = 1
             if self.gameField.matrix[y][x ].placeFull == True:
                 self.gameField.matrix[y][x ].shipHit = True
-                self.mouse += 1 
                 self.hitlastround = True
-                print( "self.mouse:", self.mouse )
-                print( "self.cros :", self.cros )
-#                print( "shipemit: yx", y, x ) 
+#                print( "self.mouse:", self.mouse )
+#                print( "self.cros :", self.cros )
+##                print( "shipemit: yx", y, x ) 
                 self.shipHit.emit( x, y )
                 coordinatesnew = [y, x]
                 shipdestroyed = self.gameField.IsShipDestroyed( coordinatesnew )
                 if shipdestroyed == True:
-                    head_tail = self.gameField.IsShipDestroyed( coordinatesnew, callfunktion = 1 )
-                    shipSize = self.gameField.matrix[y][x].shipType
-#                    print( "Tail", head_tail )
-                    rotated = self.gameField.matrix[y][x].rotated
-                    if rotated:  
-                       for x1 in range( head_tail.x(), head_tail.x() + shipSize ):
-#                           print( x1, y )
-                           self.shipHit.emit( x1, y )
-#                           time.sleep( 0.1 )
-                    else:
-                       for y1 in range( head_tail.y(), head_tail.y() + shipSize ):
-                           self.shipHit.emit( x, y1 )
-#                           time.sleep( 0.1 )
-                    # self.shipDestroyed.emit( head_tail.x(), head_tail.y(), shipSize, rotated )
+#                    head_tail = self.gameField.IsShipDestroyed( coordinatesnew, callfunktion = 1 )
+#                    shipSize = self.gameField.matrix[y][x].shipType
+##                    print( "Tail", head_tail )
+#                    rotated = self.gameField.matrix[y][x].rotated
+#                    if rotated:  
+#                       for x1 in range( head_tail.x(), head_tail.x() + shipSize ):
+##                           print( x1, y )
+#                           self.shipHit.emit( x1, y )
+##                           time.sleep( 0.1 )
+#                    else:
+#                       for y1 in range( head_tail.y(), head_tail.y() + shipSize ):
+#                           self.shipHit.emit( x, y1 )
+##                           time.sleep( 0.1 )
+#                    # self.shipDestroyed.emit( head_tail.x(), head_tail.y(), shipSize, rotated )
                     self.ShipLeft -= 1    
                     self.hitlastround = False
                     self.mouse = 0
-                    self.cros = 0
+                    self.cros = 0  
                 return True
             else:
                 self.mouse = 0
                 self.gameField.matrix[y][x].missed = True
                 self.shipMissed.emit( x, y )    
-                return False
-                   
+                return False               
         else:
             self.mouse = 0
+            self.cros += 1
             return False
-#        self.hitlastround = True
+##        self.hitlastround = True
+
+    def computerRandomKi( self ): 
         
-            
+        self.YXcoordinates()
+        while self.gameField.matrix[self.y][self.x].fired == True:
+            self.YXcoordinates() 
+        boolvar = self.computerControl( x = self.x, y = self.y ) 
+        if boolvar == True:
+            self.hitlastround = True
+         
     def ships( self ):
         #standard ship size is 5
         if self.fieldSize == 20:
-           self.bigship = 10
-           self.mediumship = 5
-           self.smallship = 6
-           self.extrasmallship = 4
-           self.ShipLeft = 25
+            self.bigship = 10
+            self.mediumship = 5
+            self.smallship = 6
+            self.extrasmallship = 4
+            self.ShipLeft = 25
         elif self.fieldSize == 16:
-           self.bigship = 3
-           self.mediumship = 3
-           self.smallship = 1
-           self.extrasmallship = 2   
-           self.ShipLeft = 9
+            self.bigship = 3
+            self.mediumship = 3
+            self.smallship = 1
+            self.extrasmallship = 2   
+            self.ShipLeft = 9
         elif self.fieldSize == 10:
             self.bigship = 2
             self.mediumship = 2
@@ -221,17 +220,17 @@ class Player( QObject ):
             self.extrasmallship = 2
             self.ShipLeft = 8
         elif self.fieldSize == 5:
-           self.bigship = 0
-           self.mediumship = 1
-           self.smallship = 1
-           self.extrasmallship = 2
-           self.ShipLeft = 4   
+            self.bigship = 0
+            self.mediumship = 1
+            self.smallship = 1
+            self.extrasmallship = 2
+            self.ShipLeft = 4   
         else :
-           self.bigship = 1
-           self.mediumship = 1
-           self.smallship = 1
-           self.extrasmallship = 2
-           self.ShipLeft = 5 
+            self.bigship = 1
+            self.mediumship = 1
+            self.smallship = 1
+            self.extrasmallship = 2
+            self.ShipLeft = 5 
                       
     def statistic( self ):  
         #ships destroyed
