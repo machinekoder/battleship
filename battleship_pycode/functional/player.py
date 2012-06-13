@@ -45,6 +45,10 @@ class Player( QObject ):
         self.x = 0
         self.y = 0
         self.ships()
+        self.bigship_destroyed = 0
+        self.mediumship_destroyed = 0
+        self.smallship_destroyed = 0
+        self.extrasmallship_destroyed = 0
 #        print( "bigship", self.bigship )        
     
     def computerPlaceShip( self ):
@@ -63,7 +67,6 @@ class Player( QObject ):
 
     def computerPlaceShipFinal( self, shipSize_com = 0, ships = 0 ): 
         rotateship = True if ( ships % 2 ) == 1 else False
-#        coordinates = self.YXcoordinates()
         while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = self.y, x = self.x ):
             self.YXcoordinates()    
                   
@@ -77,6 +80,7 @@ class Player( QObject ):
         if self.hitlastround == True: 
             x = self.x
             y = self.y   
+#            Move right
             if self.cros == 0 and self.movement == 0:
                 var = x + 1 + self.mouse
                 if var < self.fieldSize:
@@ -112,7 +116,7 @@ class Player( QObject ):
                 else:
                     self.cros = 3
                     self.mouse = 0
-        #move up
+           #move up
             if self.cros == 3 and self.movement == 0:
                 var = y - 1 - self.mouse
                 if var >= 0: 
@@ -122,24 +126,17 @@ class Player( QObject ):
                         self.hitlastround = False 
                     if boolvar == True:
                         self.mouse += 1
+                        
         if self.movement == 0:                        
             self.computerRandomKi()
-#            else:
-
-#                    
- 
-#        print( "shipleft", self.ShipLeft )  
+              
         if self.ShipLeft == 0 :
             print( "Computer won after", self.movement, "tries" )
             return True
         else:
             self.movement = 0
             return False
-#        else:
-#            print( "hitlastround: ", self.hitlastround )
-#        print( "cros        :" , self.cros )
-#            print( "fieldsize        :", self.fieldSize )
-#        print( "mouse        :", self.mouse )
+        
     def computerControl( self, x = 0, y = 0 ):
         if self.gameField.matrix[y][x ].fired == False:
             self.gameField.matrix[y][x].fired = True
@@ -147,27 +144,31 @@ class Player( QObject ):
             if self.gameField.matrix[y][x ].placeFull == True:
                 self.gameField.matrix[y][x ].shipHit = True
                 self.hitlastround = True
-#                print( "self.mouse:", self.mouse )
-#                print( "self.cros :", self.cros )
-##                print( "shipemit: yx", y, x ) 
                 self.shipHit.emit( x, y )
                 coordinatesnew = [y, x]
                 shipdestroyed = self.gameField.IsShipDestroyed( coordinatesnew )
                 if shipdestroyed == True:
-#                    head_tail = self.gameField.IsShipDestroyed( coordinatesnew, callfunktion = 1 )
-#                    shipSize = self.gameField.matrix[y][x].shipType
-##                    print( "Tail", head_tail )
-#                    rotated = self.gameField.matrix[y][x].rotated
-#                    if rotated:  
-#                       for x1 in range( head_tail.x(), head_tail.x() + shipSize ):
-##                           print( x1, y )
-#                           self.shipHit.emit( x1, y )
-##                           time.sleep( 0.1 )
-#                    else:
-#                       for y1 in range( head_tail.y(), head_tail.y() + shipSize ):
-#                           self.shipHit.emit( x, y1 )
-##                           time.sleep( 0.1 )
-#                    # self.shipDestroyed.emit( head_tail.x(), head_tail.y(), shipSize, rotated )
+                    head_tail = self.gameField.IsShipDestroyed( coordinatesnew, callfunktion = 1 )
+                    shipSize = self.gameField.matrix[y][x].shipType
+                    rotated = self.gameField.matrix[y][x].rotated
+                    if shipSize == 4:
+                        self.bigship_destroyed += 1
+                    if shipSize == 3:
+                        self.mediumship_destroyed += 1
+                    if shipSize == 2:
+                        self.smallship_destroyed += 1
+                    if shipSize == 1:
+                        self.extrasmallship_destroyed += 1
+                        
+                    if rotated:  
+                       for x1 in range( head_tail.x(), head_tail.x() + shipSize ):
+                           self.shipHit.emit( x1, y )
+#                           time.sleep( 0.1 )
+                    else:
+                       for y1 in range( head_tail.y(), head_tail.y() + shipSize ):
+                           self.shipHit.emit( x, y1 )
+#                           time.sleep( 0.1 )
+                    # self.shipDestroyed.emit( head_tail.x(), head_tail.y(), shipSize, rotated )
                     self.ShipLeft -= 1    
                     self.hitlastround = False
                     self.mouse = 0
@@ -229,12 +230,6 @@ class Player( QObject ):
             self.ShipLeft = 5 
                       
     def statistic( self ):  
-        #ships destroyed
-        self.bigship_destroyed = 0
-        self.mediumship_destroyed = 0
-        self.smallship_destroyed = 0
-        self.extrasmallship_destroyed = 0
-        
         shipparts = 0
         shipparts_destroyed = 0
         fields = 0
@@ -244,36 +239,15 @@ class Player( QObject ):
                 if self.gameField.matrix[y][x].shipType > 0:
                     shipparts += 1
                     shipType = self.gameField.matrix[y][x].shipType
-                    if self.gameField.IsShipDestroyed( coordinate = [y, x] ) == True:
-                        if shipType == 4:
-                            self.bigship_destroyed += 1
-#                            print( "big", self.bigship_destroyed )
-                        if shipType == 3:
-                            self.mediumship_destroyed += 1
-#                            print( "med", self.mediumship_destroyed )
-                        if shipType == 2:
-                            self.smallship_destroyed += 1
-#                            print( "small", self.smallship_destroyed )
-                        if shipType == 1:
-                            self.extrasmallship_destroyed += 1 
-#                            print( "extrasm", self.extrasmallship_destroyed )  
+  
                 if self.gameField.matrix[y][x].shipHit == True:
                     shipparts_destroyed += 1
                 if self.gameField.matrix[y][x].fired == True:
                     self.movement += 1
         #get percentage of destroyed ships
         self.percentdestr = ( shipparts_destroyed * 100 ) // shipparts
-        self.bigship_destroyed //= 4
-        self.mediumship_destroyed //= 3
-        self.smallship_destroyed //= 2
-        self.extrasmallship_destroyed //= 1
-        
-#        print( self.percentdestr, "Percentage of the fleed destroyed:" ) 
-#        print( "-"*50 )
-#        print( "big", self.bigship_destroyed, "med", self.mediumship_destroyed, "small", self.smallship_destroyed, "extrsm", self.extrasmallship_destroyed )
-#        print( "-"*50 )   
-#        print( self.bigship )
-#        print( self.smallship )
+
+
     def playerShoot( self, y = 0, x = 0 ):
         if self.gameField.matrix[y][x].fired == True:
             return False
