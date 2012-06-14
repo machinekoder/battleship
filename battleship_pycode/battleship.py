@@ -45,6 +45,10 @@ class BattleShip( QObject ):
       pygame.mixer.pre_init(44100, -16, 2, 2048) # setup mixer to avoid sound lag
       pygame.init()                      #initialize pygame
       
+      pygame.mixer.music.load('music/carmina_burana.ogg')#load music
+      pygame.mixer.music
+      pygame.mixer.music.play(-1) #play infinitly
+      
       self.osdSound = pygame.mixer.Sound("music/osd_text.wav" )  #load sound
       self.buttonSound = pygame.mixer.Sound("music/button.wav" )
       self.smallExplosionSound = pygame.mixer.Sound("music/small_explosion.wav" )
@@ -59,8 +63,6 @@ class BattleShip( QObject ):
       #self.buttonSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/button.wav" ) )
       #self.explosionSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/inderno_largex.wav" ) )
       #self.lazerSound = Phonon.createPlayer( Phonon.GameCategory, Phonon.MediaSource( "music/lazer.wav" ) )
-
-      self.playMusic()
       
     def initializeView( self ):
       # Create the QML user interface.
@@ -321,10 +323,6 @@ class BattleShip( QObject ):
     def playButtonSound( self ):
       if not self.soundMuted:
         self.buttonSound.play()
-      
-    def playMusic( self ):
-      pygame.mixer.music.load('music/carmina_burana.ogg')#load music
-      pygame.mixer.music.play()
     
     @pyqtSlot( bool )
     def muteMusic( self, mute ):

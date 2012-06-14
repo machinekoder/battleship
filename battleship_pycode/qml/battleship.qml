@@ -530,6 +530,7 @@ Rectangle {
                     id: networkButton
                     width: parent.width
                     text: "Network Game"
+                    visible: false
                     textSize: 13
                     textColor: main.textColor
                     fontFamily: main.fontFamily
@@ -543,14 +544,6 @@ Rectangle {
                     id: playerNameEdit
                     width: parent.width
                     labelText: "Nickname:"
-                    onClicked: {
-                        console.log(text)
-                        if (unedited)
-                        {
-                            setText("")
-                            unedited = false
-                        }
-                    }
                 }
 
         }

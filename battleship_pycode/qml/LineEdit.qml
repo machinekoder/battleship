@@ -61,6 +61,11 @@ Rectangle {
         onClicked: {
             main.clicked()
             input.focus = true
+            if (unedited)
+            {
+                setText("")
+                unedited = false
+            }
         }
     }
 
