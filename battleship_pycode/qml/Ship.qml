@@ -25,7 +25,7 @@ Rectangle {
 
     //transform:  Rotation { origin.x: width/2; origin.y: 10; axis {x:0; y:1; z:0} angle:main.yAngle }
     Timer {
-         interval: 30; running: true; repeat: true
+         interval: 30; running: main.visible; repeat: true
          onTriggered: {
             if (direction == 1)
             {

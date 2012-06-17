@@ -56,16 +56,32 @@ class GameField( QObject ):
         if rotate == True:
             if x + shipSize <= self.width :
                 placement = True
-                for i in range( x , x + shipSize ):
-                    if self.matrix[y][i].placeFull == True:
+                if x > 0:
+                  rangestart = x-1
+                else:
+                  rangestart = x
+                if x + shipSize < self.width:
+                  rangeend = x + shipSize + 1
+                else:
+                  rangeend = x + shipSize
+                for i in range( rangestart , rangeend ):
+                    if (self.matrix[y][i].placeFull == True) or ((y > 0) and (self.matrix[y-1][i].placeFull == True)) or ((y < self.height-1) and (self.matrix[y+1][i].placeFull == True)):
                        placement = False
                        break
-                               
+                
         elif rotate == False:
             if y + shipSize <= self.height :
                placement = True
-               for i in range( y , y + shipSize ):
-                  if self.matrix[i][x].placeFull == True:
+               if y > 0:
+                  rangestart = y-1
+               else:
+                  rangestart = y
+               if y + shipSize < self.height:
+                  rangeend = y + shipSize + 1
+               else:
+                  rangeend = y + shipSize
+               for i in range( rangestart , rangeend ):
+                  if (self.matrix[i][x].placeFull == True) or ((x > 0) and (self.matrix[i][x-1].placeFull == True)) or ((x < self.width-1) and (self.matrix[i][x+1].placeFull == True)):
                      placement = False
                      break
                            

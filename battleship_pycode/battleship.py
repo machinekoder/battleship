@@ -199,10 +199,11 @@ class BattleShip( QObject ):
           self.battleShipUi.stopSelectionMode()
           self.syncField(targetPlayer)
           if targetPlayer.ShipLeft != 0:
-            if self.state == GameStates.Player1GameState:
-              self.state = GameStates.Player2GameState
-            elif self.state == GameStates.Player2GameState:
-              self.state = GameStates.Player1GameState
+            if not targetPlayer.hitlastround:
+              if self.state == GameStates.Player1GameState:
+                self.state = GameStates.Player2GameState
+              elif self.state == GameStates.Player2GameState:
+                self.state = GameStates.Player1GameState
             timer = QTimer(self)
             timer.setInterval(currentPlayer.thinkSpeed)
             timer.setSingleShot(True)
@@ -271,14 +272,15 @@ class BattleShip( QObject ):
       if currentPlayer.human:
         self.battleShipUi.startSelectionMode()
       else:
-        targetPlayer.computerKI()
+        hit = targetPlayer.computerKI()
         self.syncField( targetPlayer , showAll=targetPlayer.human)
         if targetPlayer.ShipLeft != 0:
           # thinking...
-          if self.state == GameStates.Player1GameState:
-            self.state = GameStates.Player2GameState
-          elif self.state == GameStates.Player2GameState:
-            self.state = GameStates.Player1GameState
+          if not hit:
+            if self.state == GameStates.Player1GameState:
+              self.state = GameStates.Player2GameState
+            elif self.state == GameStates.Player2GameState:
+              self.state = GameStates.Player1GameState
           timer = QTimer(self)
           timer.setInterval(currentPlayer.thinkSpeed)
           timer.setSingleShot(True)

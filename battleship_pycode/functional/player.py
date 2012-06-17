@@ -130,14 +130,16 @@ class Player( QObject ):
                         self.mouse += 1
                         
         if self.movement == 0:                        
-            self.computerRandomKi()
+            boolvar = self.computerRandomKi()
               
         if self.ShipLeft == 0 :
             print( "Computer won after", self.movement, "tries" )
-            return True
+            #return True
         else:
             self.movement = 0
-            return False
+            #return False
+            
+        return boolvar
         
     def computerControl( self, x = 0, y = 0 ):
         if self.gameField.matrix[y][x ].fired == False:
@@ -189,6 +191,8 @@ class Player( QObject ):
             self.hitlastround = True
         else:
             self.hitlastround = False
+            
+        return boolvar
             
          
     def ships( self ):
@@ -250,6 +254,7 @@ class Player( QObject ):
             if self.gameField.matrix[y][x].placeFull == True:
                 self.gameField.matrix[y][x].shipHit = True
                 self.shipHit.emit( x, y )
+                self.hitlastround = True
                 coordinatesnew = [y, x]
                 if self.gameField.IsShipDestroyed( coordinatesnew ) == True:
                     self.ShipLeft -= 1
@@ -268,6 +273,7 @@ class Player( QObject ):
             else:
                 self.gameField.matrix[y][x].missed = True
                 self.shipMissed.emit( x, y )
+                self.hitlastround = False
             return True
         
                      
