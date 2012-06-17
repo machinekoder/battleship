@@ -68,6 +68,7 @@ class Player( QObject ):
 
     def computerPlaceShipFinal( self, shipSize_com = 0, ships = 0 ): 
         rotateship = True if ( ships % 2 ) == 1 else False
+        self.YXcoordinates()
         while False == self.gameField.placeShip( shipSize = shipSize_com, rotate = rotateship, y = self.y, x = self.x ):
             self.YXcoordinates()    
                   
