@@ -27,6 +27,12 @@ class Player : public QObject
     Q_PROPERTY(int smallship READ smallship WRITE setSmallship)
     Q_PROPERTY(int extrasmallship READ extrasmallship WRITE setExtrasmallship)
     Q_PROPERTY(int movement READ movement)
+    Q_PROPERTY(int sqCannon READ sqCannon)
+    Q_PROPERTY(int vCannon READ vCannon)
+    Q_PROPERTY(int hCannon READ hCannon)
+    Q_PROPERTY(int sqUseMove READ sqUseMove)
+    Q_PROPERTY(int vUseMove READ vUseMove)
+    Q_PROPERTY(int hUseMove READ hUseMove)
 
 public:
     explicit Player(QObject *parent, QString name, QString color, int fieldSize);
@@ -126,6 +132,36 @@ int movement() const
     return m_movement;
 }
 
+int sqCannon() const
+{
+    return m_sqCannon;
+}
+
+int vCannon() const
+{
+    return m_vCannon;
+}
+
+int hCannon() const
+{
+    return m_hCannon;
+}
+
+int sqUseMove() const
+{
+    return m_sqUseMove;
+}
+
+int vUseMove() const
+{
+    return m_vUseMove;
+}
+
+int hUseMove() const
+{
+    return m_hUseMove;
+}
+
 private:
 
     int m_movement;
@@ -152,12 +188,19 @@ private:
     int m_mediumship;
     int m_smallship;
     int m_extrasmallship;
+    int m_sqCannon;
+    int m_vCannon;
+    int m_hCannon;
+    int m_sqUseMove;
+    int m_vUseMove;
+    int m_hUseMove;
 
     void ships();
     bool computerRandomKi();
     bool computerControl(int x, int y);
     void YXcoordinates();
     void computerPlaceShipFinal(int shipSize, int ships);
+
 
 signals:
 

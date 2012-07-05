@@ -26,7 +26,19 @@ Player::Player(QObject *parent, QString name, QString color, int fieldSize) :
     m_smallShipsDestroyed = 0;
     m_extraSmallShipsDestroyed = 0;
     m_percentDestroyed = 0;
-
+    m_sqCannon=0;
+    m_vCannon=0;
+    m_hCannon=0;
+    m_sqUseMove=0;
+    m_vUseMove=0;
+    m_hUseMove=0;
+    if(!m_human)
+    {
+       int buf=qrand()%25;
+       m_sqUseMove=buf/fieldSize;
+       m_vUseMove=buf%fieldSize;
+       m_hUseMove=m_vUseMove+10;
+    }
     ships();
 
     qsrand(QDateTime::currentMSecsSinceEpoch());    //randomize
@@ -40,33 +52,49 @@ void Player::ships()
         m_mediumship = 5;
         m_smallship = 6;
         m_extrasmallship = 4;
+        m_sqCannon=2;
+        m_vCannon=2;
+        m_hCannon=2;
         break;
     case 16:
         m_bigship = 3;
         m_mediumship = 3;
         m_smallship = 1;
         m_extrasmallship = 2;
+        m_sqCannon=2;
+        m_vCannon=2;
+        m_hCannon=2;
         break;
     case 10:
         m_bigship = 2;
         m_mediumship = 2;
         m_smallship = 2;
         m_extrasmallship = 2;
+        m_sqCannon=1;
+        m_vCannon=1;
+        m_hCannon=1;
         break;
     case 5:
         m_bigship = 0;
-        m_mediumship = 1;
-        m_smallship = 1;
+        m_mediumship = 0;
+        m_smallship = 2;
         m_extrasmallship = 2;
+        m_sqCannon=2;
+        m_vCannon=0;
+        m_hCannon=0;
         break;
     default:
         m_bigship = 1;
         m_mediumship = 1;
         m_smallship = 1;
         m_extrasmallship = 2;
+        m_sqCannon=1;
+        m_vCannon=1;
+        m_hCannon=1;
     }
 
     m_shipsLeft = m_bigship + m_mediumship + m_smallship + m_extrasmallship;
+    qDebug()<< m_shipsLeft;
 }
 
 bool Player::computerRandomKi()
@@ -323,3 +351,20 @@ void Player::computerPlaceShipFinal(int shipSize, int ships)
     while (m_gameField->placeShip(shipSize, rotateShip, x,y) == false)
         YXcoordinates();
 }
+
+//void Player::shotOption(int option)
+//{
+//    switch(option)
+//    {
+//    case 1:
+//    {
+
+//    }
+//    case 2:
+//    {
+//    }
+
+//}
+
+
+//}
