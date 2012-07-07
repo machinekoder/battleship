@@ -38,7 +38,7 @@ public:
     explicit Player(QObject *parent, QString name, QString color, int fieldSize);
 
     void statistic();
-    bool playerShoot(int x, int y);
+    bool playerShoot(int x, int y, int shotType);
     void computerPlaceShip();
     bool computerKi();
 

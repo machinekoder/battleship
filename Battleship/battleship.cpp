@@ -24,8 +24,8 @@ Battleship::Battleship(QGraphicsObject *ui, QObject *parent) :
             this, SLOT(muteSound(bool)));
     connect(battleshipUi, SIGNAL(shipPlaced(int,int,bool)),
             this, SLOT(shipPlaced(int,int,bool)));
-    connect(battleshipUi, SIGNAL(fieldPressed(int)),
-            this, SLOT(fieldPressed(int)));
+    connect(battleshipUi, SIGNAL(fieldPressed(int,int)),
+            this, SLOT(fieldPressed(int,int)));
     connect(battleshipUi, SIGNAL(showBattlefield(int)),
             this, SLOT(showBattlefield(int)));
 }
@@ -180,7 +180,7 @@ void Battleship::shipPlaced(int index, int size, bool rotation)
     }
 }
 
-void Battleship::fieldPressed(int index)
+void Battleship::fieldPressed(int index, int shotType)
 {
     Player *currentPlayer = NULL;
     Player *targetPlayer = NULL;
@@ -200,7 +200,7 @@ void Battleship::fieldPressed(int index)
         int fieldSize = currentPlayer->fieldSize();
         int x = index % fieldSize;
         int y = (int)(index / fieldSize);
-        if (targetPlayer->playerShoot(x,y))
+        if (targetPlayer->playerShoot(x,y, shotType))
         {
             QMetaObject::invokeMethod(battleshipUi, "stopSelectionMode");
             syncField(targetPlayer);
