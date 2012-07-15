@@ -39,7 +39,6 @@ Player::Player(QObject *parent, QString name, QString color, int fieldSize) :
        m_vUseMove=buf%fieldSize;
        m_hUseMove=m_vUseMove+10;
        qDebug()<<"m_sqUseMove: "<<m_sqUseMove<<"m_vUseMove: "<<m_vUseMove<<"m_hUseMove: "<<m_hUseMove;
-
     }
     ships();
 
@@ -115,6 +114,7 @@ bool Player::computerRandomKi()
 
 bool Player::computerControl(int x, int y)
 {
+
     if ((*(m_gameField->matrix()))[y][x].fired == false)
     {
         (*(m_gameField->matrix()))[y][x].fired = true;
@@ -354,19 +354,26 @@ void Player::computerPlaceShipFinal(int shipSize, int ships)
         YXcoordinates();
 }
 
-//void Player::shotOption(int option)
-//{
-//    switch(option)
-//    {
-//    case 1:
-//    {
+void Player::shotOption(int option)
+{
 
-//    }
-//    case 2:
-//    {
-//    }
+    switch(option)
+    {
+    case 1:
+    {
 
-//}
+    }
+    case 2:
+    {
+
+    }
+    case 3:
+    {
+
+    }
+
+
+}
 
 
 //}
