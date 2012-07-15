@@ -15,6 +15,7 @@ Rectangle {
     property Gradient defaultGradient: DefaultGradient {}
     property Gradient pressedGradient: PressedGradient {}
     property Gradient hoveredGradient: HoveredGradient {}
+    property bool hoverable: true
     signal clicked
     signal pressed
     signal released
@@ -36,7 +37,7 @@ Rectangle {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-        //hoverEnabled: true
+        hoverEnabled: base.hoverable
         onClicked: {
             base.clicked()
             if (checkable)

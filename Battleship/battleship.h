@@ -57,7 +57,7 @@ private slots:
     void muteMusic(bool muted);
     void muteSound(bool muted);
     void shipPlaced(int index, int size, bool rotation);
-    void fieldPressed(int index);
+    void fieldPressed(int index, int shotType);
     void showBattlefield(int index);
     void explodeShip(int x, int y);
     void destroyShip(int x, int y, int size, bool rotated);

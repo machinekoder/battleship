@@ -281,8 +281,9 @@ void Player::statistic()
     m_percentDestroyed = (shippartsDestroyed * 100) / shipsparts;
 }
 
-bool Player::playerShoot(int x, int y)
+bool Player::playerShoot(int x, int y, int shotType)
 {
+    //TODO: shotType
     if ((*(m_gameField->matrix()))[y][x].fired == true)
         return false;
     else {
