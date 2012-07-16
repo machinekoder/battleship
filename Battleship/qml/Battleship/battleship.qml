@@ -368,4 +368,10 @@ Rectangle {
     {
         gameField.missShip(x,y)
     }
+    function updateShootCounts(count2,count3,count4)
+    {
+        gameField.shootLeft2 = count2
+        gameField.shootLeft3 = count3
+        gameField.shootLeft4 = count4
+    }
 }

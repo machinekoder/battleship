@@ -328,7 +328,13 @@ void Battleship::playerTurn()
     }
 
     if (currentPlayer->isHuman())
+    {
         QMetaObject::invokeMethod(battleshipUi, "startSelectionMode");
+        QMetaObject::invokeMethod(battleshipUi, "updateShootCounts",
+                                  Q_ARG(QVariant, currentPlayer->sqCannon()),
+                                  Q_ARG(QVariant, currentPlayer->hCannon()),
+                                  Q_ARG(QVariant, currentPlayer->vCannon()));
+    }
     else
     {
         bool hit = targetPlayer->computerKi();
