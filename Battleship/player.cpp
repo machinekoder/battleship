@@ -29,18 +29,17 @@ Player::Player(QObject *parent, QString name, QString color, int fieldSize) :
     m_sqCannon=0;
     m_vCannon=0;
     m_hCannon=0;
-    m_sqUseMove=0;
-    m_vUseMove=0;
-    m_hUseMove=0;
-    if(!m_human)
-    {
-       int buf=qrand()%25;
-       m_sqUseMove=buf/fieldSize;
-       m_vUseMove=buf%fieldSize;
-       m_hUseMove=m_vUseMove+10;
-       qDebug()<<"m_sqUseMove: "<<m_sqUseMove<<"m_vUseMove: "<<m_vUseMove<<"m_hUseMove: "<<m_hUseMove;
-
-    }
+//    m_sqUseMove=0;
+//    m_vUseMove=0;
+//    m_hUseMove=0;
+//    if(!m_human)
+//    {
+//       int buf=qrand()%25;
+//       m_sqUseMove=buf/fieldSize;
+//       m_vUseMove=buf%fieldSize;
+//       m_hUseMove=m_vUseMove+10;
+//       qDebug()<<"m_sqUseMove: "<<m_sqUseMove<<"m_vUseMove: "<<m_vUseMove<<"m_hUseMove: "<<m_hUseMove;
+//    }
     ships();
 
     qsrand(QDateTime::currentMSecsSinceEpoch());    //randomize
@@ -280,43 +279,103 @@ void Player::statistic()
     //get percentage of destroyed ships
     m_percentDestroyed = (shippartsDestroyed * 100) / shipsparts;
 }
-
+//playerShoot koordinates and the shot Type 1-4
+//1=Standart,2=Donat,3=horzintal,4=vertical
 bool Player::playerShoot(int x, int y, int shotType)
 {
     //TODO: shotType
     if ((*(m_gameField->matrix()))[y][x].fired == true)
         return false;
     else {
-        (*(m_gameField->matrix()))[y][x].fired = true;
+        switch(shotType)
+        {
+        case 2:
+        {
 
-        if ((*(m_gameField->matrix()))[y][x].placeFull) {
-            (*(m_gameField->matrix()))[y][x].shipHit = true;
-            emit shipHit(x,y);
-            m_hitLastRound = true;
-
-            QPoint coordinatesNew = QPoint(x,y);
-            if (m_gameField->isShipDestroyed(coordinatesNew)) {
-                m_shipsLeft--;
-                QPoint shipHead = m_gameField->getHeadPoint(coordinatesNew);
-                int shipSize = (*(m_gameField->matrix()))[y][x].shipType;
-                bool rotated = (*(m_gameField->matrix()))[y][x].rotated;
-                if (shipSize == 4)
-                    m_bigShipsDestroyed++;
-                else if (shipSize == 3)
-                    m_mediumShipsDestroyed++;
-                else if (shipSize == 2)
-                    m_smallShipsDestroyed++;
-                else if (shipSize == 1)
-                    m_extraSmallShipsDestroyed++;
-
-                emit shipDestroyed(shipHead.x(), shipHead.y(), shipSize, rotated);
+            (*(m_gameField->matrix()))[y][x].fired = true;
+            if ((*(m_gameField->matrix()))[y][x].placeFull) {
+                (*(m_gameField->matrix()))[y][x].shipHit = true;
+                emit shipHit(x,y);
+                m_hitLastRound = true;
+                QPoint coordinatesNew = QPoint(x,y);
+                playerShipDestroyed(coordinatesNew);
             }
+            else {
+                (*(m_gameField->matrix()))[y][x].missed = true;
+                emit shipMissed(x,y);
+                m_hitLastRound = false;
+            }
+            m_sqCannon--;
+            break;
         }
-        else {
-            (*(m_gameField->matrix()))[y][x].missed = true;
-            emit shipMissed(x,y);
-            m_hitLastRound = false;
+        case 3:
+        {
+            int i=-1;
+            while(++i!=1)
+            {
+            if((y+i)<0||(y+i)>(m_fieldSize-1))
+                continue;
+            (*(m_gameField->matrix()))[y+i][x].fired = true;
+            if ((*(m_gameField->matrix()))[y+i][x].placeFull) {
+                (*(m_gameField->matrix()))[y+i][x].shipHit = true;
+                emit shipHit(x,y+i);
+                m_hitLastRound = true;
+                QPoint coordinatesNew = QPoint(x,y+i);
+                playerShipDestroyed(coordinatesNew);
+            }
+            else {
+                (*(m_gameField->matrix()))[i][x].missed = true;
+                emit shipMissed(x,y+i);
+                m_hitLastRound = false;
+            }
+            }
+            m_hCannon--;
+            break;
         }
+        case 4:
+        {
+            int i=-1;
+            while(++i!=1)
+            {
+            if((x+i)<0||(+i)>(m_fieldSize-1))
+                continue;
+            (*(m_gameField->matrix()))[y][x+i].fired = true;
+            if ((*(m_gameField->matrix()))[y][x+i].placeFull) {
+                (*(m_gameField->matrix()))[y][x+i].shipHit = true;
+                emit shipHit(x+i,y);
+                m_hitLastRound = true;
+                QPoint coordinatesNew = QPoint(x+i,y);
+                playerShipDestroyed(coordinatesNew);
+            }
+            else {
+                (*(m_gameField->matrix()))[y][x+i].missed = true;
+                emit shipMissed(x+i,y);
+                m_hitLastRound = false;
+            }
+            }
+            m_vCannon--;
+            break;
+        }
+        default:
+        {
+            (*(m_gameField->matrix()))[y][x].fired = true;
+            if ((*(m_gameField->matrix()))[y][x].placeFull) {
+                (*(m_gameField->matrix()))[y][x].shipHit = true;
+                emit shipHit(x,y);
+                m_hitLastRound = true;
+                QPoint coordinatesNew = QPoint(x,y);
+                playerShipDestroyed(coordinatesNew);
+            }
+            else {
+                (*(m_gameField->matrix()))[y][x].missed = true;
+                emit shipMissed(x,y);
+                m_hitLastRound = false;
+            }
+
+        }
+        }
+
+
 
         return true;
     }
@@ -353,6 +412,26 @@ void Player::computerPlaceShipFinal(int shipSize, int ships)
     YXcoordinates();
     while (m_gameField->placeShip(shipSize, rotateShip, x,y) == false)
         YXcoordinates();
+}
+
+void Player::playerShipDestroyed(QPoint coordinatesNew)
+{
+    if (m_gameField->isShipDestroyed(coordinatesNew)) {
+        m_shipsLeft--;
+        QPoint shipHead = m_gameField->getHeadPoint(coordinatesNew);
+        int shipSize = (*(m_gameField->matrix()))[y][x].shipType;
+        bool rotated = (*(m_gameField->matrix()))[y][x].rotated;
+        if (shipSize == 4)
+            m_bigShipsDestroyed++;
+        else if (shipSize == 3)
+            m_mediumShipsDestroyed++;
+        else if (shipSize == 2)
+            m_smallShipsDestroyed++;
+        else if (shipSize == 1)
+            m_extraSmallShipsDestroyed++;
+
+        emit shipDestroyed(shipHead.x(), shipHead.y(), shipSize, rotated);
+    }
 }
 
 //void Player::shotOption(int option)
