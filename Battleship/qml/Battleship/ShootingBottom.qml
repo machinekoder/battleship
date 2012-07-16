@@ -10,7 +10,7 @@ Row {
 
     Button {
         id: shootButton1
-        text: "Shoot 1 (" + gameField.shootLeft2.toString() + ")"
+        text: "Single (∞)"
         width: (parent.width-3*parent.spacing)/4
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
@@ -32,7 +32,7 @@ Row {
 
     Button {
         id: shootButton2
-        text: "Shoot 2 (" + gameField.shootLeft2.toString() + ")"
+        text: "Square (" + gameField.shootLeft2.toString() + ")"
         width: (parent.width-3*parent.spacing)/4
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
@@ -49,11 +49,12 @@ Row {
             shootButton3.checked = false
             shootButton4.checked = false
         }
+        visible: gameField.shootLeft2 > 0
     }
 
     Button {
         id: shootButton3
-        text: "Shoot 3 (" + gameField.shootLeft3.toString() + ")"
+        text: "Horizontal (" + gameField.shootLeft3.toString() + ")"
         width: (parent.width-3*parent.spacing)/4
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
@@ -70,10 +71,11 @@ Row {
             shootButton2.checked = false
             shootButton4.checked = false
         }
+        visible: gameField.shootLeft3 > 0
     }
     Button {
         id: shootButton4
-        text: "Shoot 4 (" + gameField.shootLeft4.toString() + ")"
+        text: "Vertical (" + gameField.shootLeft4.toString() + ")"
         width: (parent.width-3*parent.spacing)/4
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
@@ -90,5 +92,6 @@ Row {
             shootButton2.checked = false
             shootButton3.checked = false
         }
+        visible: gameField.shootLeft4 > 0
     }
 }
