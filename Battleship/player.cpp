@@ -280,7 +280,7 @@ void Player::statistic()
     m_percentDestroyed = (shippartsDestroyed * 100) / shipsparts;
 }
 //playerShoot koordinates and the shot Type 1-4
-//1=Standart,2=Donut,3=horizontal,4=vertical
+//1=Standart,2=Donut,3=horizontal,4=verticals
 bool Player::playerShoot(int x, int y, int shotType)
 {
     //TODO: shotType
@@ -305,8 +305,8 @@ bool Player::playerShoot(int x, int y, int shotType)
                 if(m_hitLastRound==true)
                     hit=true;
             }
-            for(int i)
-            m_hitLastRound=hit
+//            for(int i)
+            m_hitLastRound=hit;
             m_sqCannon--;
             break;
         }
