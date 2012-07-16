@@ -38,7 +38,7 @@ public:
     explicit Player(QObject *parent, QString name, QString color, int fieldSize);
 
     void statistic();
-    bool playerShoot(int x, int y, int shotType);
+    bool playerShoot(int x, int y, int shootType);
     void playerShipDestroyed(QPoint coordinates);
     void playerShootContinue(int x, int y);
     void computerPlaceShip();
