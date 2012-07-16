@@ -287,57 +287,21 @@ bool Player::playerShoot(int x, int y, int shotType)
     if ((*(m_gameField->matrix()))[y][x].fired == true)
         return false;
     else {
+
         switch(shotType)
         {
         case 2:
         {
 
-            (*(m_gameField->matrix()))[y][x].fired = true;
-            if ((*(m_gameField->matrix()))[y][x].placeFull) {
-                (*(m_gameField->matrix()))[y][x].shipHit = true;
-                emit shipHit(x,y);
-                m_hitLastRound = true;
-                QPoint coordinatesNew = QPoint(x,y);
-                playerShipDestroyed(coordinatesNew);
-            }
-            else {
-                (*(m_gameField->matrix()))[y][x].missed = true;
-                emit shipMissed(x,y);
-                m_hitLastRound = false;
-            }
-            m_sqCannon--;
-            break;
+           break;
         }
         case 3:
         {
-            int i=-1;
-            while(++i!=1)
+            for(int i=-1;i<=2;i++)
             {
-            if((y+i)<0||(y+i)>(m_fieldSize-1))
+            if((x+i)<0||(x+i)>(m_fieldSize-1))
                 continue;
-            (*(m_gameField->matrix()))[y+i][x].fired = true;
-            if ((*(m_gameField->matrix()))[y+i][x].placeFull) {
-                (*(m_gameField->matrix()))[y+i][x].shipHit = true;
-                emit shipHit(x,y+i);
-                m_hitLastRound = true;
-                QPoint coordinatesNew = QPoint(x,y+i);
-                playerShipDestroyed(coordinatesNew);
-            }
-            else {
-                (*(m_gameField->matrix()))[i][x].missed = true;
-                emit shipMissed(x,y+i);
-                m_hitLastRound = false;
-            }
-            }
-            m_hCannon--;
-            break;
-        }
-        case 4:
-        {
-            int i=-1;
-            while(++i!=1)
-            {
-            if((x+i)<0||(+i)>(m_fieldSize-1))
+            if ((*(m_gameField->matrix()))[y][x].fired == true)
                 continue;
             (*(m_gameField->matrix()))[y][x+i].fired = true;
             if ((*(m_gameField->matrix()))[y][x+i].placeFull) {
@@ -350,6 +314,31 @@ bool Player::playerShoot(int x, int y, int shotType)
             else {
                 (*(m_gameField->matrix()))[y][x+i].missed = true;
                 emit shipMissed(x+i,y);
+                m_hitLastRound = false;
+            }
+            }
+            m_hCannon--;
+            break;
+        }
+        case 4:
+        {
+            for(int i=-1;i<=1;i++)
+            {
+            if((y+i)<0||(y+i)>(m_fieldSize-1))
+                continue;
+            if ((*(m_gameField->matrix()))[y+i][x].fired == true)
+                continue;
+            (*(m_gameField->matrix()))[y+i][x].fired = true;
+            if ((*(m_gameField->matrix()))[y+i][x].placeFull) {
+                (*(m_gameField->matrix()))[y+i][x].shipHit = true;
+                emit shipHit(x,y+i);
+                m_hitLastRound = true;
+                QPoint coordinatesNew = QPoint(x,y+i);
+                playerShipDestroyed(coordinatesNew);
+            }
+            else {
+                (*(m_gameField->matrix()))[y+i][x].missed = true;
+                emit shipMissed(x,y+i);
                 m_hitLastRound = false;
             }
             }
