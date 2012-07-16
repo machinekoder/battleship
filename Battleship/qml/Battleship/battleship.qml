@@ -41,19 +41,15 @@ Rectangle {
     property int mediumTextSize: battleship.width * 0.04
     property int mediumTextSize2: battleship.width * 0.05
     property int bigTextSize: battleship.width * 0.05
-    property bool antialias: false
-    property bool effectsEnabled: false
+
+    property bool antialias: true
+    property bool effectsEnabled: true
 
     id: battleship
     width: 500
     height: 700
     color: "#000000"
     state: "gameTypeState"
-
-    SmallShipExplosion {
-        x: 300
-        y: 300
-    }
 
     BackgroundStars {
         id: backgroundStars
@@ -127,14 +123,14 @@ Rectangle {
             opacity: 0
         }
 
-        PerformanceMeter {
+        /*PerformanceMeter {
             id: performanceMeter
             width: 128; height: 64
             anchors.top: parent.top
             anchors.topMargin: 5
             anchors.right: parent.right
             anchors.rightMargin: 5
-        }
+        }*/
     }
 
     states: [
@@ -259,16 +255,6 @@ Rectangle {
             PropertyChanges {
                 target: difficultyPage
                 opacity: 0
-            }
-
-            PropertyChanges {
-                target: row1
-                opacity: 1
-            }
-
-            PropertyChanges {
-                target: column3
-                opacity: 1
             }
 
         },

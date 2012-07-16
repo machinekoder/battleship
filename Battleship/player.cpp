@@ -96,9 +96,11 @@ bool Player::computerRandomKi()
     bool boolvar=false;
 
     YXcoordinates();
-    while ((*(m_gameField->matrix()))[y][x].fired)
+    while (((*(m_gameField->matrix()))[y][x].fired ||
+            advancedKi(x,y)))
         YXcoordinates();
-    shootOrNot=qrand()%6+1;
+
+            shootOrNot=qrand()%6+1;
     if((shootOrNot==1)
             && ((m_hCannon != 0) || (m_vCannon != 0) || (m_sqCannon != 0)))
     {
@@ -118,14 +120,57 @@ bool Player::computerRandomKi()
     else
     {
         boolvar = computerControl(x,y);
-
-    if (boolvar)
-        m_hitLastRound = true;
-    else
-        m_hitLastRound = false;
-
-    return boolvar;
+        m_hitLastRound = boolvar;
+        return boolvar;
     }
+}
+
+// checks wheter a field is nearby to already destroyed ship or not
+bool Player::advancedKi(int x, int y)
+{
+    int xMin;
+    int xMax;
+    int yMin;
+    int yMax;
+    bool notShoot = false;
+
+    if (x == 0)
+        xMin = 0;
+    else
+        xMin = x-1;
+
+    if (x == m_fieldSize-1)
+        xMax = m_fieldSize-1;
+    else
+        xMax = x+1;
+
+    if (y == 0)
+        yMin = 0;
+    else
+        yMin = y-1;
+
+    if (y == m_fieldSize-1)
+        yMax = m_fieldSize-1;
+    else
+        yMax = y+1;
+
+    for (int tmpX = xMin; tmpX <= xMax; tmpX++)
+    {
+        for (int tmpY = yMin; tmpY <= yMax; tmpY++)
+        {
+            if (!((tmpX == x) && (tmpY == y)))
+            {
+                if ((*(m_gameField->matrix()))[tmpY][tmpX].shipHit &&
+                        !((*(m_gameField->matrix()))[tmpY][tmpX].placeFull))
+                {
+                    notShoot = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    return notShoot;
 }
 
 bool Player::computerControl(int x, int y)
@@ -141,26 +186,7 @@ bool Player::computerControl(int x, int y)
             emit shipHit(x,y);
 
             QPoint coordinatesNew = QPoint(x,y);
-            if (m_gameField->isShipDestroyed(coordinatesNew)) {
-                m_shipsLeft--;
-                m_hitLastRound = false;
-                mouse = 0;
-                cros = qrand() % 4;
-                QPoint shipHead = m_gameField->getHeadPoint(coordinatesNew);
-                int shipSize = (*(m_gameField->matrix()))[y][x].shipType;
-                bool rotated = (*(m_gameField->matrix()))[y][x].rotated;
-                if (shipSize == 4)
-                    m_bigShipsDestroyed++;
-                else if (shipSize == 3)
-                    m_mediumShipsDestroyed++;
-                else if (shipSize == 2)
-                    m_smallShipsDestroyed++;
-                else if (shipSize == 1)
-                    m_extraSmallShipsDestroyed++;
-
-                emit shipDestroyed(shipHead.x(), shipHead.y(), shipSize, rotated);
-
-            }
+            playerShipDestroyed(coordinatesNew);
             return true;
         }
         else
@@ -427,11 +453,19 @@ void Player::computerPlaceShipFinal(int shipSize, int ships)
         YXcoordinates();
 }
 
-void Player::playerShipDestroyed(QPoint coordinatesNew)
+bool Player::playerShipDestroyed(QPoint coordinatesNew)
 {
     if (m_gameField->isShipDestroyed(coordinatesNew)) {
         m_shipsLeft--;
         QPoint shipHead = m_gameField->getHeadPoint(coordinatesNew);
+
+        //for Ki
+        m_hitLastRound = false;
+        mouse = 0;
+        cros= qrand() % 4;
+
+        int x = shipHead.x();
+        int y = shipHead.y();
         int shipSize = (*(m_gameField->matrix()))[y][x].shipType;
         bool rotated = (*(m_gameField->matrix()))[y][x].rotated;
         if (shipSize == 4)
@@ -443,8 +477,19 @@ void Player::playerShipDestroyed(QPoint coordinatesNew)
         else if (shipSize == 1)
             m_extraSmallShipsDestroyed++;
 
-        emit shipDestroyed(shipHead.x(), shipHead.y(), shipSize, rotated);
+        for (int i = 0; i < shipSize; i++)
+        {
+            if (!rotated)
+                (*(m_gameField->matrix()))[y+i][x].placeFull = false;
+            else
+                (*(m_gameField->matrix()))[y][x+i].placeFull = false;
+        }
+
+        emit shipDestroyed(x, y, shipSize, rotated);
+
+        return true;
     }
+    return false;
 }
 
 void Player::playerShootContinue(int x, int y )

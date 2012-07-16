@@ -38,8 +38,13 @@ public:
     explicit Player(QObject *parent, QString name, QString color, int fieldSize);
 
     void statistic();
+<<<<<<< HEAD
     bool playerShoot(int x, int y, int shootType);
     void playerShipDestroyed(QPoint coordinates);
+=======
+    bool playerShoot(int x, int y, int shotType);
+    bool playerShipDestroyed(QPoint coordinates);
+>>>>>>> bc66d64c8a2ec138fb73c29d2e2e88449d2fb6c0
     void playerShootContinue(int x, int y);
     void computerPlaceShip();
     bool computerKi();
@@ -199,6 +204,7 @@ private:
 
     void ships();
     bool computerRandomKi();
+    bool advancedKi(int x, int y);
     bool computerControl(int x, int y);
     void YXcoordinates();
     void computerPlaceShipFinal(int shipSize, int ships);
