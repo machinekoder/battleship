@@ -1,6 +1,5 @@
 #include "battleship.h"
-#include <iostream>
-using namespace std;
+
 Battleship::Battleship(QGraphicsObject *ui, QObject *parent) :
     QObject(parent)
 {
@@ -111,10 +110,6 @@ void Battleship::shipPlaced(int index, int size, bool rotation)
         syncField(currentPlayer, true);
         bool allShipsPlaced = false;
 
-        cout<<"bigships"<<currentPlayer->bigship()<<endl;
-        cout<<"mediumships"<<currentPlayer->mediumship()<<endl;
-        cout<<"smallships"<<currentPlayer->smallship()<<endl;
-        cout<<"extrasmallships"<<currentPlayer->extrasmallship()<<endl;
         if (currentShip == 1)
         {
             currentPlayer->setExtrasmallship(currentPlayer->extrasmallship()-1);
