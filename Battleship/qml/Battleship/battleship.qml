@@ -1,6 +1,5 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import MyComponents 1.0
 import CustomElements 1.0
 
 Rectangle {
@@ -286,11 +285,6 @@ Rectangle {
             }
 
             PropertyChanges {
-                target: logo2
-                width: height
-            }
-
-            PropertyChanges {
                 target: storyPage
                 opacity: 0
             }
@@ -373,5 +367,6 @@ Rectangle {
         gameField.shootLeft2 = count2
         gameField.shootLeft3 = count3
         gameField.shootLeft4 = count4
+        gameField.shootType = 1
     }
 }

@@ -280,7 +280,7 @@ void Player::statistic()
     m_percentDestroyed = (shippartsDestroyed * 100) / shipsparts;
 }
 //playerShoot koordinates and the shot Type 1-4
-//1=Standart,2=Donat,3=horzintal,4=vertical
+//1=Standart,2=Donut,3=horzontal,4=vertical
 bool Player::playerShoot(int x, int y, int shotType)
 {
     //TODO: shotType

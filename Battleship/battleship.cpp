@@ -331,9 +331,9 @@ void Battleship::playerTurn()
     {
         QMetaObject::invokeMethod(battleshipUi, "startSelectionMode");
         QMetaObject::invokeMethod(battleshipUi, "updateShootCounts",
-                                  Q_ARG(QVariant, currentPlayer->sqCannon()),
-                                  Q_ARG(QVariant, currentPlayer->hCannon()),
-                                  Q_ARG(QVariant, currentPlayer->vCannon()));
+                                  Q_ARG(QVariant, targetPlayer->sqCannon()),
+                                  Q_ARG(QVariant, targetPlayer->hCannon()),
+                                  Q_ARG(QVariant, targetPlayer->vCannon()));
     }
     else
     {
