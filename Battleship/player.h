@@ -40,6 +40,7 @@ public:
     void statistic();
     bool playerShoot(int x, int y, int shotType);
     void playerShipDestroyed(QPoint coordinates);
+    void playerShootContinue(int x, int y);
     void computerPlaceShip();
     bool computerKi();
 
