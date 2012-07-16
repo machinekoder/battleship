@@ -50,6 +50,8 @@ SOURCES += main.cpp \
     performancemeter.cpp
 
 QT += opengl
+QT += multimeda
+QT += mobility
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)

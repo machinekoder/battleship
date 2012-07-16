@@ -12,6 +12,13 @@ Rectangle {
     property int cellWidth: Math.floor(width / gameSize)
     property int cellHeight: Math.floor(height / gameSize)
     property int shootType: 1
+    property int selectionPosX
+    property int selectionPosY
+
+    property int shootLeft1 : Number.POSITIVE_INFINITY
+    property int shootLeft2 : 1
+    property int shootLeft3 : 2
+    property int shootLeft4 : 2
 
     id: main
     width: 500
@@ -39,8 +46,8 @@ Rectangle {
             }
             else if (selectionMode == true)
             {
-                selectionRect.y = y * main.cellHeight
-                selectionRect.x = x * main.cellWidth
+                selectionPosX = x * main.cellWidth
+                selectionPosY = y * main.cellHeight
             }
         }
 
@@ -56,11 +63,39 @@ Rectangle {
     }
 
     Rectangle {
-        id: selectionRect
+        id: selectionRect1
         width: main.cellWidth
         height: main.cellHeight
         color: "#4637fd00"
-        visible: selectionMode
+        visible: selectionMode && (shootType == 1)
+        x: selectionPosX
+        y: selectionPosY
+    }
+    Shoot2 {
+        id: selectionRect2
+        width: main.cellWidth*3
+        height: main.cellHeight*3
+        visible: selectionMode && (shootType == 2)
+        x: selectionPosX-main.cellWidth
+        y: selectionPosY-main.cellHeight
+    }
+    Rectangle {
+        id: selectionRect3
+        width: main.cellWidth*3
+        height: main.cellHeight
+        color: "#4637fd00"
+        visible: selectionMode && (shootType == 3)
+        x: selectionPosX-main.cellWidth
+        y: selectionPosY
+    }
+    Rectangle {
+        id: selectionRect4
+        width: main.cellWidth
+        height: main.cellHeight*3
+        color: "#4637fd00"
+        visible: selectionMode && (shootType == 4)
+        x: selectionPosX
+        y: selectionPosY-main.cellHeight
     }
 
     SmallShipExplosion {

@@ -36,6 +36,10 @@ private:
     QSound *errorSound;
     QSound *okSound;
 
+    //GE::PullAudioOut *m_audioOut;
+    //GE::AudioMixer m_mixer;
+    //GE::AudioBuffer m_someSample;
+
     bool soundMuted;
 
     Player *player1;
@@ -57,6 +61,7 @@ private slots:
     void muteMusic(bool muted);
     void muteSound(bool muted);
     void shipPlaced(int index, int size, bool rotation);
+    void autoPlaceShips();
     void fieldPressed(int index, int shotType);
     void showBattlefield(int index);
     void explodeShip(int x, int y);

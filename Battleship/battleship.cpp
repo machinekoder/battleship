@@ -28,6 +28,8 @@ Battleship::Battleship(QGraphicsObject *ui, QObject *parent) :
             this, SLOT(fieldPressed(int,int)));
     connect(battleshipUi, SIGNAL(showBattlefield(int)),
             this, SLOT(showBattlefield(int)));
+    connect(battleshipUi, SIGNAL(autoPlaceShips()),
+            this, SLOT(autoPlaceShips()));
 }
 
 void Battleship::initializeSound()
@@ -177,6 +179,29 @@ void Battleship::shipPlaced(int index, int size, bool rotation)
     {
         if (!soundMuted)
             errorSound->play();
+    }
+}
+
+void Battleship::autoPlaceShips()
+{
+    Player *currentPlayer = NULL;
+    if (state == Player1ShipPlacementState)
+        currentPlayer = player1;
+    else if (state == Player2ShipPlacementState)
+        currentPlayer = player2;
+
+    currentPlayer->computerPlaceShip();
+    QMetaObject::invokeMethod(battleshipUi, "stopShipPlacement");
+
+    if (state == Player1ShipPlacementState)
+    {
+        state = Player2ShipPlacementState;
+        playerShipPlacement();
+    }
+    else if (state == Player2ShipPlacementState)
+    {
+        state = Player1GameState;
+        thinkingPhase();
     }
 }
 

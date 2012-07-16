@@ -68,7 +68,7 @@ function setShip(index, type, color,rotated)
     if (shipComponent == null)
         shipComponent = Qt.createComponent("Ship.qml")
 
-    if (shipComponent.status == Component.Ready)
+    if (shipComponent.status === Component.Ready)
     {
         var dynamicObject = shipComponent.createObject(main)
         if (dynamicObject === null)
@@ -80,6 +80,7 @@ function setShip(index, type, color,rotated)
 
         dynamicObject.x = (index % fieldSize) * main.cellWidth
         dynamicObject.y = Math.floor(index / fieldSize) * main.cellHeight
+        dynamicObject.z = -1
         dynamicObject.type = type
         dynamicObject.shipColor = color
         dynamicObject.rotated = rotated
