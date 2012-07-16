@@ -8,6 +8,24 @@ Rectangle {
     width: 400
     height: 600
 
+    Button {
+        id: backButton
+        width: parent.width * 0.3
+        font.pixelSize: mediumTextSize
+        textColor: battleship.textColor
+        font.family: battleship.fontFamily
+        text: "Back"
+        anchors.top: parent.top
+        anchors.topMargin: 10
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        smooth: antialias
+        onClicked: {
+            battleship.state = "gameTypeState"
+            battleship.clearOSD();
+        }
+    }
+
     Column {
         id: column2
         spacing: 10
@@ -24,7 +42,13 @@ Rectangle {
             text: "Ensign (5x5)"
             smooth: antialias
             onClicked: {
-                battleship.state = "storyState"
+                if (battleship.demoMode)
+                {
+                    battleship.state = "playState"
+                    singlePlayerGameClicked()
+                }
+                else
+                    battleship.state = "storyState"
                 battleship.difficulty = 5
                 clearOSD()
                 storyPage.startText()
@@ -40,7 +64,13 @@ Rectangle {
             text: "Lieutenant (10x10)"
             smooth: antialias
             onClicked: {
-                battleship.state = "storyState"
+                if (battleship.demoMode)
+                {
+                    battleship.state = "playState"
+                    singlePlayerGameClicked()
+                }
+                else
+                    battleship.state = "storyState"
                 battleship.difficulty = 10
                 clearOSD()
                 storyPage.startText()
@@ -56,7 +86,13 @@ Rectangle {
             text: "Captain (16x16)"
             smooth: antialias
             onClicked: {
-                battleship.state = "storyState"
+                if (battleship.demoMode)
+                {
+                    battleship.state = "playState"
+                    singlePlayerGameClicked()
+                }
+                else
+                    battleship.state = "storyState"
                 battleship.difficulty = 16
                 clearOSD()
                 storyPage.startText()
@@ -72,7 +108,13 @@ Rectangle {
             text: "Admiral (20x20)"
             smooth: antialias
             onClicked: {
-                battleship.state = "storyState"
+                if (battleship.demoMode)
+                {
+                    battleship.state = "playState"
+                    singlePlayerGameClicked()
+                }
+                else
+                    battleship.state = "storyState"
                 battleship.difficulty = 20
                 clearOSD()
                 storyPage.startText()

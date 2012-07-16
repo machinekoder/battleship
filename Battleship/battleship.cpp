@@ -29,6 +29,11 @@ Battleship::Battleship(QGraphicsObject *ui, QObject *parent) :
             this, SLOT(showBattlefield(int)));
     connect(battleshipUi, SIGNAL(autoPlaceShips()),
             this, SLOT(autoPlaceShips()));
+
+#ifdef Q_OS_SYMBIAN
+    battleshipUi->setProperty("antialias", false);
+    battleshipUi->setProperty("effectsEnabled", false);
+#endif
 }
 
 void Battleship::initializeSound()
