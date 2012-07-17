@@ -12,6 +12,7 @@ class Player : public QObject
     Q_PROPERTY(QString name READ name WRITE setName)
     Q_PROPERTY(QString color READ color WRITE setColor)
     Q_PROPERTY(GameField *gameField READ gameField)
+    Q_PROPERTY(Player *targetPlayer READ targetPlayer WRITE setTargetPlayer)
     Q_PROPERTY(int fieldSize READ fieldSize WRITE setFieldSize)
     Q_PROPERTY(int shipsLeft READ shipsLeft)
     Q_PROPERTY(bool hitLastRound READ hitLastRound)
@@ -164,6 +165,11 @@ int hUseMove() const
     return m_hUseMove;
 }
 
+Player * targetPlayer() const
+{
+    return m_targetPlayer;
+}
+
 private:
 
     int m_movement;
@@ -204,6 +210,8 @@ private:
     void YXcoordinates();
     void computerPlaceShipFinal(int shipSize, int ships);
 
+
+    Player * m_targetPlayer;
 
 signals:
 
@@ -248,6 +256,10 @@ void setSmallship(int arg)
 void setExtrasmallship(int arg)
 {
     m_extrasmallship = arg;
+}
+void setTargetPlayer(Player * arg)
+{
+    m_targetPlayer = arg;
 }
 };
 

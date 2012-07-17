@@ -43,9 +43,9 @@ void Player::ships()
         m_mediumship = 5;
         m_smallship = 6;
         m_extrasmallship = 4;
-        m_sqCannon=3;
-        m_vCannon=3;
-        m_hCannon=3;
+        m_sqCannon=4;
+        m_vCannon=6;
+        m_hCannon=6;
         break;
     case 16:
         m_bigship = 3;
@@ -53,8 +53,8 @@ void Player::ships()
         m_smallship = 1;
         m_extrasmallship = 2;
         m_sqCannon=3;
-        m_vCannon=2;
-        m_hCannon=2;
+        m_vCannon=4;
+        m_hCannon=4;
         break;
     case 10:
         m_bigship = 2;
@@ -108,20 +108,28 @@ bool Player::computerRandomKi()
         {
             shootType=qrand()%3+2;
             if ((shootType == 2) && (m_sqCannon != 0))
-                return boolvar=playerShoot(x,y,shootType);
+            {
+                playerShoot(x,y,shootType);
+                return m_hitLastRound;
+            }
             if ((shootType == 3) && (m_hCannon != 0))
-                return boolvar=playerShoot(x,y,shootType);
+            {
+                playerShoot(x,y,shootType);
+                return m_hitLastRound;
+            }
             if ((shootType == 4) && (m_vCannon != 0))
-                return boolvar=playerShoot(x,y,shootType);
+            {
+                playerShoot(x,y,shootType);
+                return m_hitLastRound;
+            }
 
         }
 
     }
     else
     {
-        boolvar = computerControl(x,y);
-        m_hitLastRound = boolvar;
-        return boolvar;
+        m_hitLastRound = computerControl(x,y);
+        return m_hitLastRound;
     }
 }
 
@@ -348,8 +356,8 @@ bool Player::playerShoot(int x, int y, int shootType)
                 if(i==0)
                     continue;
                 playerShootContinue(x+i,y);
-                if(m_hitLastRound==true)
-                    hit=true;
+                if(m_hitLastRound == true)
+                    hit = true;
             }
             for(int i=-1;i<=1;i++)
             {
@@ -359,7 +367,7 @@ bool Player::playerShoot(int x, int y, int shootType)
                     continue;
                 playerShootContinue(x+i,y+1);
                 if(m_hitLastRound==true)
-                    hit=true;
+                    hit = true;
             }
             for(int i=-1;i<=1;i++)
             {
@@ -368,10 +376,10 @@ bool Player::playerShoot(int x, int y, int shootType)
                 if ((*(m_gameField->matrix()))[y-1][x+i].fired == true)
                     continue;
                 playerShootContinue(x+i,y-1);
-                if(m_hitLastRound==true)
+                if(m_hitLastRound == true)
                     hit=true;
             }
-            m_hitLastRound=hit;
+            m_hitLastRound = hit;
             m_sqCannon--;
             break;
         }
@@ -459,10 +467,13 @@ bool Player::playerShipDestroyed(QPoint coordinatesNew)
         m_shipsLeft--;
         QPoint shipHead = m_gameField->getHeadPoint(coordinatesNew);
 
-        //for Ki
-        m_hitLastRound = false;
-        mouse = 0;
-        cros= qrand() % 4;
+        //only necessary if other player is not a Human
+        if (!targetPlayer()->isHuman())
+        {
+            m_hitLastRound = false;
+            mouse = 0;
+            cros= qrand() % 4;
+        }
 
         int x = shipHead.x();
         int y = shipHead.y();

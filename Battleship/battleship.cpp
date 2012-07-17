@@ -60,6 +60,8 @@ void Battleship::startGame()
 
     player1 = new Player(this,battleshipUi->property("playerName").toString(), "blue", gameSize);
     player2 = new Player(this,"Computer", "red", gameSize);
+    player1->setTargetPlayer(player2);
+    player2->setTargetPlayer(player1);
 
     battleshipUi->setProperty("player1Name", player1->name());
     battleshipUi->setProperty("player2Name", player2->name());

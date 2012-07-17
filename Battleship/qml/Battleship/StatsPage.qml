@@ -5,7 +5,8 @@ import MyComponents 1.0
 Rectangle {
     id: statsRect
     color: "#00000000"
-    anchors.fill: parent
+    width: 400
+    height: 600
 
     Text {
         id: statTitle
@@ -35,7 +36,10 @@ Rectangle {
             font.pixelSize: mediumTextSize
             font.family: battleship.fontFamily
             smooth: antialias
-            onClicked: battleship.state = "gameTypeState"
+            onClicked:{
+                battleship.state = "gameTypeState"
+                battleship.clearOSD();
+            }
         }
     }
 

@@ -42,6 +42,9 @@ Rectangle {
             text: "Ensign (5x5)"
             smooth: antialias
             onClicked: {
+                battleship.difficulty = 5
+                clearOSD()
+                storyPage.startText()
                 if (battleship.demoMode)
                 {
                     battleship.state = "playState"
@@ -49,9 +52,6 @@ Rectangle {
                 }
                 else
                     battleship.state = "storyState"
-                battleship.difficulty = 5
-                clearOSD()
-                storyPage.startText()
             }
         }
 
@@ -64,6 +64,9 @@ Rectangle {
             text: "Lieutenant (10x10)"
             smooth: antialias
             onClicked: {
+                battleship.difficulty = 10
+                clearOSD()
+                storyPage.startText()
                 if (battleship.demoMode)
                 {
                     battleship.state = "playState"
@@ -71,9 +74,6 @@ Rectangle {
                 }
                 else
                     battleship.state = "storyState"
-                battleship.difficulty = 10
-                clearOSD()
-                storyPage.startText()
             }
         }
 
@@ -86,6 +86,9 @@ Rectangle {
             text: "Captain (16x16)"
             smooth: antialias
             onClicked: {
+                battleship.difficulty = 16
+                clearOSD()
+                storyPage.startText()
                 if (battleship.demoMode)
                 {
                     battleship.state = "playState"
@@ -93,9 +96,6 @@ Rectangle {
                 }
                 else
                     battleship.state = "storyState"
-                battleship.difficulty = 16
-                clearOSD()
-                storyPage.startText()
             }
         }
 
@@ -108,6 +108,9 @@ Rectangle {
             text: "Admiral (20x20)"
             smooth: antialias
             onClicked: {
+                battleship.difficulty = 20
+                clearOSD()
+                storyPage.startText()
                 if (battleship.demoMode)
                 {
                     battleship.state = "playState"
@@ -115,9 +118,6 @@ Rectangle {
                 }
                 else
                     battleship.state = "storyState"
-                battleship.difficulty = 20
-                clearOSD()
-                storyPage.startText()
             }
         }
     }

@@ -106,7 +106,7 @@ Rectangle {
             Keys.onPressed:
             {
                 if (event.key === Qt.Key_Space)
-                    rotateButton.clicked()
+                    gameField.rotateShip();
             }
         }
 
