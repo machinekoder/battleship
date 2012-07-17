@@ -7,6 +7,8 @@ Battleship::Battleship(QGraphicsObject *ui, QObject *parent) :
 
     initializeSound();
 
+    loadSettings();
+
     connect(battleshipUi, SIGNAL(singlePlayerGameClicked()),
             this, SLOT(startGame()));
     connect(battleshipUi, SIGNAL(playOsdSound()),
@@ -36,6 +38,11 @@ Battleship::Battleship(QGraphicsObject *ui, QObject *parent) :
 #endif
 }
 
+Battleship::~Battleship()
+{
+    saveSettings();
+}
+
 void Battleship::initializeSound()
 {
     music = new QSound("qml/music/carmina_burana.ogg");
@@ -58,13 +65,13 @@ void Battleship::startGame()
     int gameSize = battleshipUi->property( "difficulty" ).toInt();
     QMetaObject::invokeMethod(battleshipUi, "initializeField",Q_ARG(QVariant, gameSize));
 
-    player1 = new Player(this,battleshipUi->property("playerName").toString(), "blue", gameSize);
-    player2 = new Player(this,"Computer", "red", gameSize);
+    player1 = new Player(this,battleshipUi->property("player1Name").toString(), "blue", gameSize);
+    player2 = new Player(this,battleshipUi->property("player2Name").toString(), "red", gameSize);
     player1->setTargetPlayer(player2);
     player2->setTargetPlayer(player1);
 
-    battleshipUi->setProperty("player1Name", player1->name());
-    battleshipUi->setProperty("player2Name", player2->name());
+    //battleshipUi->setProperty("player1Name", player1->name());
+    //battleshipUi->setProperty("player2Name", player2->name());
 
     player1->setHuman(!battleshipUi->property("demoMode").toBool());
     player2->setHuman(false);
@@ -422,6 +429,26 @@ void Battleship::syncField(Player *player, bool showAll)
     }
 }
 
+void Battleship::saveSettings()
+{
+    QSettings settings("Strahlex Apps", "Battleship Galactica", this);
+
+    settings.setValue("player1Name", player1->name());
+    settings.setValue("player2Name", player2->name());
+    settings.setValue("soundMuted", soundMuted);
+    settings.setValue("musicMuted", musicMuted);
+}
+
+void Battleship::loadSettings()
+{
+    QSettings settings("Strahlex Apps", "Battleship Galactica", this);
+
+    battleshipUi->setProperty("player1Name", settings.value("player1Name","Player 1").toString());
+    battleshipUi->setProperty("player2Name", settings.value("player2Name","Player 2").toString());
+    soundMuted = settings.value("soundMuted", false).toBool();
+    musicMuted = settings.value("musicMuted", false).toBool();
+}
+
 void Battleship::muteSound(bool muted)
 {
     soundMuted = muted;
@@ -429,7 +456,7 @@ void Battleship::muteSound(bool muted)
 
 void Battleship::explodeShip(int x, int y)
 {
-    QMetaObject::invokeMethod(battleshipUi, "explodeShip",Q_ARG(QVariant, x),Q_ARG(QVariant, y),Q_ARG(QVariant, 1),Q_ARG(QVariant, false));
+    QMetaObject::invokeMethod(battleshipUi, "explodeShip",Q_ARG(QVariant, x),Q_ARG(QVariant, y),Q_ARG(QVariant, 1),Q_ARG(QVariant, false),Q_ARG(QVariant, false));
     if (!soundMuted) {
         lazerSound->play();
         smallExplosionSound->play();
@@ -438,7 +465,7 @@ void Battleship::explodeShip(int x, int y)
 
 void Battleship::destroyShip(int x, int y, int size, bool rotated)
 {
-    QMetaObject::invokeMethod(battleshipUi, "explodeShip",Q_ARG(QVariant, x),Q_ARG(QVariant, y),Q_ARG(QVariant, size),Q_ARG(QVariant, rotated));
+    QMetaObject::invokeMethod(battleshipUi, "explodeShip",Q_ARG(QVariant, x),Q_ARG(QVariant, y),Q_ARG(QVariant, size),Q_ARG(QVariant, rotated),Q_ARG(QVariant, true));
     if (!soundMuted) {
         bigExplosionSound->play();
     }

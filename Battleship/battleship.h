@@ -5,6 +5,7 @@
 #include <QGraphicsObject>
 #include <QSound>
 #include <QTimer>
+#include <QSettings>
 #include <QDebug>
 #include "gamefield.h"
 #include "player.h"
@@ -23,6 +24,7 @@ class Battleship : public QObject
     };
 public:
     explicit Battleship(QGraphicsObject *ui, QObject *parent = 0);
+    ~Battleship();
 
 private:
     QGraphicsObject *battleshipUi;
@@ -41,6 +43,7 @@ private:
     //GE::AudioBuffer m_someSample;
 
     bool soundMuted;
+    bool musicMuted;
 
     Player *player1;
     Player *player2;
@@ -52,6 +55,9 @@ private:
     void playerShipPlacement();
     void gameFinished();
     void syncField(Player *player, bool showAll = false);
+
+    void saveSettings();
+    void loadSettings();
 
 private slots:
     void startGame();

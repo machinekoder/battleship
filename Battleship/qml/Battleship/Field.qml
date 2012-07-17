@@ -143,10 +143,11 @@ Rectangle {
     {
         placementShip.rotated = !placementShip.rotated
     }
-    function explodeShip(x,y,size,rotated)
+    function explodeShip(x,y,size,rotated,destroy)
     {
-        if (size === 1)
+        if (!destroy)
         {
+            smallshipExplosion.velocity = 100
             smallshipExplosion.width = 1
             smallshipExplosion.height = 1
             smallshipExplosion.x = x * main.cellWidth + main.cellWidth/2
@@ -155,6 +156,7 @@ Rectangle {
         }
         else
         {
+            smallshipExplosion.velocity = 500
             if (rotated)
             {
                 smallshipExplosion.width = main.cellWidth*size
@@ -167,7 +169,7 @@ Rectangle {
             }
             smallshipExplosion.x = x * main.cellWidth
             smallshipExplosion.y = y * main.cellHeight
-            smallshipExplosion.burst(100*size,500)
+            smallshipExplosion.burst(100*size,1000*size)
         }
     }
     function missShip(x,y)

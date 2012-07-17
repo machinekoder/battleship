@@ -10,8 +10,8 @@ Rectangle {
     property color textColor: "white"
     property color borderColor: "#1e00ff08"
     property string fontFamily: "Courier"
-    property string player1Name: "Player 1"
-    property string player2Name: "Player 2"
+    property alias player1Name: gameTypePage.player1Name
+    property alias player2Name: gameTypePage.player2Name
     property int percentageShipsDestroyed1: 45
     property int percentageShipsDestroyed2: 100
     property int extraSmallDestroyed1: 1
@@ -340,9 +340,9 @@ Rectangle {
     {
         battleship.state = "gameFinishedState"
     }
-    function explodeShip(x,y,size,rotated)
+    function explodeShip(x,y,size,rotated,destroy)
     {
-        gameField.explodeShip(x,y,size,rotated)
+        gameField.explodeShip(x,y,size,rotated,destroy)
     }
     function missShip(x,y)
     {
