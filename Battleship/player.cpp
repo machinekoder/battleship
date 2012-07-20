@@ -491,9 +491,17 @@ bool Player::playerShipDestroyed(QPoint coordinatesNew)
         for (int i = 0; i < shipSize; i++)
         {
             if (!rotated)
+            {
                 (*(m_gameField->matrix()))[y+i][x].placeFull = false;
+                //(*(m_gameField->matrix()))[y+i][x].shipType = 0;
+                //(*(m_gameField->matrix()))[y+i][x].head = false;
+            }
             else
+            {
                 (*(m_gameField->matrix()))[y][x+i].placeFull = false;
+                //(*(m_gameField->matrix()))[y][x+i].shipType = 0;
+                //(*(m_gameField->matrix()))[y][x+i].head = false;
+            }
         }
 
         emit shipDestroyed(x, y, shipSize, rotated);
@@ -505,14 +513,14 @@ bool Player::playerShipDestroyed(QPoint coordinatesNew)
 
 void Player::playerShootContinue(int x, int y )
 {
-
     (*(m_gameField->matrix()))[y][x].fired = true;
+
     if ((*(m_gameField->matrix()))[y][x].placeFull) {
         (*(m_gameField->matrix()))[y][x].shipHit = true;
         emit shipHit(x,y);
-        m_hitLastRound = true;
         QPoint coordinatesNew = QPoint(x,y);
         playerShipDestroyed(coordinatesNew);
+        m_hitLastRound = true;
     }
     else {
         (*(m_gameField->matrix()))[y][x].missed = true;

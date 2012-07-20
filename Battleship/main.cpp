@@ -1,5 +1,4 @@
 #include <QApplication>
-#include <QGLWidget>
 #include "qmlapplicationviewer.h"
 #include "battleship.h"
 #include "performancemeter.h"

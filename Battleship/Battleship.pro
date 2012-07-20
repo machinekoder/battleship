@@ -10,37 +10,31 @@ folder_02
 QML_IMPORT_PATH += ../
 
 symbian {
-TARGET.UID3 = 0xE2D976A5
-DEPLOYMENT.installer_header = 0x2002CCCF
-my_deployment.pkg_prerules += \
-        "; Dependency to Symbian Qt Quick components" \
-        "(0x200346DE), 1, 1, 0, {\"Qt Quick components\"}"
-DEPLOYMENT += my_deployment
-ICON = Battleship.svg
+    TARGET.UID3 = 0xE2D976A5
+    DEPLOYMENT.installer_header = 0x2002CCCF
+    my_deployment.pkg_prerules += \
+            "; Dependency to Symbian Qt Quick components" \
+            "(0x200346DE), 1, 1, 0, {\"Qt Quick components\"}"
+    DEPLOYMENT += my_deployment
+    ICON = Battleship.svg
+
+    DEFINES += USE_GAMEENABLER
+    INCLUDEPATH += QtGameEnabler/src
+    include(QtGameEnabler/qtgameenableraudio.pri)
 }
 
 windows: RC_FILE = icon.rc
 
-# Smart Installer package's UID
-# This UID is from the protected range and therefore the package will
-# fail to install if self-signed. By default qmake uses the unprotected
-# range value if unprotected UID is defined for the application and
-# 0x2002CCCF value if protected UID is given to the application
-#symbian:DEPLOYMENT.installer_header = 0x2002CCCF
+linux-g++ | linux-g++-32 | linux-g++-64: !simulator {
+    LIBS += -lSDL -lSDL_mixer
+    DEFINES += USE_SDL
+}
 
-# Allow network access on Symbian
-# symbian:TARGET.CAPABILITY += NetworkServices
-
-# If your application uses the Qt Mobility libraries, uncomment the following
-# lines and add the respective components to the MOBILITY variable.
-# CONFIG += mobility
-# MOBILITY +=
-
-# Speed up launching on MeeGo/Harmattan when using applauncherd daemon
-# CONFIG += qdeclarative-boostable
-
-# Add dependency to Symbian components
-# CONFIG += qt-components
+simulator {
+    DEFINES += USE_GAMEENABLER
+    INCLUDEPATH += QtGameEnabler/src
+    include(QtGameEnabler/qtgameenableraudio.pri)
+}
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
@@ -49,9 +43,10 @@ SOURCES += main.cpp \
     gamefield.cpp \
     performancemeter.cpp
 
-QT += opengl
-QT += multimeda
-QT += mobility
+#QT += opengl
+#QT += multimeda
+#QT += mobility
+#MOBILTY += multimedia
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -62,3 +57,9 @@ HEADERS += \
     player.h \
     gamefield.h \
     performancemeter.h
+
+# Put generated temp-files under tmp
+MOC_DIR = tmp
+OBJECTS_DIR = tmp
+RCC_DIR = tmp
+UI_DIR = tmp

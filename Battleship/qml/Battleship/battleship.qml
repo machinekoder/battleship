@@ -1,12 +1,17 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 import CustomElements 1.0
+import "centerInterface"
+import "topInterface"
+import "bottomInterface"
+import "items"
 
 Rectangle {
     property string playerName
     property int difficulty: 10
     property int speed: 1000
     property bool demoMode: false
+    property bool multiplayer: false
     property color textColor: "white"
     property color borderColor: "#1e00ff08"
     property string fontFamily: "Courier"
@@ -24,18 +29,30 @@ Rectangle {
     property int bigDestroyed2:3
     property int turns1:20
     property int turns2:21
+    property bool soundMuted: false
+    property bool musicMuted: false
+
+    property bool humanTurn: false
+
+    property variant currentGamefield: gameField1
+    property bool gameFinished: false
+
+    property variant savedState
 
     signal singlePlayerGameClicked
     signal networkGameClicked
     signal playOsdSound
     signal stopOsdSound
     signal buttonSound
+    signal playMessage(int id)
     signal shipPlaced (int index, int size, bool rotation)
     signal autoPlaceShips
     signal fieldPressed(int index, int shootType)
     signal musicMuteChanged (bool muted)
     signal soundMuteChanged (bool muted)
     signal showBattlefield(int index)
+    signal showOwnBattlefield()
+    signal showTargetBattlefield()
 
     property int smallTextSize: battleship.width * 0.03
     property int mediumTextSize: battleship.width * 0.04
@@ -58,20 +75,105 @@ Rectangle {
 
     TopInterface {
         id: topInterface
-        width: parent.width
         height: parent.height*0.15
+        anchors.top: parent.top
+        anchors.topMargin: 0
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        anchors.right: parent.right
+        anchors.rightMargin: 0
     }
 
     BottomInterface {
         id: bottomInteface
         anchors.top: centralInterface.bottom
-        anchors.topMargin: 5
+        anchors.topMargin: 0
         anchors.right: parent.right
         anchors.rightMargin: 5
         anchors.left: parent.left
         anchors.leftMargin: 5
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 5
+    }
+
+    Row {
+        id: centerInterface
+        anchors.top: topInterface.bottom
+        height: battleship.width
+
+        GameTypePage {
+            id: gameTypePage
+            width: battleship.width
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
+
+        DifficultyPage {
+            id: difficultyPage
+            width: battleship.width
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
+
+        StoryPage {
+            id: storyPage
+            width: battleship.width
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
+
+        Field {
+            id: gameField1
+            width: battleship.width
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            focus: true
+
+            opacity: gameFinished?0.5:1
+
+            Keys.onPressed:
+            {
+                if (event.key === Qt.Key_Space)
+                    gameField1.rotateShip();
+            }
+        }
+
+        Field {
+            id: gameField2
+            width: battleship.width
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            focus: true
+
+            opacity: gameFinished?0.5:1
+
+            Keys.onPressed:
+            {
+                if (event.key === Qt.Key_Space)
+                    gameField2.rotateShip();
+            }
+        }
+
+        StatsPage {
+            id: statsPage
+            width: battleship.width
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
+
+        MessagePage {
+            id: messagePage
+            width: battleship.width
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
+
+        SettingsPage {
+            id: settingsPage
+            width: battleship.width
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
     }
 
     Rectangle {
@@ -83,44 +185,15 @@ Rectangle {
         color: "#00000000"
         anchors.topMargin: 0
 
-        GameTypePage {
-            id: gameTypePage
-            anchors.fill: parent
-        }
-
-        StatsPage {
-            id: statsPage
-            anchors.fill: parent
-        }
-
-        StoryPage {
-            id: storyPage
-            anchors.fill: parent
-        }
-
-        Field {
-            id: gameField
-            anchors.fill: parent
-            focus: true
-
-            Keys.onPressed:
-            {
-                if (event.key === Qt.Key_Space)
-                    gameField.rotateShip();
-            }
-        }
-
-        DifficultyPage {
-            id: difficultyPage
-            anchors.fill: parent
-        }
-
         FinishedColumn {
             id: finishedColumn
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width * 0.7
-            opacity: 0
+            opacity: gameFinished?1:0
+            Behavior on opacity {
+                NumberAnimation{ duration: 300}
+            }
         }
 
         /*PerformanceMeter {
@@ -138,195 +211,115 @@ Rectangle {
             name: "gameTypeState"
 
             PropertyChanges {
-                target: gameField
-                opacity: 0
-            }
-            PropertyChanges {
-                target: gameTypePage
-                opacity: 1
-            }
-
-            PropertyChanges {
-                target: storyPage
-                opacity: 0
-            }
-
-            PropertyChanges {
-                target: difficultyPage
-                opacity: 0
-            }
-
-            PropertyChanges {
-                target: statsPage
-                opacity: 0
-            }
+                target: centerInterface
+                x: -battleship.width*0
+            } 
         },
         State {
-            name: "playState"
+            name: "difficultyState"
 
             PropertyChanges {
-                target: gameTypePage
-                opacity: 0
-            }
-            PropertyChanges {
-                target: gameField
-                opacity: 1
-            }
-
-            PropertyChanges {
-                target: storyPage
-                opacity: 0
-            }
-
-            PropertyChanges {
-                target: difficultyPage
-                opacity: 0
-            }
-
-            PropertyChanges {
-                target: statsPage
-                opacity: 0
+                target: centerInterface
+                x: -battleship.width*1
             }
         },
         State {
             name: "storyState"
 
             PropertyChanges {
-                target: gameTypePage
-                opacity: 0
-            }
-
-            PropertyChanges {
-                target: gameField
-                opacity: 0
-            }
-
-            PropertyChanges {
-                target: difficultyPage
-                opacity: 0
-            }
-
-            PropertyChanges {
-                target: statsPage
-                opacity: 0
+                target: centerInterface
+                x: -battleship.width*2
             }
         },
         State {
-            name: "difficultyState"
+            name: "player1State"
 
             PropertyChanges {
-                target: gameField
-                opacity: 0
+                target: centerInterface
+                x: -battleship.width*3
             }
+        },
+        State {
+            name: "player2State"
 
             PropertyChanges {
-                target: gameTypePage
-                opacity: 0
-            }
-
-            PropertyChanges {
-                target: storyPage
-                opacity: 0
-            }
-
-            PropertyChanges {
-                target: statsPage
-                opacity: 0
+                target: centerInterface
+                x: -battleship.width*4
             }
         },
         State {
             name: "statsState"
 
             PropertyChanges {
-                target: storyPage
-                opacity: 0
+                target: centerInterface
+                x: -battleship.width*5
             }
-
-            PropertyChanges {
-                target: gameTypePage
-                opacity: 0
-            }
-
-            PropertyChanges {
-                target: gameField
-                opacity: 0
-            }
-
-            PropertyChanges {
-                target: difficultyPage
-                opacity: 0
-            }
-
         },
         State {
-            name: "gameFinishedState"
+            name: "messageState"
             PropertyChanges {
-                target: gameTypePage
-                opacity: 0
+                target: centerInterface
+                x: -battleship.width*6
             }
-
+        },
+        State {
+            name: "settingsState"
             PropertyChanges {
-                target: gameField
-                opacity: 0.500
-            }
-
-            PropertyChanges {
-                target: storyPage
-                opacity: 0
-            }
-
-            PropertyChanges {
-                target: difficultyPage
-                opacity: 0
-            }
-
-            PropertyChanges {
-                target: statsPage
-                opacity: 0
-            }
-
-            PropertyChanges {
-                target: finishedColumn
-                opacity: 1
+                target: centerInterface
+                x: -battleship.width*7
             }
         }
     ]
     transitions: Transition {
-             PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear }
+             PropertyAnimation { properties: "x"; duration: 600; easing.type: Easing.OutExpo }
          }
+
+    function setCurrentPlayer(id)
+    {
+        if (id === 1)
+        {
+            battleship.state = "player1State"
+            currentGamefield = gameField1
+        }
+        else
+        {
+            battleship.state = "player2State"
+            currentGamefield = gameField2
+        }
+    }
 
     function initializeField(gameSize)
     {
-        gameField.gameSize = gameSize
-        gameField.initializeField()
+        currentGamefield.gameSize = gameSize
+        currentGamefield.initializeField()
     }
     function setShip(index, type, color,rotated)
     {
-        gameField.setShip(index,type,color,rotated)
+        currentGamefield.setShip(index,type,color,rotated)
     }
     function setHitAndMissed(index, hit, missed)
     {
-        gameField.setHitAndMissed(index,hit,missed)
+        currentGamefield.setHitAndMissed(index,hit,missed)
     }
     function clearField()
     {
-        gameField.clearField()
+        currentGamefield.clearField()
     }
     function startShipPlacement(shipType, color)
     {
-        gameField.startShipPlacement(shipType, color)
+        currentGamefield.startShipPlacement(shipType, color)
     }
     function stopShipPlacement()
     {
-        gameField.stopShipPlacement()
+        currentGamefield.stopShipPlacement()
     }
     function startSelectionMode()
     {
-        gameField.selectionMode = true
+        currentGamefield.selectionMode = true
     }
     function stopSelectionMode()
     {
-        gameField.selectionMode = false
+        currentGamefield.selectionMode = false
     }
     function outputOSD(text)
     {
@@ -338,21 +331,21 @@ Rectangle {
     }
     function gameFinished()
     {
-        battleship.state = "gameFinishedState"
+        battleship.gameFinished = true
     }
     function explodeShip(x,y,size,rotated,destroy)
     {
-        gameField.explodeShip(x,y,size,rotated,destroy)
+        currentGamefield.explodeShip(x,y,size,rotated,destroy)
     }
     function missShip(x,y)
     {
-        gameField.missShip(x,y)
+        currentGamefield.missShip(x,y)
     }
     function updateShootCounts(count2,count3,count4)
     {
-        gameField.shootLeft2 = count2
-        gameField.shootLeft3 = count3
-        gameField.shootLeft4 = count4
-        gameField.shootType = 1
+        currentGamefield.shootLeft2 = count2
+        currentGamefield.shootLeft3 = count3
+        currentGamefield.shootLeft4 = count4
+        currentGamefield.shootType = 1
     }
 }
