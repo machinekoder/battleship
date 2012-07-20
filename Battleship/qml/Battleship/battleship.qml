@@ -64,7 +64,7 @@ Rectangle {
 
     id: battleship
     width: 500
-    height: 700
+    height: 800
     color: "#000000"
     state: "gameTypeState"
 

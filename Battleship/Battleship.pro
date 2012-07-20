@@ -1,17 +1,14 @@
 # Add more folders to ship with the application, here
 folder_01.source = qml
 folder_01.target =
-folder_02.source = ../MyComponents/
-folder_02.target =
-DEPLOYMENTFOLDERS = folder_01 \
-folder_02
-
+DEPLOYMENTFOLDERS = folder_01
 # Additional import path used to resolve QML modules in Creator's code model
 QML_IMPORT_PATH += ../
 
 symbian {
     TARGET.UID3 = 0xE2D976A5
     DEPLOYMENT.installer_header = 0x2002CCCF
+    DEPLOYMENT.display_name = Battleship Galactica
     my_deployment.pkg_prerules += \
             "; Dependency to Symbian Qt Quick components" \
             "(0x200346DE), 1, 1, 0, {\"Qt Quick components\"}"
@@ -63,3 +60,12 @@ MOC_DIR = tmp
 OBJECTS_DIR = tmp
 RCC_DIR = tmp
 UI_DIR = tmp
+
+OTHER_FILES += \
+    qtc_packaging/debian_harmattan/rules \
+    qtc_packaging/debian_harmattan/README \
+    qtc_packaging/debian_harmattan/manifest.aegis \
+    qtc_packaging/debian_harmattan/copyright \
+    qtc_packaging/debian_harmattan/control \
+    qtc_packaging/debian_harmattan/compat \
+    qtc_packaging/debian_harmattan/changelog
