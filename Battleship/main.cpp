@@ -25,9 +25,11 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.setAttribute(Qt::WA_NoSystemBackground);
     viewer.viewport()->setAttribute(Qt::WA_OpaquePaintEvent);
     viewer.viewport()->setAttribute(Qt::WA_NoSystemBackground);
+    viewer.setOrientation(QmlApplicationViewer::ScreenOrientationLockPortrait);
     viewer.showExpanded();
 
     Battleship *battleship = new Battleship(viewer.rootObject());
+    app->installEventFilter(battleship);
 
     return app->exec();
 }

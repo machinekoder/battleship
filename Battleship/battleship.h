@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <QSettings>
 #include <QDebug>
+#include <QEvent>
 #include "gamefield.h"
 #include "player.h"
 #ifdef USE_SDL
@@ -32,12 +33,18 @@ class Battleship : public QObject
         Player2GameState = 4,
         StatsState = 5
     };
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
+
 public:
     explicit Battleship(QGraphicsObject *ui, QObject *parent = 0);
     ~Battleship();
 
 private:
     QGraphicsObject *battleshipUi;
+    bool tmpSoundMuted;
+    bool tmpMusicMuted;
 
 #ifdef USE_SDL
     Mix_Music *music;

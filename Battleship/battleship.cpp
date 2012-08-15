@@ -681,3 +681,21 @@ void Battleship::muteSound(bool muted)
     soundMuted = muted;
     battleshipUi->setProperty("soundMuted", muted);
 }
+
+bool Battleship::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type() == QEvent::ApplicationDeactivate) {
+        tmpMusicMuted = musicMuted;
+        tmpSoundMuted = soundMuted;
+        muteSound(true);
+        muteMusic(true);
+        return true; // The event is handled
+    }
+    if (event->type() == QEvent::ApplicationActivate) {
+        muteSound(tmpSoundMuted);
+        muteMusic(tmpMusicMuted);
+        return true;
+    }
+
+    return QObject::eventFilter(obj, event); // Unhandled events are passed to the base class
+}
